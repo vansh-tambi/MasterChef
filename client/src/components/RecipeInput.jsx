@@ -1,0 +1,210 @@
+import React, { useState, useRef } from 'react'
+import { Button } from './ui/Button'
+import { Card } from './ui/Card'
+
+const PRESETS = [
+  {
+    label: '🍝 Pasta Night',
+    ingredients: 'dry pasta, canned tomatoes, garlic, olive oil, basil, parmesan rind',
+  },
+  {
+    label: '🍳 Quick Breakfast',
+    ingredients: '3 eggs, cheddar cheese, green onion, butter, sourdough bread',
+  },
+  {
+    label: '🥗 Crisper Clean-out',
+    ingredients: 'block of firm tofu, broccoli florets, carrots, soy sauce, sesame oil, chili flakes',
+  },
+]
+
+export function RecipeInput({ onSubmit, isLoading = false }) {
+  const [ingredients, setIngredients] = useState('')
+  const [servings, setServings] = useState(2)
+
+  const textareaRef = useRef(null)
+
+  const trimmed = ingredients.trim()
+  const isValid = trimmed.length >= 4
+
+  const handlePresetClick = (presetText) => {
+    setIngredients(presetText)
+    if (textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }
+
+  const handleServingChange = (delta) => {
+    setServings((prev) => {
+      const next = prev + delta
+      if (next < 1) return 1
+      if (next > 12) return 12
+      return next
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!isValid || isLoading) return
+
+    const ingredientList = ingredients
+      .split(/[\n,]+/)
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0)
+
+    if (onSubmit) {
+      onSubmit({
+        ingredients: ingredientList,
+        servings,
+      })
+    }
+  }
+
+  return (
+    <Card accent={true} className="w-full max-w-2xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-terracotta-100 border border-terracotta-200 text-terracotta-700 text-xs font-semibold tracking-wide uppercase">
+          <span>🥘</span>
+          <span>Pantry to Plate</span>
+        </div>
+        <h2 className="font-display text-2xl md:text-3xl text-charcoal-900 font-bold tracking-tight">
+          What are we cooking with?
+        </h2>
+        <p className="text-charcoal-700 text-sm leading-relaxed">
+          Tell us what's lingering in your fridge, crisper drawer, or spice rack. We'll turn it into tonight's dinner.
+        </p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Ingredients Textarea */}
+        <div className="space-y-2">
+          <label htmlFor="ingredients-input" className="block text-xs font-bold text-charcoal-700 uppercase tracking-wider">
+            Available Ingredients &amp; Staples
+          </label>
+          <textarea
+            id="ingredients-input"
+            ref={textareaRef}
+            rows={4}
+            value={ingredients}
+            onChange={(e) => setIngredients(e.target.value)}
+            disabled={isLoading}
+            placeholder="e.g., chicken thighs, baby spinach, minced garlic, leftover cooked jasmine rice, soy sauce, a knob of ginger..."
+            className="w-full bg-cream-50 border border-cream-200 focus:border-terracotta-500 focus:ring-1 focus:ring-terracotta-500 rounded-lg p-3.5 text-charcoal-900 placeholder:text-charcoal-500/70 font-body text-sm leading-relaxed transition-all shadow-inner outline-none resize-y min-h-[110px] disabled:opacity-60 disabled:cursor-not-allowed"
+          />
+
+          {/* Dynamic Helper Note */}
+          <div className="flex items-center justify-between text-xs px-1">
+            <span
+              className={`transition-colors ${
+                isValid ? 'text-olive-600 font-medium' : 'text-charcoal-500'
+              }`}
+            >
+              {isValid
+                ? '✓ Ready to compose your recipe'
+                : 'Add at least a couple of ingredients to start cooking (min. 4 characters)'}
+            </span>
+            <span className="text-charcoal-500 font-mono text-[11px]">
+              {trimmed.length} chars
+            </span>
+          </div>
+        </div>
+
+        {/* Clickable Inspiration Chips (Presets) */}
+        <div className="space-y-2 pt-1">
+          <span className="text-xs font-semibold text-charcoal-700 block">
+            Quick Inspiration Presets:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {PRESETS.map((preset) => (
+              <button
+                key={preset.label}
+                type="button"
+                onClick={() => handlePresetClick(preset.ingredients)}
+                disabled={isLoading}
+                className="border border-cream-300 bg-cream-50 hover:bg-cream-200/80 active:scale-[0.98] transition-all px-3 py-1 rounded-full text-xs font-medium text-charcoal-700 flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:pointer-events-none"
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Stepper Control for Servings */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-cream-200">
+          <div>
+            <label className="block text-xs font-bold text-charcoal-700 uppercase tracking-wider">
+              Target Servings
+            </label>
+            <p className="text-xs text-charcoal-500">Scale proportions for the table</p>
+          </div>
+
+          <div className="inline-flex items-center bg-cream-50 border border-cream-200 rounded-lg p-1 shadow-sm">
+            <button
+              type="button"
+              onClick={() => handleServingChange(-1)}
+              disabled={servings <= 1 || isLoading}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+              aria-label="Decrease servings"
+            >
+              −
+            </button>
+            <div className="w-12 text-center font-display font-bold text-charcoal-900 text-lg select-none">
+              {servings}
+            </div>
+            <button
+              type="button"
+              onClick={() => handleServingChange(1)}
+              disabled={servings >= 12 || isLoading}
+              className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+              aria-label="Increase servings"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="pt-2">
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={!isValid || isLoading}
+            className="w-full flex items-center justify-center gap-2"
+          >
+            {isLoading ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                <span>Composing your recipe...</span>
+              </>
+            ) : (
+              <span>Create Recipe from Ingredients</span>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Card>
+  )
+}
+
+export default RecipeInput
