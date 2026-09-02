@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { API_BASE } from '../utils/api'
 
 /**
  * Enterprise-grade custom hook for resilient recipe generation requests.
@@ -64,7 +65,7 @@ export function useRecipeRequest() {
     setError(null)
 
     try {
-      const res = await fetch('/api/recipe', {
+      const res = await fetch(`${API_BASE}/api/recipe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ingredients, servings }),

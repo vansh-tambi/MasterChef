@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from './ui/Button'
+import { API_BASE } from '../utils/api'
 
 export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
   const [instruction, setInstruction] = useState('')
@@ -15,7 +16,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
     setErrorMessage(null)
 
     try {
-      const res = await fetch('/api/recipe/refine', {
+      const res = await fetch(`${API_BASE}/api/recipe/refine`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
