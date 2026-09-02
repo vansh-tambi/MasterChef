@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 /**
- * 60 FPS Hardware-Accelerated Custom Cursor (Artisanal Whisk Utensil)
+ * 60 FPS Hardware-Accelerated Custom Cursor (Iconic Chef's Knife)
  * Features:
- * - Touch & Coarse Pointer Suppression
- * - requestAnimationFrame LERP Engine
- * - Zero Layout Thrashing (direct transform manipulation)
- * - Interactive Hover Stirring & Click Dip Physics
+ * - Ultra-crisp, instantly recognizable Chef's Knife SVG (Option B)
+ * - Gentle ~15° idle breathing/swaying rotation physics
+ * - Interactive hover stirring & click chop dynamics
+ * - Touch & Coarse pointer suppression
  */
 export function CustomCursor() {
   const cursorRef = useRef(null)
@@ -34,6 +34,7 @@ export function CustomCursor() {
     let currentY = -100
     let isVisible = false
     let animationFrameId
+    let startTime = performance.now()
 
     const onMouseMove = (e) => {
       targetX = e.clientX
@@ -78,21 +79,27 @@ export function CustomCursor() {
       isPressedRef.current = false
     }
 
-    // 60 FPS LERP Render Loop
-    const render = () => {
-      // Linear interpolation factor (0.18 for smooth responsive tracking)
+    // 60 FPS Render Loop
+    const render = (now) => {
       currentX += (targetX - currentX) * 0.18
       currentY += (targetY - currentY) * 0.18
 
       if (cursorRef.current && isVisible) {
+        // Idle gentle sway (~15° subtle oscillation over 2.4s)
+        const elapsed = (now - startTime) / 1000
+        const idleWobble = Math.sin(elapsed * 2.6) * 6
+
         let transformStr = `translate3d(${currentX}px, ${currentY}px, 0)`
 
         if (isPressedRef.current) {
-          transformStr += ' scale(0.85) rotate(-12deg)'
+          // Tactile chop click
+          transformStr += ` scale(0.85) rotate(${idleWobble - 16}deg)`
         } else if (isHoveredRef.current) {
-          transformStr += ' scale(1.18) rotate(18deg)'
+          // Interactive hover poise
+          transformStr += ` scale(1.15) rotate(${idleWobble + 14}deg)`
         } else {
-          transformStr += ' scale(1) rotate(0deg)'
+          // Natural resting idle with gentle sway
+          transformStr += ` scale(1) rotate(${idleWobble}deg)`
         }
 
         cursorRef.current.style.transform = transformStr
@@ -130,60 +137,68 @@ export function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform opacity-0 -ml-1 -mt-1 select-none transition-opacity duration-150"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform opacity-0 select-none transition-opacity duration-150"
       style={{
         transform: 'translate3d(-100px, -100px, 0)',
         transformOrigin: '2px 2px',
       }}
       aria-hidden="true"
     >
-      {/* Artisanal Kitchen Whisk SVG Icon */}
+      {/* Option B: Premium Lucide/Phosphor Style Chef's Knife */}
       <svg
-        width="34"
-        height="34"
-        viewBox="0 0 34 34"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+        className="filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
       >
-        {/* Pointer Hotspot Dot */}
-        <circle cx="2" cy="2" r="2" fill="#D99B26" />
+        {/* Knife Tip Pointer Hotspot */}
+        <circle cx="2.5" cy="2.5" r="1.5" fill="#D99B26" />
 
-        {/* Whisk Handle (Terracotta) */}
-        <line
-          x1="2"
-          y1="2"
-          x2="12"
-          y2="12"
-          stroke="#C85A32"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-
-        {/* Handle Collar (Mustard Gold) */}
-        <circle cx="12" cy="12" r="2" fill="#D99B26" />
-
-        {/* Whisk Balloon Loops (Sage / Gold Wire) */}
+        {/* Steel Blade: Curved belly, bolster, and sharp point */}
         <path
-          d="M12 12 Q20 14 26 26 Q14 20 12 12 Z"
-          fill="rgba(217, 155, 38, 0.15)"
-          stroke="#D99B26"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+          d="M2.5 2.5 L14.5 14.5 C16 16 17 18 16 20 L12 20 C10 18 8 16 6 12 Z"
+          fill="#FAF6EE"
+          stroke="#3B312A"
+          strokeWidth="1.25"
           strokeLinejoin="round"
         />
+
+        {/* Blade Spine Highlight / Bevel */}
         <path
-          d="M12 12 Q24 16 28 28 Q16 24 12 12 Z"
-          stroke="#586B4D"
-          strokeWidth="1.25"
+          d="M2.5 2.5 L14.5 14.5"
+          stroke="#D9CEB6"
+          strokeWidth="1"
           strokeLinecap="round"
         />
-        <path
-          d="M12 12 Q16 24 24 30 Q20 18 12 12 Z"
-          stroke="#D96E47"
-          strokeWidth="1.25"
-          strokeLinecap="round"
+
+        {/* Bolster / Guard (Mustard Gold Accent) */}
+        <rect
+          x="13.5"
+          y="13.5"
+          width="4"
+          height="4"
+          rx="1"
+          transform="rotate(45 15.5 15.5)"
+          fill="#D99B26"
+          stroke="#3B312A"
+          strokeWidth="1"
         />
+
+        {/* Ergonomic Wooden Handle (Terracotta) */}
+        <path
+          d="M16 16 L25 25 C26.5 26.5 28 26 29 25 C30 24 30.5 22.5 29 21 L20 12 Z"
+          fill="#C85A32"
+          stroke="#3B312A"
+          strokeWidth="1.25"
+          strokeLinejoin="round"
+        />
+
+        {/* Brass Handle Rivets */}
+        <circle cx="21.5" cy="18.5" r="0.85" fill="#FAF6EE" />
+        <circle cx="24.5" cy="21.5" r="0.85" fill="#FAF6EE" />
+        <circle cx="27.5" cy="24.5" r="0.85" fill="#FAF6EE" />
       </svg>
     </div>
   )

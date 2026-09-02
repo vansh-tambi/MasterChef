@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useTheme } from './hooks/useTheme'
 import { useRecipeRequest } from './hooks/useRecipeRequest'
 import { useRecipeSession } from './hooks/useRecipeSession'
@@ -8,9 +9,10 @@ import { RecipeInput } from './components/RecipeInput'
 import { RecipeView } from './components/RecipeView'
 import { RecipeLoading } from './components/RecipeLoading'
 import { FeedbackState } from './components/FeedbackState'
-import { Button } from './components/ui/Button'
+import { fadeTransition } from './utils/motion'
 
 function App() {
+  const shouldReduceMotion = useReducedMotion()
   const { theme, toggleTheme } = useTheme()
   const { session, saveSession, clearSession, isRestored } = useRecipeSession()
   const {
@@ -83,6 +85,12 @@ function App() {
     [activeRecipe, saveSession]
   )
 
+  // Determine current active view state
+  let currentKey = 'input'
+  if (status === 'loading') currentKey = 'loading'
+  else if (status === 'error') currentKey = 'error'
+  else if (activeRecipe) currentKey = 'recipe'
+
   return (
     <main className="min-h-screen w-full bg-kitchen-bg text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow">
       {/* 60 FPS Hardware-Accelerated Artisanal Whisk Cursor */}
@@ -113,58 +121,100 @@ function App() {
           </p>
 
           {/* Session Restored Notice */}
-          {showRestoredNotice && activeRecipe && (
-            <div className="inline-flex items-center justify-between gap-3 px-4 py-1.5 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium animate-fadeIn mt-2 shadow-stamp">
-              <span>Restored previous Master Chef creation</span>
-              <button
-                type="button"
-                onClick={handleStartOver}
-                className="underline hover:text-parchment-100 font-bold text-mustard-400"
+          <AnimatePresence>
+            {showRestoredNotice && activeRecipe && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="inline-flex items-center justify-between gap-3 px-4 py-1.5 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium mt-2 shadow-stamp"
               >
-                Start Fresh
-              </button>
-            </div>
-          )}
+                <span>Restored previous Master Chef creation</span>
+                <button
+                  type="button"
+                  onClick={handleStartOver}
+                  className="underline hover:text-parchment-100 font-bold text-mustard-400 cursor-pointer"
+                >
+                  Start Fresh
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </header>
 
-        {/* State 1: Loading */}
-        {status === 'loading' && (
-          <RecipeLoading onCancel={cancel} />
-        )}
+        {/* AnimatePresence Page-Level State Crossfading */}
+        <AnimatePresence mode="wait">
+          {/* State 1: Loading */}
+          {status === 'loading' && (
+            <motion.div
+              key="loading"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={fadeTransition}
+            >
+              <RecipeLoading onCancel={cancel} />
+            </motion.div>
+          )}
 
-        {/* State 2: Error */}
-        {status === 'error' && (
-          <FeedbackState
-            error={error}
-            onRetry={retry}
-            onReset={handleStartOver}
-          />
-        )}
+          {/* State 2: Error */}
+          {status === 'error' && (
+            <motion.div
+              key="error"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={fadeTransition}
+            >
+              <FeedbackState
+                error={error}
+                onRetry={retry}
+                onReset={handleStartOver}
+              />
+            </motion.div>
+          )}
 
-        {/* State 3: Active Recipe View */}
-        {status !== 'loading' && status !== 'error' && activeRecipe && (
-          <RecipeView
-            recipe={activeRecipe}
-            onReset={handleStartOver}
-            onRegenerate={retry}
-            onRecipeUpdate={handleRecipeUpdate}
-            isRegenerating={isLoading}
-            initialServings={session?.servings}
-            initialCompletedSteps={session?.completedSteps}
-            initialActiveSwaps={session?.activeSwaps}
-            onStateChange={handleViewSessionStateChange}
-          />
-        )}
+          {/* State 3: Active Recipe View */}
+          {status !== 'loading' && status !== 'error' && activeRecipe && (
+            <motion.div
+              key="recipe"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={fadeTransition}
+            >
+              <RecipeView
+                recipe={activeRecipe}
+                onReset={handleStartOver}
+                onRegenerate={retry}
+                onRecipeUpdate={handleRecipeUpdate}
+                isRegenerating={isLoading}
+                initialServings={session?.servings}
+                initialCompletedSteps={session?.completedSteps}
+                initialActiveSwaps={session?.activeSwaps}
+                onStateChange={handleViewSessionStateChange}
+              />
+            </motion.div>
+          )}
 
-        {/* State 4: Idle Input Form */}
-        {status === 'idle' && !activeRecipe && (
-          <RecipeInput
-            onSubmit={submit}
-            isLoading={isLoading}
-            initialIngredients={lastParams?.ingredients || ''}
-            initialServings={lastParams?.servings || 2}
-          />
-        )}
+          {/* State 4: Idle Input Form */}
+          {status === 'idle' && !activeRecipe && (
+            <motion.div
+              key="input"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={fadeTransition}
+            >
+              <RecipeInput
+                onSubmit={submit}
+                isLoading={isLoading}
+                initialIngredients={lastParams?.ingredients || ''}
+                initialServings={lastParams?.servings || 2}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </main>
   )

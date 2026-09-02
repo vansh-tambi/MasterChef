@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const variants = {
   primary:
@@ -27,20 +28,25 @@ export function Button({
   children,
   ...props
 }) {
+  const shouldReduceMotion = useReducedMotion()
+
   const baseStyles =
-    'font-body font-semibold inline-flex items-center justify-center rounded-xl transition-all duration-150 ease-out active:scale-[0.97] disabled:opacity-40 disabled:pointer-events-none disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg touch-manipulation select-none'
+    'font-body font-semibold inline-flex items-center justify-center rounded-xl transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg touch-manipulation select-none cursor-pointer'
 
   const variantStyles = variants[variant] || variants.primary
   const sizeStyles = sizes[size] || sizes.md
 
   return (
-    <button
+    <motion.button
       disabled={disabled}
+      whileHover={disabled || shouldReduceMotion ? undefined : { scale: 1.02 }}
+      whileTap={disabled || shouldReduceMotion ? undefined : { scale: 0.96 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 20 }}
       className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}
       {...props}
     >
       {children}
-    </button>
+    </motion.button>
   )
 }
 

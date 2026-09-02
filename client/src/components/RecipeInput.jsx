@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 
@@ -88,7 +89,7 @@ export function RecipeInput({
   }
 
   return (
-    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn">
+    <Card accent={true} className="w-full space-y-6 sm:space-y-8">
       {/* Header Section */}
       <div className="space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold tracking-wider uppercase shadow-stamp">
@@ -105,7 +106,7 @@ export function RecipeInput({
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Ingredients Textarea (Head Chef's Prep Pad) */}
+        {/* Ingredients Textarea */}
         <div className="space-y-2.5">
           <div className="flex items-center justify-between">
             <label
@@ -165,7 +166,7 @@ export function RecipeInput({
                 type="button"
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="min-h-[44px] border border-kitchen-border bg-kitchen-card hover:bg-kitchen-card/90 hover:border-mustard-500/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg transition-all px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-parchment-200 flex items-center gap-2 shadow-stamp disabled:opacity-50 text-left touch-manipulation"
+                className="min-h-[44px] border border-kitchen-border bg-kitchen-card hover:bg-kitchen-card/90 hover:border-mustard-500/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg transition-all px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-parchment-200 flex items-center gap-2 shadow-stamp disabled:opacity-50 text-left touch-manipulation cursor-pointer"
               >
                 <span>{preset.icon}</span>
                 <span>{preset.label}</span>
@@ -174,7 +175,7 @@ export function RecipeInput({
           </div>
         </div>
 
-        {/* Stepper Control for Servings */}
+        {/* Stepper Control for Servings with AnimatePresence */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-kitchen-border">
           <div>
             <label className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-1.5">
@@ -189,19 +190,29 @@ export function RecipeInput({
               type="button"
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Decrease servings"
             >
               −
             </button>
-            <div className="w-14 text-center font-display font-bold text-mustard-400 text-xl select-none">
-              {servings}
+            <div className="w-14 text-center font-display font-bold text-mustard-400 text-xl select-none overflow-hidden h-7 flex items-center justify-center">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={servings}
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 10, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {servings}
+                </motion.span>
+              </AnimatePresence>
             </div>
             <button
               type="button"
               onClick={() => handleServingChange(1)}
               disabled={servings >= 12 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Increase servings"
             >
               +
