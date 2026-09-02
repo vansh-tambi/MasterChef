@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
+import { springTap } from '../utils/motionPresets'
 
 const PRESETS = [
   {
@@ -27,6 +28,7 @@ export function RecipeInput({
   initialIngredients = '',
   initialServings = 2,
 }) {
+  const shouldReduceMotion = useReducedMotion()
   const [ingredients, setIngredients] = useState(
     Array.isArray(initialIngredients) ? initialIngredients.join(', ') : initialIngredients
   )
@@ -91,12 +93,11 @@ export function RecipeInput({
   const formattedServings = String(servings).padStart(2, '0')
 
   return (
-    <Card accent={true} badge="INVENTORY // SPEC 01" className="w-full space-y-6 sm:space-y-7">
+    <Card accent={true} className="w-full space-y-6 sm:space-y-7">
       {/* Structural Header Band */}
       <div className="space-y-2 border-b-2 border-panel-border pb-4 -mx-5 sm:-mx-8 px-5 sm:px-8 bg-elevated/40">
         <div className="flex items-center justify-between">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-surface border-2 border-panel-border text-ember-500 text-xs font-mono font-bold tracking-wider uppercase shadow-[2px_2px_0px_0px_rgba(26,29,32,0.12)] dark:shadow-[2px_2px_0px_0px_#2D323B]">
-            <span className="w-2 h-2 rounded-none bg-brass-500 animate-pulse"></span>
             <span>Pantry to Plate</span>
           </div>
         </div>
@@ -159,16 +160,19 @@ export function RecipeInput({
 
           <div className="flex flex-wrap gap-2.5">
             {PRESETS.map((preset) => (
-              <button
+              <motion.button
                 key={preset.label}
                 type="button"
+                whileHover={shouldReduceMotion ? undefined : { x: -1, y: -1 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.96 }}
+                transition={springTap}
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="min-h-[38px] border-2 border-panel-border bg-elevated hover:bg-surface hover:border-ember-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all px-3.5 py-1.5 rounded-md text-xs font-mono font-bold text-ink-secondary hover:text-ink flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[2px_2px_0px_0px_#2D323B] disabled:opacity-50 text-left touch-manipulation cursor-pointer"
+                className="min-h-[38px] border-2 border-panel-border bg-elevated hover:bg-surface hover:border-ember-500 active:shadow-none transition-colors px-3.5 py-1.5 rounded-md text-xs font-mono font-bold text-ink-secondary hover:text-ink flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[2px_2px_0px_0px_#2D323B] disabled:opacity-50 text-left touch-manipulation cursor-pointer"
               >
                 <span>{preset.icon}</span>
                 <span>{preset.label}</span>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -182,15 +186,17 @@ export function RecipeInput({
           </div>
 
           <div className="inline-flex items-center gap-2 bg-elevated border-2 border-panel-border rounded-md p-1.5 shadow-[3px_3px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[3px_3px_0px_0px_#000] self-start sm:self-auto">
-            <button
+            <motion.button
               type="button"
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.92 }}
+              transition={springTap}
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1 || isLoading}
-              className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-surface text-ink font-mono font-bold text-base hover:border-ember-500 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none shadow-[1px_1px_0px_0px_rgba(26,29,32,0.15)] dark:shadow-[1px_1px_0px_0px_#000] disabled:opacity-30 transition-all select-none touch-manipulation cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-surface text-ink font-mono font-bold text-base hover:border-ember-500 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.15)] dark:shadow-[1px_1px_0px_0px_#000] disabled:opacity-30 transition-colors select-none touch-manipulation cursor-pointer"
               aria-label="Decrease servings"
             >
               −
-            </button>
+            </motion.button>
             
             <div className="px-3 py-1 font-mono font-bold text-xs sm:text-sm tracking-wider text-brass-500 select-none overflow-hidden h-7 flex items-center justify-center min-w-[110px]">
               <AnimatePresence mode="popLayout" initial={false}>
@@ -200,21 +206,24 @@ export function RecipeInput({
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.15 }}
+                  className="inline-block"
                 >
                   {formattedServings} PORTIONS
                 </motion.span>
               </AnimatePresence>
             </div>
 
-            <button
+            <motion.button
               type="button"
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.92 }}
+              transition={springTap}
               onClick={() => handleServingChange(1)}
               disabled={servings >= 12 || isLoading}
-              className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-surface text-ink font-mono font-bold text-base hover:border-ember-500 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none shadow-[1px_1px_0px_0px_rgba(26,29,32,0.15)] dark:shadow-[1px_1px_0px_0px_#000] disabled:opacity-30 transition-all select-none touch-manipulation cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-surface text-ink font-mono font-bold text-base hover:border-ember-500 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.15)] dark:shadow-[1px_1px_0px_0px_#000] disabled:opacity-30 transition-colors select-none touch-manipulation cursor-pointer"
               aria-label="Increase servings"
             >
               +
-            </button>
+            </motion.button>
           </div>
         </div>
 

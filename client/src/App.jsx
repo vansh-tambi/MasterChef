@@ -9,7 +9,7 @@ import { RecipeInput } from './components/RecipeInput'
 import { RecipeView } from './components/RecipeView'
 import { RecipeLoading } from './components/RecipeLoading'
 import { FeedbackState } from './components/FeedbackState'
-import { fadeTransition } from './utils/motion'
+import { smoothFade, springTap } from './utils/motionPresets'
 
 function App() {
   const shouldReduceMotion = useReducedMotion()
@@ -96,9 +96,13 @@ function App() {
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
 
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-md bg-surface border-2 border-panel-border text-ember-500 text-2xl shadow-[3px_3px_0px_0px_rgba(26,29,32,0.12)] dark:shadow-[3px_3px_0px_0px_#000] mb-0.5">
+          <motion.div
+            whileHover={shouldReduceMotion ? undefined : { rotate: [-2, 2, -1, 0], scale: 1.05 }}
+            transition={springTap}
+            className="inline-flex items-center justify-center w-12 h-12 rounded-md bg-surface border-2 border-panel-border text-ember-500 text-2xl shadow-[3px_3px_0px_0px_rgba(26,29,32,0.12)] dark:shadow-[3px_3px_0px_0px_#000] mb-0.5 cursor-default select-none"
+          >
             👨‍🍳
-          </div>
+          </motion.div>
 
           <div className="space-y-0.5">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink break-words">
@@ -114,9 +118,10 @@ function App() {
           <AnimatePresence>
             {showRestoredNotice && activeRecipe && (
               <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
+                initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                transition={smoothFade}
                 className="inline-flex items-center justify-between gap-3 px-3.5 py-1 rounded-sm bg-surface border-2 border-rosemary-500/50 text-rosemary-500 text-xs font-mono font-bold mt-1.5 shadow-[2px_2px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[2px_2px_0px_0px_#000]"
               >
                 <span>RESTORED SESSION</span>
@@ -138,10 +143,10 @@ function App() {
           {status === 'loading' && (
             <motion.div
               key="loading"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={fadeTransition}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+              transition={smoothFade}
             >
               <RecipeLoading onCancel={cancel} />
             </motion.div>
@@ -151,10 +156,10 @@ function App() {
           {status === 'error' && (
             <motion.div
               key="error"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={fadeTransition}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+              transition={smoothFade}
             >
               <FeedbackState
                 error={error}
@@ -168,10 +173,10 @@ function App() {
           {status !== 'loading' && status !== 'error' && activeRecipe && (
             <motion.div
               key="recipe"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={fadeTransition}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+              transition={smoothFade}
             >
               <RecipeView
                 recipe={activeRecipe}
@@ -191,10 +196,10 @@ function App() {
           {status === 'idle' && !activeRecipe && (
             <motion.div
               key="input"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={fadeTransition}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+              transition={smoothFade}
             >
               <RecipeInput
                 onSubmit={submit}
