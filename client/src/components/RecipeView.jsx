@@ -32,9 +32,9 @@ function formatQuantity(quantity, scalingFactor, unit) {
 }
 
 const difficultyStyles = {
-  easy: 'bg-sage-600/30 border-sage-500/40 text-sage-400',
-  medium: 'bg-mustard-500/20 border-mustard-500/40 text-mustard-400',
-  hard: 'bg-terracotta-600/30 border-terracotta-500/40 text-terracotta-400',
+  easy: 'bg-rosemary-500/15 border-rosemary-500/40 text-rosemary-400',
+  medium: 'bg-brass-500/15 border-brass-500/40 text-brass-500',
+  hard: 'bg-ember-500/15 border-ember-500/40 text-ember-400',
 }
 
 export function RecipeView({
@@ -133,13 +133,13 @@ export function RecipeView({
         {/* Top Action Bar */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-kitchen-border pb-4"
+          className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-panel-border pb-4"
         >
           <Button
             variant="ghost"
             size="sm"
             onClick={onReset}
-            className="flex items-center justify-center sm:justify-start gap-2 text-parchment-300 hover:text-parchment-100 w-full sm:w-auto"
+            className="flex items-center justify-center sm:justify-start gap-2 text-ink-muted hover:text-ink w-full sm:w-auto"
           >
             <span>←</span>
             <span>New Recipe</span>
@@ -155,7 +155,7 @@ export function RecipeView({
             {isRegenerating ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4 text-mustard-400"
+                  className="animate-spin h-4 w-4 text-brass-500"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -196,19 +196,19 @@ export function RecipeView({
               {recipe.difficulty}
             </span>
             {recipe.totalTimeMinutes && (
-              <span className="bg-kitchen-card border border-kitchen-border text-parchment-200 text-xs font-medium px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-stamp">
+              <span className="bg-elevated border border-panel-border text-ink-secondary text-xs font-medium px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-stamp">
                 <span>⏱</span>
                 <span>{recipe.totalTimeMinutes} mins</span>
               </span>
             )}
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-parchment-100 tracking-tight break-words">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink tracking-tight break-words">
             {recipe.title}
           </h1>
 
           {recipe.description && (
-            <p className="font-body text-parchment-200 italic text-sm sm:text-base leading-relaxed border-l-2 border-terracotta-500 pl-4 break-words">
+            <p className="font-body text-ink-secondary italic text-sm sm:text-base leading-relaxed border-l-2 border-ember-500 pl-4 break-words">
               "{recipe.description}"
             </p>
           )}
@@ -219,7 +219,7 @@ export function RecipeView({
               {recipe.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="bg-kitchen-card border border-kitchen-border text-xs font-mono px-2.5 py-0.5 rounded-md text-parchment-300 shadow-stamp"
+                  className="bg-elevated border border-panel-border text-xs font-mono px-2.5 py-0.5 rounded-md text-ink-muted shadow-stamp"
                 >
                   #{tag}
                 </span>
@@ -231,31 +231,31 @@ export function RecipeView({
         {/* Servings Bar */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="bg-kitchen-bg/90 border border-kitchen-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-brass-dial"
+          className="bg-canvas border border-panel-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-dial"
         >
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-1.5">
                 <span>🍽️</span>
                 <span>Servings</span>
               </span>
-              <span className="text-xs text-mustard-400 font-mono">
+              <span className="text-xs text-brass-500 font-mono">
                 (Base: {baseServings})
               </span>
             </div>
           </div>
 
-          <div className="inline-flex items-center bg-kitchen-card border border-kitchen-border rounded-xl p-1 shadow-stamp self-start sm:self-auto">
+          <div className="inline-flex items-center bg-elevated border border-panel-border rounded-xl p-1 shadow-stamp self-start sm:self-auto">
             <button
               type="button"
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-surface hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Decrease servings"
             >
               −
             </button>
-            <div className="w-14 text-center font-mono font-bold text-mustard-400 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
+            <div className="w-14 text-center font-mono font-bold text-brass-500 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={servings}
@@ -272,7 +272,7 @@ export function RecipeView({
               type="button"
               onClick={() => handleServingChange(1)}
               disabled={servings >= 20}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-surface hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Increase servings"
             >
               +
@@ -287,18 +287,18 @@ export function RecipeView({
         >
           {/* Central Binder Crease */}
           <div
-            className="hidden lg:block absolute inset-y-0 left-[41.666%] w-px bg-gradient-to-b from-transparent via-kitchen-border/80 to-transparent -translate-x-1/2 pointer-events-none"
+            className="hidden lg:block absolute inset-y-0 left-[41.666%] w-px bg-gradient-to-b from-transparent via-panel-border to-transparent -translate-x-1/2 pointer-events-none"
             aria-hidden="true"
           />
 
           {/* Left Page: Ingredients (5 cols) */}
           <div className="lg:col-span-5 space-y-3">
-            <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
-              <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-dashed border-panel-border pb-2">
+              <h2 className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-2">
                 <span>🧺</span>
                 <span>Ingredients</span>
               </h2>
-              <span className="text-xs text-parchment-300/60 font-mono">
+              <span className="text-xs text-ink-muted font-mono">
                 {recipe.ingredients?.length || 0}
               </span>
             </div>
@@ -311,15 +311,15 @@ export function RecipeView({
                 return (
                   <div
                     key={idx}
-                    className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-3.5 space-y-2 shadow-butcher-tag transition-all duration-200"
+                    className="bg-elevated border border-panel-border rounded-xl p-3.5 space-y-2 shadow-tag transition-all duration-200"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1 pr-1">
                         <h3
                           className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
                             isSwapped
-                              ? 'hand-strike text-parchment-300/40 opacity-60'
-                              : 'text-parchment-100'
+                              ? 'hand-strike text-ink-muted/40 opacity-60'
+                              : 'text-ink'
                           }`}
                         >
                           {ing.name}
@@ -327,8 +327,8 @@ export function RecipeView({
                         <p
                           className={`text-xs sm:text-sm font-mono transition-all duration-200 ${
                             isSwapped
-                              ? 'line-through text-parchment-300/40 opacity-60'
-                              : 'text-mustard-400 font-semibold'
+                              ? 'line-through text-ink-muted/40 opacity-60'
+                              : 'text-brass-500 font-semibold'
                           }`}
                         >
                           {scaledQty} {ing.unit}
@@ -339,10 +339,10 @@ export function RecipeView({
                         <button
                           type="button"
                           onClick={() => toggleSwap(ing.name)}
-                          className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 touch-manipulation shrink-0 cursor-pointer ${
+                          className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 touch-manipulation shrink-0 cursor-pointer ${
                             isSwapped
-                              ? 'bg-sage-600 text-parchment-100 border-sage-500 shadow-sm'
-                              : 'bg-kitchen-surface text-parchment-200 border-kitchen-border hover:border-kitchen-border/80'
+                              ? 'bg-rosemary-500 text-white border-rosemary-600 shadow-sm'
+                              : 'bg-surface text-ink-secondary border-panel-border hover:border-ember-500/50'
                           }`}
                         >
                           {isSwapped ? '✓ Swapped' : '⇄ Swap'}
@@ -358,8 +358,8 @@ export function RecipeView({
                           {...swapExpand}
                           className="overflow-hidden"
                         >
-                          <div className="bg-sage-600/20 border border-sage-500/40 rounded-lg p-2.5 text-xs sm:text-sm text-sage-300 space-y-0.5 mt-2">
-                            <span className="font-bold text-[11px] uppercase tracking-wider block text-sage-200">
+                          <div className="bg-rosemary-500/10 border border-rosemary-500/30 rounded-lg p-2.5 text-xs sm:text-sm text-rosemary-400 space-y-0.5 mt-2">
+                            <span className="font-bold text-[11px] uppercase tracking-wider block text-rosemary-500">
                               Swap Choice:
                             </span>
                             <p className="break-words">{ing.swapSuggestion}</p>
@@ -375,20 +375,20 @@ export function RecipeView({
 
           {/* Right Page: Steps (7 cols) */}
           <div className="lg:col-span-7 space-y-3">
-            <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
-              <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-dashed border-panel-border pb-2">
+              <h2 className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-2">
                 <span>👨‍🍳</span>
                 <span>Steps</span>
               </h2>
-              <span className="text-xs text-mustard-400 font-mono font-bold">
+              <span className="text-xs text-brass-500 font-mono font-bold">
                 {completedCount} / {totalSteps} done
               </span>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-kitchen-card h-1.5 rounded-full overflow-hidden border border-kitchen-border/60">
+            <div className="w-full bg-elevated h-1.5 rounded-full overflow-hidden border border-panel-border/60">
               <motion.div
-                className="bg-gradient-to-r from-terracotta-500 via-mustard-500 to-sage-500 h-full"
+                className="bg-gradient-to-r from-ember-500 via-brass-500 to-rosemary-500 h-full"
                 animate={{ width: `${progressPercent}%` }}
                 transition={{ type: 'spring', stiffness: 200, damping: 25 }}
               />
@@ -415,10 +415,10 @@ export function RecipeView({
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    className={`cursor-pointer rounded-xl border p-3.5 transition-colors duration-200 flex items-start gap-3.5 select-none shadow-stamp touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg ${
+                    className={`cursor-pointer rounded-xl border p-3.5 transition-colors duration-200 flex items-start gap-3.5 select-none shadow-stamp touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
                       isDone
-                        ? 'bg-kitchen-surface/50 border-kitchen-border/50 text-parchment-300/40'
-                        : 'bg-kitchen-card/90 border-kitchen-border hover:border-terracotta-500/40'
+                        ? 'bg-surface/50 border-panel-border/50 text-ink-muted'
+                        : 'bg-elevated border-panel-border hover:border-ember-500/40'
                     }`}
                   >
                     <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
@@ -428,8 +428,8 @@ export function RecipeView({
                         transition={{ type: 'spring', stiffness: 600, damping: 20 }}
                         className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-colors duration-200 ${
                           isDone
-                            ? 'bg-sage-600 text-parchment-100 shadow-candlelight'
-                            : 'bg-kitchen-surface text-terracotta-400 border border-kitchen-border'
+                            ? 'bg-rosemary-500 text-white shadow-glow'
+                            : 'bg-surface text-ember-500 border border-panel-border'
                         }`}
                       >
                         {isDone ? '✓' : step.order}
@@ -441,7 +441,7 @@ export function RecipeView({
                         animate={{ opacity: isDone ? 0.45 : 1 }}
                         transition={{ duration: 0.15 }}
                         className={`text-sm sm:text-base leading-relaxed break-words ${
-                          isDone ? 'hand-strike' : 'text-parchment-100 font-medium'
+                          isDone ? 'hand-strike' : 'text-ink font-medium'
                         }`}
                       >
                         {step.instruction}
@@ -455,7 +455,7 @@ export function RecipeView({
         </motion.div>
 
         {/* Recipe Refine Section */}
-        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="pt-3 border-t border-dashed border-kitchen-border">
+        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="pt-3 border-t border-dashed border-panel-border">
           <RecipeRefine
             currentRecipe={recipe}
             onRefineSuccess={(updated) => {

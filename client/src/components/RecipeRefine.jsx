@@ -44,10 +44,10 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
   }
 
   return (
-    <div className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-4 sm:p-5 space-y-3 shadow-stamp transition-colors duration-200">
+    <div className="bg-elevated border border-panel-border rounded-xl p-4 sm:p-5 space-y-3 shadow-stamp transition-colors duration-200">
       <div className="flex items-center gap-2">
         <span className="text-base">✍️</span>
-        <h3 className="font-display font-bold text-sm sm:text-base text-parchment-100">
+        <h3 className="font-display font-bold text-sm sm:text-base text-ink">
           Adjust Recipe
         </h3>
       </div>
@@ -62,7 +62,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
           }}
           disabled={isSubmitting}
           placeholder="e.g. Make it vegetarian, less spicy..."
-          className="flex-1 min-h-[44px] px-3.5 py-2.5 rounded-xl border border-kitchen-border bg-kitchen-bg/90 text-parchment-100 placeholder:text-parchment-300/40 text-sm focus:border-terracotta-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg transition-all"
+          className="flex-1 min-h-[44px] px-3.5 py-2.5 rounded-xl border border-panel-border bg-surface text-ink placeholder:text-ink-muted/40 text-sm focus:border-ember-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas transition-all"
         />
 
         <Button
@@ -77,7 +77,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
       </form>
 
       {errorMessage && (
-        <p className="text-xs text-terracotta-400 animate-fadeIn">
+        <p className="text-xs text-ember-500 animate-fadeIn">
           ⚠️ {errorMessage}
         </p>
       )}

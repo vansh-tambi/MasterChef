@@ -67,38 +67,38 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
   return (
     <Card
       accent={true}
-      className="w-full space-y-6 bg-kitchen-surface border-kitchen-border text-parchment-100 shadow-candlelight animate-fadeIn overflow-hidden"
+      className="w-full space-y-6 animate-fadeIn overflow-hidden"
     >
       {/* Header Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-kitchen-border pb-4">
-        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold uppercase tracking-wider shadow-stamp">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-panel-border pb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-ember-500/10 border border-ember-500/30 text-ember-500 text-xs font-semibold uppercase tracking-wider shadow-stamp">
           <span>{config.icon}</span>
           <span>{config.badge}</span>
         </div>
-        <span className="text-xs font-mono text-parchment-300/60">
+        <span className="text-xs font-mono text-ink-muted">
           Code: {code}
         </span>
       </div>
 
       {/* Main Copy Area */}
       <div className="space-y-1.5">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-parchment-100 break-words">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink break-words">
           {config.headline}
         </h2>
-        <p className="text-parchment-200 text-sm sm:text-base leading-relaxed break-words">
+        <p className="text-ink-secondary text-sm sm:text-base leading-relaxed break-words">
           {config.body}
         </p>
         {error?.message && error.message !== config.body && (
-          <p className="text-xs font-mono text-terracotta-400 bg-kitchen-bg/90 p-3 rounded-xl border border-kitchen-border mt-3 break-words">
+          <p className="text-xs font-mono text-ember-400 bg-elevated p-3 rounded-xl border border-panel-border mt-3 break-words">
             Note: {error.message}
           </p>
         )}
       </div>
 
       {/* Action Buttons */}
-      <div className="pt-4 border-t border-kitchen-border flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
+      <div className="pt-4 border-t border-panel-border flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
         {config.showReset ? (
-          <Button variant="ghost" size="sm" onClick={onReset} className="w-full sm:w-auto text-parchment-300">
+          <Button variant="ghost" size="sm" onClick={onReset} className="w-full sm:w-auto text-ink-muted">
             ← Ingredients
           </Button>
         ) : (

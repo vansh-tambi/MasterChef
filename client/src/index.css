@@ -2,12 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════
+   NORDIC SMOKED CERAMIC & CAST IRON — Theme Tokens
+   ═══════════════════════════════════════════════════ */
+:root {
+  /* Light Mode: Smoked Ceramic & Alabaster */
+  --c-canvas:        #F8F9FA;
+  --c-surface:       #FFFFFF;
+  --c-elevated:      #F1F3F5;
+  --c-border:        #E5E7EB;
+  --c-ink:           #1A1D20;
+  --c-ink-secondary: #4B5563;
+  --c-ink-muted:     #9CA3AF;
+  --c-ink-inverse:   #F8F9FA;
+}
+
+.dark {
+  /* Dark Mode: Obsidian Kitchen & Cast Iron */
+  --c-canvas:        #0F1115;
+  --c-surface:       #181B20;
+  --c-elevated:      #22262E;
+  --c-border:        #2D323B;
+  --c-ink:           #F1F3F5;
+  --c-ink-secondary: #9CA3AF;
+  --c-ink-muted:     #6B7280;
+  --c-ink-inverse:   #1A1D20;
+}
+
 @layer base {
   body {
+    background-color: var(--c-canvas);
+    color: var(--c-ink);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Custom artisanal scrollbar */
+  ::selection {
+    background: rgba(224, 83, 56, 0.25);
+    color: #FFFFFF;
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -16,46 +50,37 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #3B312A;
+    background: var(--c-border);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #C85A32;
+    background: #E05338;
   }
 }
 
-/* Global native cursor suppression only when desktop CustomCursor is mounted and active */
+/* Global native cursor suppression when desktop CustomCursor is mounted */
 html.cursor-none-active,
 html.cursor-none-active body,
 html.cursor-none-active * {
   cursor: none !important;
 }
 
-/* Atmospheric candlelight gradient glow utility */
+/* Atmospheric ember glow */
 .ambient-glow {
-  background: radial-gradient(circle at 50% 15%, rgba(200, 90, 50, 0.12) 0%, rgba(18, 16, 14, 0) 75%);
+  background: radial-gradient(circle at 50% 10%, rgba(224,83,56,0.06) 0%, transparent 70%);
 }
-
 .dark .ambient-glow {
-  background: radial-gradient(circle at 50% 15%, rgba(200, 90, 50, 0.14) 0%, rgba(18, 16, 14, 0) 75%);
+  background: radial-gradient(circle at 50% 10%, rgba(240,101,72,0.08) 0%, transparent 70%);
 }
 
-/* Head Chef's Ledger lined paper effect */
+/* Ledger lined paper effect */
 .ledger-lines {
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    rgba(59, 49, 42, 0.2) 28px
+    var(--c-border) 28px
   );
   line-height: 28px;
-}
-
-.dark .ledger-lines {
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 27px,
-    rgba(59, 49, 42, 0.45) 28px
-  );
 }
 
 /* Hand-drawn organic strike-through */
@@ -70,7 +95,7 @@ html.cursor-none-active * {
   top: 50%;
   height: 2px;
   background: currentColor;
-  opacity: 0.6;
+  opacity: 0.5;
   transform: rotate(-1.2deg) translateY(-50%);
   border-radius: 9999px;
   pointer-events: none;

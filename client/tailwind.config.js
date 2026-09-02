@@ -14,75 +14,63 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        kitchen: {
-          bg: '#12100E',
-          surface: '#1C1815',
-          card: '#241E1A',
-          border: '#3B312A',
-          muted: '#52453C',
+        /* ──────────────────────────────────────────────
+         * Semantic surface tokens backed by CSS vars
+         * (swap instantly when .dark toggles on <html>)
+         * ────────────────────────────────────────────── */
+        canvas:     'var(--c-canvas)',
+        surface:    'var(--c-surface)',
+        elevated:   'var(--c-elevated)',
+        'panel-border': 'var(--c-border)',
+
+        ink: {
+          DEFAULT:  'var(--c-ink)',
+          secondary:'var(--c-ink-secondary)',
+          muted:    'var(--c-ink-muted)',
+          inverse:  'var(--c-ink-inverse)',
         },
-        cream: {
-          50: '#FAF8F5',
-          100: '#F4EFE6',
-          200: '#E8DFD1',
-          300: '#DACDBA',
-          400: '#C7B49B',
+
+        /* ── Hero: Ember / Persimmon ── */
+        ember: {
+          400: '#F06548',
+          500: '#E05338',
+          600: '#C74127',
+          glow: 'rgba(224, 83, 56, 0.25)',
         },
-        roast: {
-          700: '#3B312A',
-          800: '#26201C',
-          900: '#1C1815',
-          950: '#12100E',
+        /* ── Success: Rosemary / Alpine Sage ── */
+        rosemary: {
+          400: '#4E9F76',
+          500: '#3D7055',
+          600: '#2F5943',
         },
-        terracotta: {
-          400: '#D96E47',
-          500: '#C85A32',
-          600: '#AE4822',
-        },
-        sage: {
-          400: '#758A69',
-          500: '#586B4D',
-          600: '#43523B',
-        },
-        mustard: {
-          400: '#EDB03A',
-          500: '#D99B26',
+        /* ── Accent: Nordic Brass ── */
+        brass: {
+          400: '#E5AB4C',
+          500: '#D49A3D',
           600: '#B8801B',
-        },
-        parchment: {
-          100: '#FAF6EE',
-          200: '#EDE4D1',
-          300: '#D9CEB6',
-        },
-        charcoal: {
-          500: '#857D75',
-          700: '#524C46',
-          900: '#262320',
-          950: '#1A1816',
         },
       },
       boxShadow: {
-        candlelight: '0 8px 32px -4px rgba(200, 90, 50, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.4)',
-        'candlelight-hover': '0 12px 40px -4px rgba(200, 90, 50, 0.14), 0 4px 12px -1px rgba(0, 0, 0, 0.6)',
-        press: '0 2px 4px 0 rgba(0, 0, 0, 0.5)',
-        stamp: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0,0,0,0.3)',
-        'butcher-tag': '2px 3px 0px rgba(0, 0, 0, 0.4)',
-        'brass-dial': 'inset 0 2px 4px rgba(0,0,0,0.6), 0 1px 0 rgba(217,155,38,0.2)',
+        glow:      '0 8px 30px -4px rgba(224,83,56,0.10), 0 2px 8px -2px rgba(0,0,0,0.08)',
+        'glow-lg': '0 12px 40px -4px rgba(224,83,56,0.16), 0 4px 12px -2px rgba(0,0,0,0.12)',
+        stamp:     'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.12)',
+        tag:       '1px 2px 0px rgba(0,0,0,0.06)',
+        dial:      'inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 0 rgba(212,154,61,0.15)',
       },
       keyframes: {
         flicker: {
           '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.82', transform: 'scale(0.98)' },
+          '50%':      { opacity: '0.82', transform: 'scale(0.98)' },
         },
         stampIn: {
-          '0%': { transform: 'scale(0.8)', opacity: '0' },
-          '70%': { transform: 'scale(1.1)' },
+          '0%':   { transform: 'scale(0.8)', opacity: '0' },
+          '70%':  { transform: 'scale(1.1)' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },
       animation: {
         flicker: 'flicker 3s ease-in-out infinite',
-        stamp: 'stampIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+        stamp:   'stampIn 0.25s cubic-bezier(0.175,0.885,0.32,1.275) forwards',
       },
     },
   },

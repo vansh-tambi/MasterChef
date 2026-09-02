@@ -3,15 +3,15 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 const variants = {
   primary:
-    'bg-gradient-to-b from-terracotta-500 to-terracotta-600 text-parchment-100 hover:from-terracotta-400 hover:to-terracotta-500 active:from-terracotta-600 active:to-terracotta-700 shadow-candlelight border border-terracotta-400/30 focus-visible:ring-mustard-500',
+    'bg-ember-500 hover:bg-ember-600 active:bg-ember-600 text-white shadow-glow border border-ember-600/20 focus-visible:ring-ember-400',
   secondary:
-    'bg-sage-600 text-parchment-100 hover:bg-sage-500 active:bg-sage-700 shadow-sm border border-sage-500/40 focus-visible:ring-sage-400',
+    'bg-rosemary-500 hover:bg-rosemary-400 active:bg-rosemary-600 text-white shadow-sm border border-rosemary-600/20 focus-visible:ring-rosemary-400',
   outline:
-    'border border-kitchen-border bg-kitchen-card/80 text-parchment-200 hover:bg-kitchen-card hover:border-terracotta-500/50 hover:text-parchment-100 focus-visible:ring-terracotta-500',
+    'border border-panel-border bg-transparent text-ink hover:bg-elevated active:bg-elevated focus-visible:ring-ember-400',
   ghost:
-    'text-parchment-300 hover:bg-kitchen-card/60 hover:text-parchment-100 focus-visible:ring-terracotta-500',
+    'text-ink-muted hover:bg-elevated hover:text-ink focus-visible:ring-ember-400',
   gold:
-    'bg-gradient-to-b from-mustard-400 to-mustard-500 text-kitchen-bg font-bold hover:from-mustard-300 hover:to-mustard-400 shadow-candlelight border border-mustard-300/40 focus-visible:ring-mustard-400',
+    'bg-brass-500 hover:bg-brass-400 active:bg-brass-600 text-white font-bold shadow-glow border border-brass-600/20 focus-visible:ring-brass-400',
 }
 
 const sizes = {
@@ -31,7 +31,7 @@ export function Button({
   const shouldReduceMotion = useReducedMotion()
 
   const baseStyles =
-    'font-body font-semibold inline-flex items-center justify-center rounded-xl transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg touch-manipulation select-none cursor-pointer'
+    'font-body font-semibold inline-flex items-center justify-center rounded-xl transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas touch-manipulation select-none cursor-pointer'
 
   const variantStyles = variants[variant] || variants.primary
   const sizeStyles = sizes[size] || sizes.md

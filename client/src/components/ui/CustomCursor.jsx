@@ -144,23 +144,23 @@ export function CustomCursor() {
       }}
       aria-hidden="true"
     >
-      {/* Option B: Premium Lucide/Phosphor Style Chef's Knife */}
+      {/* Nordic Chef's Knife — Ember tip, Brass bolster, clean steel blade */}
       <svg
         width="32"
         height="32"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
+        className="filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
       >
         {/* Knife Tip Pointer Hotspot */}
-        <circle cx="2.5" cy="2.5" r="1.5" fill="#D99B26" />
+        <circle cx="2.5" cy="2.5" r="1.5" fill="#D49A3D" />
 
-        {/* Steel Blade: Curved belly, bolster, and sharp point */}
+        {/* Steel Blade */}
         <path
           d="M2.5 2.5 L14.5 14.5 C16 16 17 18 16 20 L12 20 C10 18 8 16 6 12 Z"
-          fill="#FAF6EE"
-          stroke="#3B312A"
+          fill="#E8EAED"
+          stroke="#2D323B"
           strokeWidth="1.25"
           strokeLinejoin="round"
         />
@@ -168,12 +168,12 @@ export function CustomCursor() {
         {/* Blade Spine Highlight / Bevel */}
         <path
           d="M2.5 2.5 L14.5 14.5"
-          stroke="#D9CEB6"
+          stroke="#F1F3F5"
           strokeWidth="1"
           strokeLinecap="round"
         />
 
-        {/* Bolster / Guard (Mustard Gold Accent) */}
+        {/* Bolster / Guard (Brass Accent) */}
         <rect
           x="13.5"
           y="13.5"
@@ -181,24 +181,24 @@ export function CustomCursor() {
           height="4"
           rx="1"
           transform="rotate(45 15.5 15.5)"
-          fill="#D99B26"
-          stroke="#3B312A"
+          fill="#D49A3D"
+          stroke="#2D323B"
           strokeWidth="1"
         />
 
-        {/* Ergonomic Wooden Handle (Terracotta) */}
+        {/* Ergonomic Handle (Ember) */}
         <path
           d="M16 16 L25 25 C26.5 26.5 28 26 29 25 C30 24 30.5 22.5 29 21 L20 12 Z"
-          fill="#C85A32"
-          stroke="#3B312A"
+          fill="#E05338"
+          stroke="#2D323B"
           strokeWidth="1.25"
           strokeLinejoin="round"
         />
 
         {/* Brass Handle Rivets */}
-        <circle cx="21.5" cy="18.5" r="0.85" fill="#FAF6EE" />
-        <circle cx="24.5" cy="21.5" r="0.85" fill="#FAF6EE" />
-        <circle cx="27.5" cy="24.5" r="0.85" fill="#FAF6EE" />
+        <circle cx="21.5" cy="18.5" r="0.85" fill="#F1F3F5" />
+        <circle cx="24.5" cy="21.5" r="0.85" fill="#F1F3F5" />
+        <circle cx="27.5" cy="24.5" r="0.85" fill="#F1F3F5" />
       </svg>
     </div>
   )

@@ -92,14 +92,14 @@ export function RecipeInput({
     <Card accent={true} className="w-full space-y-6 sm:space-y-7">
       {/* Header */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between border-b border-kitchen-border pb-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold tracking-wider uppercase shadow-stamp">
-            <span className="w-2 h-2 rounded-full bg-mustard-500 animate-pulse"></span>
+        <div className="flex items-center justify-between border-b border-panel-border pb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-elevated border border-panel-border text-ember-500 text-xs font-semibold tracking-wider uppercase shadow-stamp">
+            <span className="w-2 h-2 rounded-full bg-brass-500 animate-pulse"></span>
             <span>Pantry to Plate</span>
           </div>
         </div>
 
-        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-parchment-100 font-bold tracking-tight break-words">
+        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-ink font-bold tracking-tight break-words">
           Your Ingredients
         </h2>
       </div>
@@ -111,16 +111,16 @@ export function RecipeInput({
           <div className="flex items-center justify-between">
             <label
               htmlFor="ingredients-input"
-              className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider"
+              className="block text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider"
             >
               Ingredients
             </label>
-            <span className="text-[11px] text-parchment-300/60 hidden sm:inline font-mono">
-              <kbd className="px-1.5 py-0.5 rounded border border-kitchen-border bg-kitchen-card text-mustard-400 font-mono text-[10px]">Ctrl/⌘ + Enter</kbd>
+            <span className="text-[11px] text-ink-muted hidden sm:inline font-mono">
+              <kbd className="px-1.5 py-0.5 rounded border border-panel-border bg-elevated text-brass-500 font-mono text-[10px]">Ctrl/⌘ + Enter</kbd>
             </span>
           </div>
 
-          <div className="relative rounded-xl border border-kitchen-border bg-kitchen-bg/95 overflow-hidden shadow-inner focus-within:border-terracotta-500">
+          <div className="relative rounded-xl border border-panel-border bg-surface overflow-hidden shadow-sm focus-within:border-ember-500 focus-within:ring-1 focus-within:ring-ember-500 transition-all">
             <textarea
               id="ingredients-input"
               ref={textareaRef}
@@ -130,7 +130,7 @@ export function RecipeInput({
               onKeyDown={handleKeyDown}
               disabled={isLoading}
               placeholder="Chicken, spinach, garlic, rice, soy sauce..."
-              className="w-full bg-transparent p-4 sm:p-5 text-parchment-100 placeholder:text-parchment-300/30 font-mono text-sm sm:text-base leading-[28px] ledger-lines outline-none resize-y min-h-[120px] disabled:opacity-50"
+              className="w-full bg-transparent p-4 sm:p-5 text-ink placeholder:text-ink-muted/40 font-mono text-sm sm:text-base leading-[28px] ledger-lines outline-none resize-y min-h-[120px] disabled:opacity-50"
             />
           </div>
 
@@ -138,12 +138,12 @@ export function RecipeInput({
           <div className="flex items-center justify-between text-xs px-1">
             <span
               className={`transition-colors ${
-                isValid ? 'text-sage-400 font-medium' : 'text-parchment-300/60'
+                isValid ? 'text-rosemary-500 font-medium' : 'text-ink-muted'
               }`}
             >
               {isValid ? '✓ Ready' : 'Min. 4 characters'}
             </span>
-            <span className="text-parchment-300/40 font-mono text-[11px]">
+            <span className="text-ink-muted/50 font-mono text-[11px]">
               {trimmed.length} chars
             </span>
           </div>
@@ -151,7 +151,7 @@ export function RecipeInput({
 
         {/* Quick Ideas Presets */}
         <div className="space-y-2 pt-1">
-          <span className="text-xs font-semibold text-parchment-200 uppercase tracking-wider block">
+          <span className="text-xs font-semibold text-ink-secondary uppercase tracking-wider block">
             Quick Ideas
           </span>
 
@@ -162,7 +162,7 @@ export function RecipeInput({
                 type="button"
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="min-h-[44px] border border-kitchen-border bg-kitchen-card hover:bg-kitchen-card/90 hover:border-mustard-500/60 active:scale-[0.98] transition-all px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-parchment-200 flex items-center gap-2 shadow-butcher-tag disabled:opacity-50 text-left touch-manipulation cursor-pointer"
+                className="min-h-[44px] border border-panel-border bg-elevated hover:border-ember-500/60 active:scale-[0.98] transition-all px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-ink-secondary flex items-center gap-2 shadow-tag disabled:opacity-50 text-left touch-manipulation cursor-pointer"
               >
                 <span>{preset.icon}</span>
                 <span className="font-semibold">{preset.label}</span>
@@ -172,24 +172,24 @@ export function RecipeInput({
         </div>
 
         {/* Servings Counter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-kitchen-border">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-panel-border">
           <div>
-            <label className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider">
+            <label className="block text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider">
               Servings
             </label>
           </div>
 
-          <div className="inline-flex items-center bg-kitchen-bg border border-kitchen-border rounded-xl p-1 shadow-brass-dial self-start sm:self-auto">
+          <div className="inline-flex items-center bg-canvas border border-panel-border rounded-xl p-1 shadow-dial self-start sm:self-auto">
             <button
               type="button"
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-card hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-elevated hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Decrease servings"
             >
               −
             </button>
-            <div className="w-14 text-center font-mono font-bold text-mustard-400 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
+            <div className="w-14 text-center font-mono font-bold text-brass-500 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={servings}
@@ -206,7 +206,7 @@ export function RecipeInput({
               type="button"
               onClick={() => handleServingChange(1)}
               disabled={servings >= 12 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-card hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-elevated hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
               aria-label="Increase servings"
             >
               +
