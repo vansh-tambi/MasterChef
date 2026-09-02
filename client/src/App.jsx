@@ -3,6 +3,7 @@ import { useTheme } from './hooks/useTheme'
 import { useRecipeRequest } from './hooks/useRecipeRequest'
 import { useRecipeSession } from './hooks/useRecipeSession'
 import { ThemeToggle } from './components/ui/ThemeToggle'
+import { CustomCursor } from './components/ui/CustomCursor'
 import { RecipeInput } from './components/RecipeInput'
 import { RecipeView } from './components/RecipeView'
 import { RecipeLoading } from './components/RecipeLoading'
@@ -84,6 +85,9 @@ function App() {
 
   return (
     <main className="min-h-screen w-full bg-kitchen-bg text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow">
+      {/* 60 FPS Hardware-Accelerated Artisanal Whisk Cursor */}
+      <CustomCursor />
+
       <div className="max-w-2xl lg:max-w-4xl w-full space-y-8 sm:space-y-10">
         {/* Brand Header with Restaurant Signage Typography */}
         <header className="relative text-center space-y-3 pt-2 sm:pt-0">
