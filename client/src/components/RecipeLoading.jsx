@@ -1,41 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 
-const KITCHEN_PHRASES = [
-  'Clarifying the aromatic broth...',
-  'Tempering herbs and whole spices...',
-  'Composing the brigade line instructions...',
-  'Balancing seasoning and cooking yields...',
-  'Master Chef is plating the recipe...',
-]
-
 export function RecipeLoading({ onCancel }) {
-  const [phraseIndex, setPhraseIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPhraseIndex((prev) => (prev + 1) % KITCHEN_PHRASES.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card accent={true} className="w-full space-y-7 sm:space-y-9 animate-fadeIn overflow-hidden">
-      {/* Animated Copper Pot / Flame Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-kitchen-border pb-5">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4 border-b border-kitchen-border pb-5">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-kitchen-card border border-kitchen-border flex items-center justify-center text-xl animate-flicker shadow-candlelight">
             🔥
           </div>
-          <div>
-            <span className="text-xs uppercase font-bold text-mustard-400 tracking-wider block">
-              Brigade in Progress
-            </span>
-            <span className="text-base sm:text-lg font-display italic text-parchment-100 font-semibold transition-all duration-300">
-              {KITCHEN_PHRASES[phraseIndex]}
-            </span>
-          </div>
+          <span className="text-lg sm:text-xl font-display font-semibold text-parchment-100">
+            Crafting Recipe...
+          </span>
         </div>
 
         {onCancel && (
@@ -43,9 +21,9 @@ export function RecipeLoading({ onCancel }) {
             variant="ghost"
             size="sm"
             onClick={onCancel}
-            className="text-parchment-300 hover:text-parchment-100 w-full sm:w-auto"
+            className="text-parchment-300 hover:text-parchment-100"
           >
-            ✕ Cancel and return
+            Cancel
           </Button>
         )}
       </div>

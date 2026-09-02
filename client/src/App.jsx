@@ -85,39 +85,30 @@ function App() {
     [activeRecipe, saveSession]
   )
 
-  // Determine current active view state
-  let currentKey = 'input'
-  if (status === 'loading') currentKey = 'loading'
-  else if (status === 'error') currentKey = 'error'
-  else if (activeRecipe) currentKey = 'recipe'
-
   return (
     <main className="min-h-screen w-full bg-kitchen-bg text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow">
-      {/* 60 FPS Hardware-Accelerated Artisanal Whisk Cursor */}
+      {/* 60 FPS Hardware-Accelerated Artisanal Whisk/Knife Cursor */}
       <CustomCursor />
 
       <div className="max-w-2xl lg:max-w-4xl w-full space-y-8 sm:space-y-10">
-        {/* Brand Header with Restaurant Signage Typography */}
-        <header className="relative text-center space-y-3 pt-2 sm:pt-0">
+        {/* Brand Header */}
+        <header className="relative text-center space-y-2.5 pt-2 sm:pt-0">
           <div className="absolute right-0 top-0">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
 
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-kitchen-surface border border-kitchen-border text-terracotta-400 text-3xl shadow-candlelight mb-1">
+          <div className="inline-flex items-center justify-center w-13 h-13 rounded-2xl bg-kitchen-surface border border-kitchen-border text-terracotta-400 text-2xl shadow-candlelight mb-0.5">
             👨‍🍳
           </div>
 
-          <div className="space-y-1">
-            <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-mustard-400 font-bold block">
-              Culinary Intelligence Studio
-            </span>
+          <div className="space-y-0.5">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-parchment-100 break-words">
               Master Chef
             </h1>
           </div>
 
-          <p className="font-body text-parchment-300 text-sm sm:text-base mt-2 leading-relaxed max-w-lg mx-auto break-words">
-            Transform ingredients in your pantry and fridge into artisanal home-cooked meals.
+          <p className="font-body text-parchment-300 text-sm sm:text-base leading-relaxed max-w-sm mx-auto break-words">
+            Fridge to plate, instantly.
           </p>
 
           {/* Session Restored Notice */}
@@ -127,9 +118,9 @@ function App() {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
-                className="inline-flex items-center justify-between gap-3 px-4 py-1.5 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium mt-2 shadow-stamp"
+                className="inline-flex items-center justify-between gap-3 px-4 py-1 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium mt-1.5 shadow-stamp"
               >
-                <span>Restored previous Master Chef creation</span>
+                <span>Restored session</span>
                 <button
                   type="button"
                   onClick={handleStartOver}

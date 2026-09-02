@@ -4,49 +4,49 @@ import { Card } from './ui/Card'
 
 const ERROR_CONFIGS = {
   invalid_shape: {
-    badge: 'Recipe Jumbled',
+    badge: 'Error',
     icon: '🥣',
-    headline: 'The Recipe Came Back Scrambled',
-    body: "The brigade notes got slightly jumbled on their way to your table. Let's give it another stir.",
-    primaryActionText: 'Try Again',
+    headline: 'Recipe Scrambled',
+    body: 'Failed to format properly. Please retry.',
+    primaryActionText: 'Retry',
     primaryActionType: 'retry',
     showReset: true,
   },
   ai_request_failed: {
-    badge: 'Kitchen Busy',
+    badge: 'Error',
     icon: '👨‍🍳',
-    headline: 'Master Chef Kitchen Temporarily Busy',
-    body: "The culinary generator encountered an upstream pause. Your pantry ingredients are safe — let's re-fire.",
-    primaryActionText: 'Re-Fire Request',
+    headline: 'AI Unavailable',
+    body: 'Could not reach the model. Please retry.',
+    primaryActionText: 'Retry',
     primaryActionType: 'retry',
     showReset: true,
   },
   timeout: {
-    badge: 'Simmering Slow',
+    badge: 'Timeout',
     icon: '⏱',
-    headline: 'Taking a Little Longer than Expected',
-    body: 'Master Chef is working through complex culinary steps. Would you like to wait a bit longer or fire it again?',
-    primaryActionText: 'Try Again',
+    headline: 'Request Timed Out',
+    body: 'Server took too long to respond.',
+    primaryActionText: 'Retry',
     primaryActionType: 'retry',
-    secondaryActionText: 'Keep Waiting',
+    secondaryActionText: 'Wait',
     secondaryActionType: 'wait',
     showReset: true,
   },
   network_error: {
-    badge: 'Connection Lost',
+    badge: 'Offline',
     icon: '📡',
-    headline: 'Pantry Disconnected',
-    body: 'It looks like your internet connection slipped away. Reconnect and Master Chef will cook.',
-    primaryActionText: 'Reconnect & Try Again',
+    headline: "You're Offline",
+    body: 'Check your internet connection.',
+    primaryActionText: 'Retry',
     primaryActionType: 'retry',
     showReset: true,
   },
   empty_recipe: {
-    badge: 'No Notes Found',
+    badge: 'Empty',
     icon: '📝',
-    headline: 'No Recipe Formed',
-    body: "The pantry ingredients didn't produce any actionable steps. Try adjusting your ingredients list with a few more details.",
-    primaryActionText: 'Revise Ingredients',
+    headline: 'No Recipe Found',
+    body: 'Try adding a few more ingredients.',
+    primaryActionText: 'Edit Ingredients',
     primaryActionType: 'reset',
     showReset: false,
   },
@@ -71,7 +71,7 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
     >
       {/* Header Badge */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-kitchen-border pb-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold uppercase tracking-wider shadow-stamp">
+        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold uppercase tracking-wider shadow-stamp">
           <span>{config.icon}</span>
           <span>{config.badge}</span>
         </div>
@@ -81,7 +81,7 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
       </div>
 
       {/* Main Copy Area */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <h2 className="font-display text-2xl sm:text-3xl font-bold text-parchment-100 break-words">
           {config.headline}
         </h2>
@@ -90,7 +90,7 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
         </p>
         {error?.message && error.message !== config.body && (
           <p className="text-xs font-mono text-terracotta-400 bg-kitchen-bg/90 p-3 rounded-xl border border-kitchen-border mt-3 break-words">
-            Chef's note: {error.message}
+            Note: {error.message}
           </p>
         )}
       </div>
@@ -99,7 +99,7 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
       <div className="pt-4 border-t border-kitchen-border flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
         {config.showReset ? (
           <Button variant="ghost" size="sm" onClick={onReset} className="w-full sm:w-auto text-parchment-300">
-            ← Return to Ingredients
+            ← Ingredients
           </Button>
         ) : (
           <div></div>

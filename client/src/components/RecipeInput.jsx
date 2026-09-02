@@ -5,22 +5,19 @@ import { Card } from './ui/Card'
 
 const PRESETS = [
   {
-    label: 'Pasta Night',
+    label: 'Pasta',
     ingredients: 'dry pasta, canned tomatoes, garlic, olive oil, basil, parmesan rind',
     icon: '🍝',
-    note: 'classic pantry',
   },
   {
-    label: 'Quick Breakfast',
+    label: 'Eggs & Toast',
     ingredients: '3 eggs, cheddar cheese, green onion, butter, sourdough bread',
     icon: '🍳',
-    note: '10 min prep',
   },
   {
-    label: 'Crisper Clean-out',
+    label: 'Tofu & Veggies',
     ingredients: 'block of firm tofu, broccoli florets, carrots, soy sauce, sesame oil, chili flakes',
     icon: '🥗',
-    note: 'zero waste',
   },
 ]
 
@@ -92,46 +89,34 @@ export function RecipeInput({
   }
 
   return (
-    <Card accent={true} className="w-full space-y-6 sm:space-y-8">
-      {/* Marquee Serial Header */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-kitchen-border pb-3">
+    <Card accent={true} className="w-full space-y-6 sm:space-y-7">
+      {/* Header */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between border-b border-kitchen-border pb-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kitchen-card border border-kitchen-border text-terracotta-400 text-xs font-semibold tracking-wider uppercase shadow-stamp">
             <span className="w-2 h-2 rounded-full bg-mustard-500 animate-pulse"></span>
-            <span>Brigade De Cuisine</span>
+            <span>Pantry to Plate</span>
           </div>
-          <span className="font-mono text-[11px] text-parchment-300/60 uppercase tracking-widest">
-            SPEC NO. 01 ◆ SERVICE 2026
-          </span>
         </div>
 
         <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-parchment-100 font-bold tracking-tight break-words">
-          What are we cooking with tonight?
+          Your Ingredients
         </h2>
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-          <p className="text-parchment-300 text-sm sm:text-base leading-relaxed break-words max-w-xl">
-            Enter what’s in your fridge, crisper, or spice rack. Master Chef will craft an inventive recipe.
-          </p>
-          <span className="font-hand text-lg sm:text-xl text-mustard-400 rotate-[-1deg] shrink-0">
-            * no ingredient too humble!
-          </span>
-        </div>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Head Chef's Lined Prep Pad */}
-        <div className="space-y-2.5">
+        {/* Ingredients Textarea */}
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label
               htmlFor="ingredients-input"
-              className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-1.5"
+              className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider"
             >
-              <span>🔪</span>
-              <span>Available Ingredients &amp; Staples</span>
+              Ingredients
             </label>
             <span className="text-[11px] text-parchment-300/60 hidden sm:inline font-mono">
-              Press <kbd className="px-1.5 py-0.5 rounded border border-kitchen-border bg-kitchen-card text-mustard-400 font-mono text-[10px]">Ctrl/⌘ + Enter</kbd> to fire
+              <kbd className="px-1.5 py-0.5 rounded border border-kitchen-border bg-kitchen-card text-mustard-400 font-mono text-[10px]">Ctrl/⌘ + Enter</kbd>
             </span>
           </div>
 
@@ -144,76 +129,57 @@ export function RecipeInput({
               onChange={(e) => setIngredients(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isLoading}
-              placeholder="e.g., chicken thighs, baby spinach, minced garlic, leftover cooked jasmine rice, soy sauce, a knob of ginger..."
-              className="w-full bg-transparent p-4 sm:p-5 text-parchment-100 placeholder:text-parchment-300/30 font-mono text-sm sm:text-base leading-[28px] ledger-lines outline-none resize-y min-h-[140px] disabled:opacity-50"
+              placeholder="Chicken, spinach, garlic, rice, soy sauce..."
+              className="w-full bg-transparent p-4 sm:p-5 text-parchment-100 placeholder:text-parchment-300/30 font-mono text-sm sm:text-base leading-[28px] ledger-lines outline-none resize-y min-h-[120px] disabled:opacity-50"
             />
           </div>
 
           {/* Helper Validation Note */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs px-1">
+          <div className="flex items-center justify-between text-xs px-1">
             <span
-              className={`transition-colors flex items-center gap-1.5 ${
+              className={`transition-colors ${
                 isValid ? 'text-sage-400 font-medium' : 'text-parchment-300/60'
               }`}
             >
-              {isValid ? (
-                <>
-                  <span className="w-1.5 h-1.5 rounded-full bg-sage-400"></span>
-                  <span>Ready to fire on the brigade line</span>
-                </>
-              ) : (
-                <span>Add at least a couple of ingredients (min. 4 characters)</span>
-              )}
+              {isValid ? '✓ Ready' : 'Min. 4 characters'}
             </span>
             <span className="text-parchment-300/40 font-mono text-[11px]">
-              {trimmed.length} characters
+              {trimmed.length} chars
             </span>
           </div>
         </div>
 
-        {/* Textured Hanging Butcher Jar Tags (Presets) */}
-        <div className="space-y-2.5 pt-1">
-          <div className="flex items-center justify-between">
-            <span className="text-xs sm:text-sm font-semibold text-parchment-200 block">
-              Pantry Jar Tags:
-            </span>
-            <span className="font-hand text-sm text-parchment-300 rotate-1">
-              click to fill prep pad
-            </span>
-          </div>
+        {/* Quick Ideas Presets */}
+        <div className="space-y-2 pt-1">
+          <span className="text-xs font-semibold text-parchment-200 uppercase tracking-wider block">
+            Quick Ideas
+          </span>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5">
             {PRESETS.map((preset) => (
               <button
                 key={preset.label}
                 type="button"
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="relative min-h-[44px] border border-kitchen-border bg-kitchen-card hover:bg-kitchen-card/90 hover:border-mustard-500/60 active:scale-[0.98] transition-all px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-parchment-200 flex items-center gap-2.5 shadow-butcher-tag disabled:opacity-50 text-left touch-manipulation cursor-pointer group"
+                className="min-h-[44px] border border-kitchen-border bg-kitchen-card hover:bg-kitchen-card/90 hover:border-mustard-500/60 active:scale-[0.98] transition-all px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-parchment-200 flex items-center gap-2 shadow-butcher-tag disabled:opacity-50 text-left touch-manipulation cursor-pointer"
               >
-                {/* Simulated Tag Hole Punch */}
-                <span className="w-2 h-2 rounded-full bg-kitchen-bg border border-kitchen-border group-hover:border-mustard-500/50"></span>
                 <span>{preset.icon}</span>
                 <span className="font-semibold">{preset.label}</span>
-                <span className="text-[10px] font-mono text-mustard-400/80 bg-kitchen-bg px-1.5 py-0.5 rounded border border-kitchen-border/70">
-                  {preset.note}
-                </span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Vintage Line-Ticket Servings Counter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-kitchen-border">
+        {/* Servings Counter */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-kitchen-border">
           <div>
-            <label className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-1.5">
-              <span>🍽️</span>
-              <span>Target Servings (Plates)</span>
+            <label className="block text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider">
+              Servings
             </label>
-            <p className="text-xs text-parchment-300/70">Scale brigade proportions automatically</p>
           </div>
 
-          <div className="inline-flex items-center bg-kitchen-bg border border-kitchen-border rounded-xl p-1.5 shadow-brass-dial self-start sm:self-auto">
+          <div className="inline-flex items-center bg-kitchen-bg border border-kitchen-border rounded-xl p-1 shadow-brass-dial self-start sm:self-auto">
             <button
               type="button"
               onClick={() => handleServingChange(-1)}
@@ -223,7 +189,7 @@ export function RecipeInput({
             >
               −
             </button>
-            <div className="w-16 text-center font-mono font-bold text-mustard-400 text-xl select-none overflow-hidden h-7 flex items-center justify-center tracking-widest drop-shadow-[0_0_8px_rgba(217,155,38,0.4)]">
+            <div className="w-14 text-center font-mono font-bold text-mustard-400 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={servings}
@@ -232,7 +198,7 @@ export function RecipeInput({
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  {String(servings).padStart(2, '0')}
+                  {servings}
                 </motion.span>
               </AnimatePresence>
             </div>
@@ -255,10 +221,9 @@ export function RecipeInput({
             variant="primary"
             size="lg"
             disabled={!isValid || isLoading}
-            className="w-full flex items-center justify-center gap-2.5 font-bold"
+            className="w-full flex items-center justify-center gap-2 font-bold"
           >
-            <span>🔥</span>
-            <span>Fire Master Chef Recipe</span>
+            {isLoading ? <span>Cooking...</span> : <span>Get Recipe</span>}
           </Button>
         </div>
       </form>
