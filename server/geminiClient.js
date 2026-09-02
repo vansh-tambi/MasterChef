@@ -79,7 +79,7 @@ export async function generateRecipeWithGemini({
   ingredients = [],
   dietaryNotes = "",
   servings = 2,
-  timeoutMs = 20000,
+  timeoutMs = 35000,
 }) {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured in the server environment.");
@@ -129,7 +129,7 @@ Ensure accurate step ordering, clear measurements, and practical cooking times.`
 export async function refineRecipe({
   currentRecipe,
   instruction,
-  timeoutMs = 20000,
+  timeoutMs = 35000,
 }) {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured in the server environment.");

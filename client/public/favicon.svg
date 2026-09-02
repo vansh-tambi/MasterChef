@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Outer Cast-Iron & Ember Badge Squircle -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#E05338" stroke="#8F2815" stroke-width="3" />
+  
+  <!-- Subtle Inner Inset Border -->
+  <rect x="5" y="5" width="54" height="54" rx="11" stroke="#F06548" stroke-width="1.5" opacity="0.6" />
+
+  <!-- Chef Hat / Toque Geometry -->
+  <!-- Top Central Puff -->
+  <circle cx="32" cy="22" r="10" fill="#FFFFFF" />
+  <!-- Left Puff -->
+  <circle cx="23" cy="26" r="8" fill="#FFFFFF" />
+  <!-- Right Puff -->
+  <circle cx="41" cy="26" r="8" fill="#FFFFFF" />
+  
+  <!-- Chef Hat Base Body -->
+  <path d="M19 28 C19 24 45 24 45 28 L43 43 C43 44 21 44 21 43 Z" fill="#FFFFFF" />
+  
+  <!-- Hat Pleats / Creases (Subtle Graphite) -->
+  <path d="M27 28 L27 40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" />
+  <path d="M32 26 L32 40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" />
+  <path d="M37 28 L37 40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Nordic Brass Chef Hat Headband -->
+  <rect x="19" y="41" width="26" height="7" rx="2" fill="#D49A3D" stroke="#8A601E" stroke-width="1.5" />
+  
+  <!-- Brass Rivets / Stars -->
+  <circle cx="25" cy="44.5" r="1.25" fill="#FFFFFF" />
+  <circle cx="32" cy="44.5" r="1.25" fill="#FFFFFF" />
+  <circle cx="39" cy="44.5" r="1.25" fill="#FFFFFF" />
+</svg>

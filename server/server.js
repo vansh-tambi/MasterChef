@@ -52,7 +52,7 @@ app.post('/api/recipe', async (req, res) => {
       ingredients: Array.isArray(ingredients) && ingredients.length > 0 ? ingredients : ["pasta", "garlic", "tomatoes"],
       dietaryNotes,
       servings: typeof servings === 'number' && servings > 0 ? servings : 2,
-      timeoutMs: 20000,
+      timeoutMs: 35000,
     });
 
     const validationResult = validateRecipe(rawRecipe);
@@ -83,7 +83,7 @@ app.post('/api/recipe', async (req, res) => {
   }
 });
 
-// Route: Refine Existing Recipe (Stretch C)
+// Route: Refine Existing Recipe
 app.post('/api/recipe/refine', async (req, res) => {
   const { currentRecipe, instruction } = req.body || {};
 
@@ -113,7 +113,7 @@ app.post('/api/recipe/refine', async (req, res) => {
     const rawRecipe = await refineRecipe({
       currentRecipe,
       instruction: instruction.trim(),
-      timeoutMs: 20000,
+      timeoutMs: 35000,
     });
 
     const validationResult = validateRecipe(rawRecipe);
