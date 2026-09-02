@@ -67,38 +67,38 @@ export function FeedbackState({ error, onRetry, onReset, onWait }) {
   return (
     <Card
       accent={true}
-      className="w-full space-y-6 bg-cream-100 border-terracotta-200 text-charcoal-900 shadow-tactile animate-fadeIn overflow-hidden"
+      className="w-full space-y-6 bg-cream-100 dark:bg-roast-900 border-terracotta-200 dark:border-terracotta-700/50 text-charcoal-900 dark:text-cream-100 shadow-tactile dark:shadow-none animate-fadeIn overflow-hidden"
     >
       {/* Header Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-cream-200 pb-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-terracotta-100 border border-terracotta-200 text-terracotta-700 text-xs font-semibold uppercase tracking-wider">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-cream-200 dark:border-roast-700 pb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-terracotta-100 dark:bg-terracotta-900/40 border border-terracotta-200 dark:border-terracotta-700/60 text-terracotta-700 dark:text-terracotta-300 text-xs font-semibold uppercase tracking-wider">
           <span>{config.icon}</span>
           <span>{config.badge}</span>
         </div>
-        <span className="text-xs font-mono text-charcoal-500">
+        <span className="text-xs font-mono text-charcoal-500 dark:text-cream-300/70">
           Code: {code}
         </span>
       </div>
 
       {/* Main Copy Area */}
       <div className="space-y-2">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-charcoal-900 break-words">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-charcoal-900 dark:text-cream-50 break-words">
           {config.headline}
         </h2>
-        <p className="text-charcoal-700 text-sm sm:text-base leading-relaxed break-words">
+        <p className="text-charcoal-700 dark:text-cream-200 text-sm sm:text-base leading-relaxed break-words">
           {config.body}
         </p>
         {error?.message && error.message !== config.body && (
-          <p className="text-xs font-mono text-terracotta-700 bg-terracotta-100/60 p-3 rounded-md border border-terracotta-200/60 mt-3 break-words">
+          <p className="text-xs font-mono text-terracotta-700 dark:text-terracotta-300 bg-terracotta-100/60 dark:bg-roast-950 p-3 rounded-md border border-terracotta-200/60 dark:border-roast-700 mt-3 break-words">
             Kitchen note: {error.message}
           </p>
         )}
       </div>
 
-      {/* Action Buttons (Responsive stacking with 44px min height) */}
-      <div className="pt-4 border-t border-cream-200 flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
+      {/* Action Buttons */}
+      <div className="pt-4 border-t border-cream-200 dark:border-roast-700 flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
         {config.showReset ? (
-          <Button variant="ghost" size="sm" onClick={onReset} className="w-full sm:w-auto text-charcoal-700">
+          <Button variant="ghost" size="sm" onClick={onReset} className="w-full sm:w-auto text-charcoal-700 dark:text-cream-200">
             ← Return to Ingredients
           </Button>
         ) : (

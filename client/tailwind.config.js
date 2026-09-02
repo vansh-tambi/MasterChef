@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -35,6 +36,12 @@ export default {
           700: '#524C46',
           900: '#262320',
           950: '#1A1816',
+        },
+        roast: {
+          700: '#3D342D',
+          800: '#2D2621',
+          900: '#211C18',
+          950: '#171412',
         },
       },
       boxShadow: {

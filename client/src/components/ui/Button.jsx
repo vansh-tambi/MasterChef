@@ -1,10 +1,10 @@
 import React from 'react'
 
 const variants = {
-  primary: 'bg-terracotta-500 text-cream-50 hover:bg-terracotta-600 active:bg-terracotta-700 shadow-sm',
-  secondary: 'bg-olive-500 text-cream-50 hover:bg-olive-600 active:bg-olive-700 shadow-sm',
-  outline: 'border border-cream-300 bg-cream-50 text-charcoal-900 hover:bg-cream-100 hover:border-cream-400',
-  ghost: 'text-charcoal-700 hover:bg-cream-200/60 hover:text-charcoal-900',
+  primary: 'bg-terracotta-500 dark:bg-terracotta-500 text-cream-50 hover:bg-terracotta-600 dark:hover:bg-terracotta-600 active:bg-terracotta-700 dark:active:bg-terracotta-700 shadow-sm',
+  secondary: 'bg-olive-500 dark:bg-olive-600 text-cream-50 dark:text-cream-100 hover:bg-olive-600 dark:hover:bg-olive-700 active:bg-olive-700 shadow-sm',
+  outline: 'border border-cream-300 dark:border-roast-700 bg-cream-50 dark:bg-roast-800 text-charcoal-900 dark:text-cream-100 hover:bg-cream-100 dark:hover:bg-roast-700 hover:border-cream-400 dark:hover:border-roast-700',
+  ghost: 'text-charcoal-700 dark:text-cream-200 hover:bg-cream-200/60 dark:hover:bg-roast-800 hover:text-charcoal-900 dark:hover:text-cream-50',
 }
 
 const sizes = {
