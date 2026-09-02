@@ -1,0 +1,14 @@
+{
+  "name": "fridge-to-recipe",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -p \"[{name}]\" -n \"SERVER,CLIENT\" -c \"yellow.bold,cyan.bold\" \"npm run dev --workspace=server\" \"npm run dev --workspace=client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
