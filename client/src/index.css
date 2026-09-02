@@ -35,5 +35,33 @@ html.cursor-none-active * {
 
 /* Atmospheric candlelight gradient glow utility */
 .ambient-glow {
-  background: radial-gradient(circle at 50% 0%, rgba(200, 90, 50, 0.08) 0%, rgba(18, 16, 14, 0) 70%);
+  background: radial-gradient(circle at 50% 15%, rgba(200, 90, 50, 0.12) 0%, rgba(18, 16, 14, 0) 75%);
+}
+
+/* Head Chef's Ledger lined paper effect */
+.ledger-lines {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(59, 49, 42, 0.45) 28px
+  );
+  line-height: 28px;
+}
+
+/* Hand-drawn organic strike-through */
+.hand-strike {
+  position: relative;
+}
+.hand-strike::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 50%;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.6;
+  transform: rotate(-1.2deg) translateY(-50%);
+  border-radius: 9999px;
+  pointer-events: none;
 }

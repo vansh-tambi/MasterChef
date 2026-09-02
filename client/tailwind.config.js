@@ -10,6 +10,7 @@ export default {
       fontFamily: {
         display: ['"Fraunces"', 'serif'],
         body: ['"Manrope"', 'sans-serif'],
+        hand: ['"Caveat"', 'cursive'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
@@ -52,6 +53,8 @@ export default {
         'candlelight-hover': '0 12px 40px -4px rgba(200, 90, 50, 0.14), 0 4px 12px -1px rgba(0, 0, 0, 0.6)',
         press: '0 2px 4px 0 rgba(0, 0, 0, 0.5)',
         stamp: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0,0,0,0.3)',
+        'butcher-tag': '2px 3px 0px rgba(0, 0, 0, 0.4)',
+        'brass-dial': 'inset 0 2px 4px rgba(0,0,0,0.6), 0 1px 0 rgba(217,155,38,0.2)',
       },
       keyframes: {
         flicker: {

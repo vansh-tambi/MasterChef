@@ -145,47 +145,53 @@ export function RecipeView({
             <span>Return to Pantry</span>
           </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onRegenerate}
-            disabled={isRegenerating}
-            className="flex items-center justify-center gap-2 shadow-stamp w-full sm:w-auto"
-          >
-            {isRegenerating ? (
-              <>
-                <svg
-                  className="animate-spin h-4 w-4 text-mustard-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                <span>Re-firing recipe...</span>
-              </>
-            ) : (
-              <>
-                <span>↻</span>
-                <span>Regenerate Plate</span>
-              </>
-            )}
-          </Button>
+          <div className="flex items-center gap-3">
+            <span className="font-hand text-sm text-mustard-400 hidden sm:inline rotate-[-2deg]">
+              * mise en place ready
+            </span>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onRegenerate}
+              disabled={isRegenerating}
+              className="flex items-center justify-center gap-2 shadow-stamp w-full sm:w-auto"
+            >
+              {isRegenerating ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4 text-mustard-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  <span>Re-firing recipe...</span>
+                </>
+              ) : (
+                <>
+                  <span>↻</span>
+                  <span>Regenerate Plate</span>
+                </>
+              )}
+            </Button>
+          </div>
         </motion.div>
 
-        {/* Header Section */}
+        {/* Header Section with Michelin Spec Branding */}
         <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="space-y-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
             <span
@@ -201,6 +207,9 @@ export function RecipeView({
                 <span>{recipe.totalTimeMinutes} mins total</span>
               </span>
             )}
+            <span className="font-hand text-sm text-parchment-300 hidden md:inline ml-auto rotate-1">
+              "Chef's tasting notes attached"
+            </span>
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-parchment-100 tracking-tight break-words">
@@ -228,10 +237,10 @@ export function RecipeView({
           )}
         </motion.div>
 
-        {/* Interactive Servings Bar with AnimatePresence */}
+        {/* Vintage Line-Ticket Servings Bar */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="bg-kitchen-bg/80 border border-kitchen-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-inner"
+          className="bg-kitchen-bg/90 border border-kitchen-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-brass-dial"
         >
           <div>
             <div className="flex items-center gap-2">
@@ -240,13 +249,13 @@ export function RecipeView({
                 <span>Proportional Brigade Yield</span>
               </span>
               {servings !== baseServings && (
-                <span className="text-xs text-mustard-400 font-semibold">
+                <span className="text-xs text-mustard-400 font-semibold font-mono">
                   (Base: {baseServings})
                 </span>
               )}
             </div>
             <p className="text-xs text-parchment-300/70 mt-0.5">
-              Ingredients scale proportionally for your table
+              Ingredients recalculate instantly for your dining room
             </p>
           </div>
 
@@ -260,7 +269,7 @@ export function RecipeView({
             >
               −
             </button>
-            <div className="w-14 text-center font-display font-bold text-mustard-400 text-xl select-none overflow-hidden h-7 flex items-center justify-center">
+            <div className="w-16 text-center font-mono font-bold text-mustard-400 text-xl select-none overflow-hidden h-7 flex items-center justify-center tracking-widest drop-shadow-[0_0_8px_rgba(217,155,38,0.4)]">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={servings}
@@ -269,7 +278,7 @@ export function RecipeView({
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  {servings}
+                  {String(servings).padStart(2, '0')}
                 </motion.span>
               </AnimatePresence>
             </div>
@@ -285,12 +294,18 @@ export function RecipeView({
           </div>
         </motion.div>
 
-        {/* Asymmetric Editorial Grid */}
+        {/* Asymmetric Open Cookbook Spread with Central Binder Crease */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-8 pt-2"
+          className="relative grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 pt-2"
         >
-          {/* Left Column: Pantry Tags & Scaled Quantities */}
+          {/* Central Binder Crease on Desktop */}
+          <div
+            className="hidden lg:block absolute inset-y-0 left-[41.666%] w-px bg-gradient-to-b from-transparent via-kitchen-border/80 to-transparent -translate-x-1/2 pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Left Page: Pantry Tags & Scaled Quantities (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
               <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
@@ -310,14 +325,14 @@ export function RecipeView({
                 return (
                   <div
                     key={idx}
-                    className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-3.5 space-y-2 shadow-stamp transition-all duration-200"
+                    className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-3.5 space-y-2 shadow-butcher-tag transition-all duration-200"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1 pr-1">
                         <h3
                           className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
                             isSwapped
-                              ? 'line-through text-parchment-300/40 opacity-60'
+                              ? 'hand-strike text-parchment-300/40 opacity-60'
                               : 'text-parchment-100'
                           }`}
                         >
@@ -372,16 +387,21 @@ export function RecipeView({
             </div>
           </div>
 
-          {/* Right Column: Step-by-Step Brigade Checklist */}
+          {/* Right Page: Step-by-Step Brigade Checklist (7 cols) */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
               <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
                 <span>👨‍🍳</span>
                 <span>Brigade Checklist</span>
               </h2>
-              <span className="text-xs text-mustard-400 font-mono font-bold">
-                {progressPercent}% Complete
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-hand text-xs text-parchment-300 hidden sm:inline">
+                  check when plated
+                </span>
+                <span className="text-xs text-mustard-400 font-mono font-bold">
+                  {progressPercent}% Done
+                </span>
+              </div>
             </div>
 
             {/* Progress Bar */}
@@ -393,7 +413,7 @@ export function RecipeView({
               />
             </div>
 
-            {/* Step Cards with Spring Checkmark Physics */}
+            {/* Step Cards with Spring Checkmark Physics & Organic Hand Strike */}
             <div className="space-y-3 pt-1">
               {recipe.steps?.map((step) => {
                 const isDone = completedSteps.has(step.order)
@@ -440,7 +460,7 @@ export function RecipeView({
                         animate={{ opacity: isDone ? 0.45 : 1 }}
                         transition={{ duration: 0.15 }}
                         className={`text-sm sm:text-base leading-relaxed break-words ${
-                          isDone ? 'line-through' : 'text-parchment-100 font-medium'
+                          isDone ? 'hand-strike' : 'text-parchment-100 font-medium'
                         }`}
                       >
                         {step.instruction}
