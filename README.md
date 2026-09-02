@@ -1,18 +1,18 @@
-# Master Chef — Fridge-to-Recipe Assistant
+# Master Chef — Artisanal Recipe Assistant
 
-An interactive culinary web tool that transforms an unorganized list of pantry ingredients into a structured, step-by-step recipe. This project fulfills the **Fridge-to-recipe** track of the Frontend Internship Assignment.
+An interactive culinary web application that transforms an unorganized list of pantry ingredients into a structured, step-by-step recipe.
 
-Instead of outputting markdown text into a standard chatbot interface, Master Chef prompts an LLM for strictly typed JSON data, validating and rendering it into a tactile, interactive notebook with scalable quantities, interactive step checklists, and ingredient substitutions.
+Instead of outputting markdown text into a generic chatbot interface, Master Chef prompts an LLM for strictly typed structured JSON data, validating and rendering it into a tactile, asymmetric culinary journal with scalable quantities, an industrial prep timeline, and instant ingredient substitutions.
 
 ---
 
-## Getting Started
+## Getting Started (Local Development)
 
 ### Prerequisites
 - Node.js (v18+ recommended)
-- A Gemini API Key (obtainable via Google AI Studio)
+- A Gemini API Key (obtainable via [Google AI Studio](https://aistudio.google.com/app/apikey))
 
-### Installation & Setup
+### Quickstart
 
 1. **Clone the repository:**
    ```bash
@@ -22,7 +22,6 @@ Instead of outputting markdown text into a standard chatbot interface, Master Ch
 
 2. **Install dependencies:**
    ```bash
-   # From the project root (installs root, client, and server dependencies via npm workspaces)
    npm install
    ```
 
@@ -37,14 +36,61 @@ Instead of outputting markdown text into a standard chatbot interface, Master Ch
    GEMINI_MODEL=gemini-2.5-flash
    ```
 
-4. **Run the application:**
+4. **Run the development servers:**
    ```bash
    npm run dev
    ```
-   This executes `concurrently` to run both services in parallel:
-   - **Client dev server:** http://localhost:5173
-   - **Express backend API:** http://localhost:3001
-   - Requests made to `/api/*` on the client are automatically forwarded to port 3001 via Vite's proxy.
+   - **Client:** http://localhost:5173
+   - **Server:** http://localhost:3001
+   - Requests to `/api/*` are automatically proxied from Vite to the Express backend.
+
+---
+
+## 🚀 Production Deployment Guide
+
+Master Chef is configured for zero-config, unified full-stack deployment on any modern cloud platform.
+
+### Option 1: Render.com (Recommended — 1-Click Blueprint)
+1. Fork or push this repository to your GitHub account.
+2. Go to [Render Dashboard](https://dashboard.render.com/) $\to$ **New** $\to$ **Blueprint**.
+3. Select this repository. Render will automatically read [`render.yaml`](./render.yaml).
+4. In the Environment Variables prompt, set:
+   - `GEMINI_API_KEY`: Your Gemini API key from Google AI Studio.
+   - `NODE_ENV`: `production`
+5. Click **Apply**. Render will build the frontend bundle and start the unified Express server with automatic `/api/health` monitoring.
+
+---
+
+### Option 2: Railway / Heroku / Fly.io / Self-Hosted Node.js
+
+The root `package.json` includes full-stack build and start lifecycle scripts:
+
+- **Build Command:**
+  ```bash
+  npm install && npm run build
+  ```
+- **Start Command:**
+  ```bash
+  npm start
+  ```
+
+In production (`NODE_ENV=production`), the Express server automatically hosts the optimized client bundle from `client/dist/` on the assigned `PORT` while routing API calls under `/api/*` and handling single-page app (SPA) fallback routing.
+
+---
+
+### Option 3: Split Deployment (Vercel Frontend + Render/Railway Backend)
+- **Frontend (Vercel):** Root directory: `client/`, Build Command: `npm run build`, Output Directory: `dist`.
+- **Backend (Render/Railway):** Root directory: `server/`, Start Command: `node server.js`.
+
+---
+
+## 📡 API Health & Endpoints
+
+| Method | Route | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/health` | Uptime check and active Gemini model identifier |
+| `POST` | `/api/recipe` | Generate a new structured recipe with schema normalization |
+| `POST` | `/api/recipe/refine` | Conversationally adjust an active recipe |
 
 ---
 
@@ -53,75 +99,38 @@ Instead of outputting markdown text into a standard chatbot interface, Master Ch
 ```
 ┌─────────────────────────┐          ┌───────────────────────────┐          ┌──────────────────────┐
 │       Vite + React      │  /api/*  │       Node + Express      │  SDK Call│      Gemini API      │
-│  (Custom Hook & State)  ├─────────►│  (Schema Check & Timeout) ├─────────►│  (2.5 Flash Model)   │
+│  (Custom Hook & Motion) ├─────────►│  (Schema Check & Timeout) ├─────────►│  (2.5 Flash Model)   │
 │                         │◄─────────┤                           │◄─────────┤                      │
 └─────────────────────────┘ JSON/Err └───────────────────────────┘  JSON    └──────────────────────┘
 ```
 
-- **Frontend (`/client`):** Built with React (functional components, custom hooks) and Tailwind CSS. It provides a tactile "Master Chef" artisanal aesthetic (warm cream linen paper tones, terracotta primary accents, and sage green success indicators) avoiding generic SaaS design clichés.
-- **Backend (`/server`):** A lightweight ESM Express server acting as a secure gateway.
-- **Security Guardrail:** The `GEMINI_API_KEY` is strictly confined to the backend environment. Routing AI calls through the server prevents token exposure in client bundles, mitigates browser abuse, and centralizes rate-limit protection.
+- **Frontend (`/client`):** Built with React 18, Tailwind CSS, and Framer Motion. Uses a **"Nordic Smoked Ceramic & Obsidian Cast Iron"** aesthetic with physical hard-offset drop shadows, an asymmetric 12-column prep timeline, and an interactive Chef's knife cursor.
+- **Backend (`/server`):** A resilient ESM Express gateway enforcing schema normalization via Zod.
+- **Security Guardrail:** The `GEMINI_API_KEY` is strictly confined to the backend environment, preventing token leaks in client bundles and centralizing rate limiting.
 
 ---
 
-## Handling Bad AI Output
+## Handling Bad AI Output & Resilience
 
-Handling unpredictable LLM output gracefully is the primary focus of Master Chef:
+- **Zod Schema Normalization:**
+  Incoming LLM responses are validated server-side against a resilient Zod contract (`RecipeSchema`). Optional fields (like `swapSuggestion`), numeric coercion, and case normalization (`"EASY"` $\to$ `"easy"`) prevent 502 parse failures.
 
-- **Schema Enforcement via Zod:**
-  Incoming LLM responses are validated server-side against a strict Zod contract (`RecipeSchema`) validating required properties, types, minimum lengths, and enum values. If validation fails, the server rejects the payload with HTTP 502 (`invalid_shape`) rather than forwarding broken data to the frontend.
+- **Timeout & Stall Protection:**
+  Every AI request is bound to an `AbortController` configured with a generous 35-second threshold to accommodate LLM latency during peak traffic.
 
-- **Timeout & Stall Mitigation:**
-  Every AI request is bound to an `AbortController` configured with a 20-second threshold. If upstream generation stalls, the backend aborts the process and returns an HTTP 504 (`timeout`).
-
-- **Race Conditions & Stale-Response Invalidation:**
-  The custom client hook `useRecipeRequest` maintains an incrementing `activeRequestId` ref and an active client-side `AbortController`. If a user modifies their ingredients and resubmits while a request is in flight, the previous HTTP call is aborted and any out-of-order response with a mismatched request token is discarded, preventing stale data from overwriting newer submissions.
-
-- **Defensive Client Parsing:**
-  Even if an object satisfies basic schema checks, the frontend validates that ingredients and steps contain actionable entries, redirecting empty responses to a recovery state.
+- **Race Condition Invalidation:**
+  `useRecipeRequest` maintains an incrementing `activeRequestId` token. If the user edits ingredients while a request is in flight, the previous call is aborted and mismatched responses are cleanly discarded.
 
 - **Self-Healing Recovery UX:**
-  Every failure mode displays an intentional, non-technical recovery panel retaining the user's initial input with a single-click retry action:
-  - **502 `invalid_shape`:** Prompts a clean re-generation.
-  - **502 `ai_request_failed`:** Re-establishes connection to the AI provider.
-  - **504 `timeout`:** Provides options to either keep waiting or retry immediately.
-  - **Network Error:** Detects offline status and prompts reconnection.
+  Intentional recovery panels retain user inputs with single-click retry mechanisms for network drops, timeouts, and API disruptions.
 
 ---
 
-## AI Usage Note
+## Stretch Goals & Polish Completed
 
-In accordance with assignment guidelines, AI assistance was leveraged as an engineering pair-programmer:
-
-- **Scaffolding & Boilerplate:** Used AI assistants to quickly bootstrap the initial Express server configuration, monorepo `package.json` scripts, and Tailwind font imports.
-- **Handwritten Core Logic:** The client-side mathematical scaling logic, the race-condition request ID hook (`useRecipeRequest`), touch-target mobile layouts, and custom interactive step states were written and verified manually.
-- **Debugging & Edge Cases:** Used AI to review edge cases for Gemini's structured output schema typing (`SchemaType`) and to help refine the fallback error messaging.
-
----
-
-## Known Limitations
-
-- **Session Scope:** Persistence is strictly client-side (`localStorage`); sessions are not synced across multiple devices or persistent database layers.
-- **Refinement Depth:** The recipe refinement endpoint modifies the immediate active recipe, but does not maintain a multi-turn undo/redo history tree.
-- **Offline Generation:** While cached recipes load offline via local storage, generating new recipes requires an active internet connection to contact the Gemini API.
-
----
-
-## Time Spent
-
-**Total Time:** ~7.5 hours (within the suggested 8-hour target)
-
-- Architecture, monorepo scaffolding & schema contract: ~1.5 hours
-- Gemini SDK integration, structured output & timeout handling: ~1.5 hours
-- Client state machine, custom hook & race-condition guards: ~1.5 hours
-- Interactive recipe view, ingredient math & checklist UI: ~1.5 hours
-- Responsive audit, dark mode, keyboard navigation & documentation: ~1.5 hours
-
----
-
-## Stretch Goals Completed
-
-- [x] **Dark Mode:** A cozy, late-night "warm roast espresso" theme switchable via toggle and persisted in `localStorage`.
-- [x] **Save & Reload Sessions:** Automatic session hydration from `localStorage` on page reload, complete with a "Start Fresh" reset control.
-- [x] **Refinement Loop:** An inline conversational adjustment input sending the current recipe JSON plus user edits to `POST /api/recipe/refine`.
-- [x] **Keyboard Accessibility & Tactile Polish:** `Cmd/Ctrl + Enter` form submission, accessible 44px touch targets, visible theme-matched focus rings, and animated checklist transitions.
+- [x] **Light & Dark Theme:** Nordic Alabaster & Ceramic (light) $\leftrightarrow$ Obsidian Cast Iron (dark) with instant CSS-variable reactive toggling.
+- [x] **Save & Reload Sessions:** Automatic session hydration from `localStorage` (`master_chef_session_v1`) with "Start Fresh" control.
+- [x] **Refinement Loop:** Inline recipe adjustment sending active JSON plus user instructions to `POST /api/recipe/refine`.
+- [x] **60 FPS Utensil Cursor:** Hardware-accelerated chef's knife cursor with idle sway and touch suppression.
+- [x] **Physics-Based Motion Language:** Tactile rubber-stamp buttons, staggered plating animations, and timeline step pops.
+- [x] **Production Unified Server:** Express serves built client assets with SPA fallback and `/api/health` monitoring.
