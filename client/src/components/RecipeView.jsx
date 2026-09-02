@@ -2,19 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 
-/**
- * Rounds and formats scaled quantities for clean cooking fractions/decimals
- */
 function formatQuantity(quantity, scalingFactor, unit) {
   const scaled = quantity * scalingFactor
   if (!scaled || isNaN(scaled)) return '0'
 
-  // If whole unit or near-integer, round cleanly
   if (unit?.toLowerCase() === 'whole' || unit?.toLowerCase() === 'piece') {
     return Math.round(scaled * 10) / 10
   }
 
-  // Fraction approximations for common cooking measurements
   const whole = Math.floor(scaled)
   const remainder = scaled - whole
 
@@ -30,7 +25,6 @@ function formatQuantity(quantity, scalingFactor, unit) {
     return whole > 0 ? `${whole} ${fractionStr}` : fractionStr
   }
 
-  // Fallback to max 2 decimal places without trailing zeros
   return Math.round(scaled * 100) / 100
 }
 
@@ -50,7 +44,6 @@ export function RecipeView({
   const [completedSteps, setCompletedSteps] = useState(new Set())
   const [activeSwaps, setActiveSwaps] = useState(new Set())
 
-  // Reset local state if a new recipe payload comes in
   useEffect(() => {
     if (recipe?.servings) {
       setServings(recipe.servings)
@@ -101,14 +94,14 @@ export function RecipeView({
   }
 
   return (
-    <Card accent={true} className="w-full max-w-3xl mx-auto space-y-8 animate-fadeIn">
-      {/* Top Action Bar */}
-      <div className="flex items-center justify-between gap-3 border-b border-cream-200 pb-4">
+    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn overflow-hidden">
+      {/* Top Action Bar (Stacking cleanly on mobile) */}
+      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-200 pb-4">
         <Button
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="flex items-center gap-1.5 text-charcoal-700 hover:text-charcoal-900"
+          className="flex items-center justify-center sm:justify-start gap-1.5 text-charcoal-700 hover:text-charcoal-900 w-full sm:w-auto"
         >
           <span>←</span>
           <span>Back to Pantry</span>
@@ -119,12 +112,12 @@ export function RecipeView({
           size="sm"
           onClick={onRegenerate}
           disabled={isRegenerating}
-          className="flex items-center gap-1.5 shadow-sm"
+          className="flex items-center justify-center gap-1.5 shadow-sm w-full sm:w-auto"
         >
           {isRegenerating ? (
             <>
               <svg
-                className="animate-spin h-3.5 w-3.5 text-terracotta-600"
+                className="animate-spin h-4 w-4 text-terracotta-600"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -158,37 +151,37 @@ export function RecipeView({
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <span
-            className={`border px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize ${
+            className={`border px-3 py-1 rounded-full text-xs font-semibold capitalize ${
               difficultyStyles[recipe.difficulty] || difficultyStyles.easy
             }`}
           >
             {recipe.difficulty}
           </span>
           {recipe.totalTimeMinutes && (
-            <span className="bg-cream-50 border border-cream-300 text-charcoal-700 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+            <span className="bg-cream-50 border border-cream-300 text-charcoal-700 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
               <span>⏱</span>
               <span>{recipe.totalTimeMinutes} mins</span>
             </span>
           )}
         </div>
 
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-charcoal-900 tracking-tight">
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal-900 tracking-tight break-words">
           {recipe.title}
         </h1>
 
         {recipe.description && (
-          <p className="font-body text-charcoal-700 italic text-base leading-relaxed border-l-2 border-terracotta-500 pl-3.5">
+          <p className="font-body text-charcoal-700 italic text-sm sm:text-base leading-relaxed border-l-2 border-terracotta-500 pl-3.5 break-words">
             "{recipe.description}"
           </p>
         )}
 
-        {/* Tag Pills */}
+        {/* Tag Pills (wrapping naturally) */}
         {recipe.tags && recipe.tags.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5 pt-1">
             {recipe.tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="bg-cream-200/70 border border-cream-300 text-[11px] font-mono px-2 py-0.5 rounded text-charcoal-700"
+                className="bg-cream-200/70 border border-cream-300 text-xs font-mono px-2.5 py-1 rounded text-charcoal-700 break-words"
               >
                 #{tag}
               </span>
@@ -201,12 +194,12 @@ export function RecipeView({
       <div className="bg-cream-50 border border-cream-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-inner">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-charcoal-700 uppercase tracking-wider">
+            <span className="text-xs sm:text-sm font-bold text-charcoal-700 uppercase tracking-wider">
               Servings Proportions
             </span>
             {servings !== baseServings && (
-              <span className="text-[11px] text-terracotta-600 font-medium">
-                (Scaled from base {baseServings})
+              <span className="text-xs text-terracotta-600 font-medium">
+                (Base {baseServings})
               </span>
             )}
           </div>
@@ -220,7 +213,7 @@ export function RecipeView({
             type="button"
             onClick={() => handleServingChange(-1)}
             disabled={servings <= 1}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Decrease servings"
           >
             −
@@ -232,7 +225,7 @@ export function RecipeView({
             type="button"
             onClick={() => handleServingChange(1)}
             disabled={servings >= 20}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Increase servings"
           >
             +
@@ -240,10 +233,10 @@ export function RecipeView({
         </div>
       </div>
 
-      {/* Ingredient List with Swaps */}
+      {/* Ingredient List with Responsive Layout and 44px Swap Buttons */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold text-charcoal-700 uppercase tracking-wider flex items-center gap-1.5">
+          <h2 className="text-xs sm:text-sm font-bold text-charcoal-700 uppercase tracking-wider flex items-center gap-1.5">
             <span>🧺</span>
             <span>Ingredients &amp; Smart Swaps</span>
           </h2>
@@ -252,7 +245,7 @@ export function RecipeView({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {recipe.ingredients?.map((ing, idx) => {
             const isSwapped = activeSwaps.has(ing.name)
             const scaledQty = formatQuantity(ing.quantity, scalingFactor, ing.unit)
@@ -260,12 +253,12 @@ export function RecipeView({
             return (
               <div
                 key={idx}
-                className="bg-cream-50 border border-cream-300 rounded-lg p-3.5 space-y-2 shadow-tactile transition-all"
+                className="bg-cream-50 border border-cream-300 rounded-lg p-3.5 space-y-2.5 shadow-tactile transition-all"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div>
+                  <div className="min-w-0 flex-1 pr-2">
                     <h3
-                      className={`font-semibold text-sm transition-all ${
+                      className={`font-semibold text-sm sm:text-base break-words transition-all ${
                         isSwapped
                           ? 'line-through text-charcoal-500 opacity-60'
                           : 'text-charcoal-900'
@@ -274,7 +267,7 @@ export function RecipeView({
                       {ing.name}
                     </h3>
                     <p
-                      className={`text-xs font-mono transition-all ${
+                      className={`text-xs sm:text-sm font-mono transition-all ${
                         isSwapped
                           ? 'line-through text-charcoal-500 opacity-60'
                           : 'text-charcoal-700 font-medium'
@@ -288,7 +281,7 @@ export function RecipeView({
                     <button
                       type="button"
                       onClick={() => toggleSwap(ing.name)}
-                      className={`text-[11px] font-semibold px-2 py-1 rounded-md border transition-all active:scale-95 ${
+                      className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-md border transition-all active:scale-95 touch-manipulation shrink-0 ${
                         isSwapped
                           ? 'bg-olive-500 text-cream-50 border-olive-600 shadow-sm'
                           : 'bg-cream-100 text-charcoal-700 border-cream-300 hover:bg-cream-200'
@@ -300,11 +293,11 @@ export function RecipeView({
                 </div>
 
                 {isSwapped && ing.swapSuggestion && (
-                  <div className="bg-olive-100/70 border border-olive-500/30 rounded-md p-2 text-xs text-olive-800 animate-fadeIn space-y-0.5">
+                  <div className="bg-olive-100/70 border border-olive-500/30 rounded-md p-2.5 text-xs sm:text-sm text-olive-800 animate-fadeIn space-y-0.5">
                     <span className="font-bold text-[11px] uppercase tracking-wider block text-olive-900">
                       Alternative Choice:
                     </span>
-                    <p>{ing.swapSuggestion}</p>
+                    <p className="break-words">{ing.swapSuggestion}</p>
                   </div>
                 )}
               </div>
@@ -313,17 +306,16 @@ export function RecipeView({
         </div>
       </div>
 
-      {/* Interactive Step Checklist */}
+      {/* Interactive Step Checklist with 44px Hit Target Wrappers */}
       <div className="space-y-4 pt-2">
-        {/* Progress Meter */}
         <div className="space-y-1.5 bg-cream-50 border border-cream-200 p-3.5 rounded-xl shadow-sm">
-          <div className="flex items-center justify-between text-xs font-bold text-charcoal-700">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-bold text-charcoal-700">
             <span>
               Cooking Progress: {completedCount} of {totalSteps} completed
             </span>
             <span className="font-mono text-olive-600">{progressPercent}%</span>
           </div>
-          <div className="w-full bg-cream-200 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-cream-200 h-2.5 rounded-full overflow-hidden">
             <div
               className="bg-olive-500 h-full transition-all duration-300 ease-out"
               style={{ width: `${progressPercent}%` }}
@@ -331,7 +323,6 @@ export function RecipeView({
           </div>
         </div>
 
-        {/* Step Cards */}
         <div className="space-y-2.5">
           {recipe.steps?.map((step) => {
             const isDone = completedSteps.has(step.order)
@@ -340,26 +331,28 @@ export function RecipeView({
               <div
                 key={step.order}
                 onClick={() => toggleStep(step.order)}
-                className={`cursor-pointer rounded-xl border p-4 transition-all flex items-start gap-3.5 select-none shadow-tactile ${
+                className={`cursor-pointer rounded-xl border p-3.5 sm:p-4 transition-all flex items-start gap-3 select-none shadow-tactile touch-manipulation active:bg-cream-200/50 ${
                   isDone
                     ? 'bg-cream-200/40 border-cream-300/80'
                     : 'bg-cream-50 border-cream-200 hover:border-terracotta-500/40'
                 }`}
               >
-                {/* Step Number / Checkbox Badge */}
-                <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs shrink-0 transition-colors ${
-                    isDone
-                      ? 'bg-olive-500 text-cream-50'
-                      : 'bg-terracotta-100 text-terracotta-700 border border-terracotta-200'
-                  }`}
-                >
-                  {isDone ? '✓' : step.order}
+                {/* 44x44px Touch Target Hit-Test Wrapper */}
+                <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
+                  <div
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-colors ${
+                      isDone
+                        ? 'bg-olive-500 text-cream-50'
+                        : 'bg-terracotta-100 text-terracotta-700 border border-terracotta-200'
+                    }`}
+                  >
+                    {isDone ? '✓' : step.order}
+                  </div>
                 </div>
 
-                <div className="space-y-1 flex-1">
+                <div className="space-y-1 flex-1 pt-2.5">
                   <p
-                    className={`text-sm leading-relaxed transition-all ${
+                    className={`text-sm sm:text-base leading-relaxed break-words transition-all ${
                       isDone
                         ? 'line-through text-charcoal-500 opacity-60'
                         : 'text-charcoal-900 font-medium'

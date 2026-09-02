@@ -8,9 +8,9 @@ const variants = {
 }
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-xs',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-5 py-2.5 text-base',
+  sm: 'min-h-[44px] px-3.5 py-2.5 text-xs sm:text-sm',
+  md: 'min-h-[44px] px-4 py-2.5 text-sm sm:text-base',
+  lg: 'min-h-[48px] px-5 py-3 text-base',
 }
 
 export function Button({
@@ -22,7 +22,7 @@ export function Button({
   ...props
 }) {
   const baseStyles =
-    'font-body font-semibold inline-flex items-center justify-center rounded-lg transition-all duration-150 ease-out active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500/50'
+    'font-body font-semibold inline-flex items-center justify-center rounded-lg transition-all duration-150 ease-out active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500/50 touch-manipulation select-none'
 
   const variantStyles = variants[variant] || variants.primary
   const sizeStyles = sizes[size] || sizes.md

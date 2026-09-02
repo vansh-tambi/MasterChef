@@ -30,7 +30,6 @@ export function RecipeInput({
 
   const textareaRef = useRef(null)
 
-  // Sync if initial values change (e.g. returning from error/revision)
   useEffect(() => {
     if (initialIngredients) {
       setIngredients(
@@ -79,26 +78,29 @@ export function RecipeInput({
   }
 
   return (
-    <Card accent={true} className="w-full max-w-2xl mx-auto space-y-6">
+    <Card accent={true} className="w-full space-y-6">
       {/* Header */}
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-terracotta-100 border border-terracotta-200 text-terracotta-700 text-xs font-semibold tracking-wide uppercase">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-terracotta-100 border border-terracotta-200 text-terracotta-700 text-xs font-semibold tracking-wide uppercase">
           <span>🥘</span>
           <span>Pantry to Plate</span>
         </div>
-        <h2 className="font-display text-2xl md:text-3xl text-charcoal-900 font-bold tracking-tight">
+        <h2 className="font-display text-2xl sm:text-3xl text-charcoal-900 font-bold tracking-tight break-words">
           What are we cooking with?
         </h2>
-        <p className="text-charcoal-700 text-sm leading-relaxed">
+        <p className="text-charcoal-700 text-sm sm:text-base leading-relaxed break-words">
           Tell us what's lingering in your fridge, crisper drawer, or spice rack. We'll turn it into tonight's dinner.
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Ingredients Textarea */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Ingredients Textarea (16px / text-base prevents iOS Safari zoom) */}
         <div className="space-y-2">
-          <label htmlFor="ingredients-input" className="block text-xs font-bold text-charcoal-700 uppercase tracking-wider">
+          <label
+            htmlFor="ingredients-input"
+            className="block text-xs sm:text-sm font-bold text-charcoal-700 uppercase tracking-wider"
+          >
             Available Ingredients &amp; Staples
           </label>
           <textarea
@@ -109,11 +111,11 @@ export function RecipeInput({
             onChange={(e) => setIngredients(e.target.value)}
             disabled={isLoading}
             placeholder="e.g., chicken thighs, baby spinach, minced garlic, leftover cooked jasmine rice, soy sauce, a knob of ginger..."
-            className="w-full bg-cream-50 border border-cream-200 focus:border-terracotta-500 focus:ring-1 focus:ring-terracotta-500 rounded-lg p-3.5 text-charcoal-900 placeholder:text-charcoal-500/70 font-body text-sm leading-relaxed transition-all shadow-inner outline-none resize-y min-h-[110px] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full bg-cream-50 border border-cream-200 focus:border-terracotta-500 focus:ring-1 focus:ring-terracotta-500 rounded-lg p-3.5 sm:p-4 text-charcoal-900 placeholder:text-charcoal-500/70 font-body text-base leading-relaxed transition-all shadow-inner outline-none resize-y min-h-[120px] disabled:opacity-60 disabled:cursor-not-allowed"
           />
 
-          {/* Dynamic Helper Note */}
-          <div className="flex items-center justify-between text-xs px-1">
+          {/* Helper Note */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs px-1">
             <span
               className={`transition-colors ${
                 isValid ? 'text-olive-600 font-medium' : 'text-charcoal-500'
@@ -121,7 +123,7 @@ export function RecipeInput({
             >
               {isValid
                 ? '✓ Ready to compose your recipe'
-                : 'Add at least a couple of ingredients to start cooking (min. 4 characters)'}
+                : 'Add at least a couple of ingredients (min. 4 chars)'}
             </span>
             <span className="text-charcoal-500 font-mono text-[11px]">
               {trimmed.length} chars
@@ -129,9 +131,9 @@ export function RecipeInput({
           </div>
         </div>
 
-        {/* Clickable Inspiration Chips (Presets) */}
-        <div className="space-y-2 pt-1">
-          <span className="text-xs font-semibold text-charcoal-700 block">
+        {/* Clickable Inspiration Presets (Wrapping Naturally) */}
+        <div className="space-y-2.5 pt-1">
+          <span className="text-xs sm:text-sm font-semibold text-charcoal-700 block">
             Quick Inspiration Presets:
           </span>
           <div className="flex flex-wrap gap-2">
@@ -141,7 +143,7 @@ export function RecipeInput({
                 type="button"
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="border border-cream-300 bg-cream-50 hover:bg-cream-200/80 active:scale-[0.98] transition-all px-3 py-1 rounded-full text-xs font-medium text-charcoal-700 flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:pointer-events-none"
+                className="min-h-[44px] border border-cream-300 bg-cream-50 hover:bg-cream-200/80 active:scale-[0.98] transition-all px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium text-charcoal-700 flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:pointer-events-none text-left touch-manipulation"
               >
                 {preset.label}
               </button>
@@ -149,21 +151,21 @@ export function RecipeInput({
           </div>
         </div>
 
-        {/* Stepper Control for Servings */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-cream-200">
+        {/* Stepper Control for Servings (44x44px touch targets) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-cream-200">
           <div>
-            <label className="block text-xs font-bold text-charcoal-700 uppercase tracking-wider">
+            <label className="block text-xs sm:text-sm font-bold text-charcoal-700 uppercase tracking-wider">
               Target Servings
             </label>
             <p className="text-xs text-charcoal-500">Scale proportions for the table</p>
           </div>
 
-          <div className="inline-flex items-center bg-cream-50 border border-cream-200 rounded-lg p-1 shadow-sm">
+          <div className="inline-flex items-center bg-cream-50 border border-cream-200 rounded-lg p-1 shadow-sm self-start sm:self-auto">
             <button
               type="button"
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1 || isLoading}
-              className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
               aria-label="Decrease servings"
             >
               −
@@ -175,7 +177,7 @@ export function RecipeInput({
               type="button"
               onClick={() => handleServingChange(1)}
               disabled={servings >= 12 || isLoading}
-              className="w-8 h-8 flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-base select-none"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 hover:bg-cream-200 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
               aria-label="Increase servings"
             >
               +
@@ -190,7 +192,7 @@ export function RecipeInput({
             variant="primary"
             size="lg"
             disabled={!isValid || isLoading}
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full flex items-center justify-center gap-2 text-base"
           >
             <span>Create Recipe from Ingredients</span>
           </Button>
