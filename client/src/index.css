@@ -4,8 +4,6 @@
 
 @layer base {
   body {
-    background-color: #12100E;
-    color: #FAF6EE;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
@@ -15,7 +13,7 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #12100E;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: #3B312A;
@@ -38,14 +36,26 @@ html.cursor-none-active * {
   background: radial-gradient(circle at 50% 15%, rgba(200, 90, 50, 0.12) 0%, rgba(18, 16, 14, 0) 75%);
 }
 
+.dark .ambient-glow {
+  background: radial-gradient(circle at 50% 15%, rgba(200, 90, 50, 0.14) 0%, rgba(18, 16, 14, 0) 75%);
+}
+
 /* Head Chef's Ledger lined paper effect */
 .ledger-lines {
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    rgba(59, 49, 42, 0.45) 28px
+    rgba(59, 49, 42, 0.2) 28px
   );
   line-height: 28px;
+}
+
+.dark .ledger-lines {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(59, 49, 42, 0.45) 28px
+  );
 }
 
 /* Hand-drawn organic strike-through */

@@ -86,7 +86,7 @@ function App() {
   )
 
   return (
-    <main className="min-h-screen w-full bg-kitchen-bg text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow">
+    <main className="min-h-screen w-full bg-cream-100 dark:bg-kitchen-bg text-charcoal-900 dark:text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow transition-colors duration-200">
       {/* 60 FPS Hardware-Accelerated Artisanal Whisk/Knife Cursor */}
       <CustomCursor />
 
@@ -97,17 +97,17 @@ function App() {
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
 
-          <div className="inline-flex items-center justify-center w-13 h-13 rounded-2xl bg-kitchen-surface border border-kitchen-border text-terracotta-400 text-2xl shadow-candlelight mb-0.5">
+          <div className="inline-flex items-center justify-center w-13 h-13 rounded-2xl bg-cream-50 dark:bg-kitchen-surface border border-cream-300 dark:border-kitchen-border text-terracotta-500 text-2xl shadow-candlelight mb-0.5">
             👨‍🍳
           </div>
 
           <div className="space-y-0.5">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-parchment-100 break-words">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-charcoal-900 dark:text-parchment-100 break-words">
               Master Chef
             </h1>
           </div>
 
-          <p className="font-body text-parchment-300 text-sm sm:text-base leading-relaxed max-w-sm mx-auto break-words">
+          <p className="font-body text-charcoal-700 dark:text-parchment-300 text-sm sm:text-base leading-relaxed max-w-sm mx-auto break-words">
             Fridge to plate, instantly.
           </p>
 
@@ -118,13 +118,13 @@ function App() {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
-                className="inline-flex items-center justify-between gap-3 px-4 py-1 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium mt-1.5 shadow-stamp"
+                className="inline-flex items-center justify-between gap-3 px-4 py-1 rounded-full bg-cream-50 dark:bg-kitchen-surface border border-sage-500/40 text-sage-600 dark:text-sage-400 text-xs font-medium mt-1.5 shadow-stamp"
               >
                 <span>Restored session</span>
                 <button
                   type="button"
                   onClick={handleStartOver}
-                  className="underline hover:text-parchment-100 font-bold text-mustard-400 cursor-pointer"
+                  className="underline hover:text-charcoal-900 dark:hover:text-parchment-100 font-bold text-terracotta-600 dark:text-mustard-400 cursor-pointer"
                 >
                   Start Fresh
                 </button>
