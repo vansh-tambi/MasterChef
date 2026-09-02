@@ -7,7 +7,7 @@ function formatQuantity(quantity, scalingFactor, unit) {
   const scaled = quantity * scalingFactor
   if (!scaled || isNaN(scaled)) return '0'
 
-  if (unit?.toLowerCase() === 'whole' || unit?.toLowerCase() === 'piece') {
+  if (unit?.toLowerCase() === 'whole' || unit?.toLowerCase() === 'piece' || unit?.toLowerCase() === 'count') {
     return Math.round(scaled * 10) / 10
   }
 
@@ -30,9 +30,9 @@ function formatQuantity(quantity, scalingFactor, unit) {
 }
 
 const difficultyStyles = {
-  easy: 'bg-olive-100 dark:bg-olive-950/60 border-olive-500/30 text-olive-700 dark:text-olive-300',
-  medium: 'bg-amber-100/70 dark:bg-amber-950/60 border-amber-500/30 text-amber-800 dark:text-amber-300',
-  hard: 'bg-terracotta-100 dark:bg-terracotta-950/60 border-terracotta-500/30 text-terracotta-700 dark:text-terracotta-300',
+  easy: 'bg-sage-600/30 border-sage-500/40 text-sage-400',
+  medium: 'bg-mustard-500/20 border-mustard-500/40 text-mustard-400',
+  hard: 'bg-terracotta-600/30 border-terracotta-500/40 text-terracotta-400',
 }
 
 export function RecipeView({
@@ -50,25 +50,32 @@ export function RecipeView({
   const [completedSteps, setCompletedSteps] = useState(() => new Set(initialCompletedSteps || []))
   const [activeSwaps, setActiveSwaps] = useState(() => new Set(initialActiveSwaps || []))
 
-  // Sync state upward for persistence (Stretch B)
+  const completedStepsArray = React.useMemo(() => Array.from(completedSteps).sort(), [completedSteps])
+  const activeSwapsArray = React.useMemo(() => Array.from(activeSwaps).sort(), [activeSwaps])
+  const isFirstRender = React.useRef(true)
+
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
     if (onStateChange) {
       onStateChange({
         servings,
-        completedSteps,
-        activeSwaps,
+        completedSteps: completedStepsArray,
+        activeSwaps: activeSwapsArray,
       })
     }
-  }, [servings, completedSteps, activeSwaps, onStateChange])
+  }, [servings, completedStepsArray.join(','), activeSwapsArray.join(','), onStateChange])
 
-  // Reset local state if a fundamentally new recipe arrives
   useEffect(() => {
     if (recipe && !initialServings) {
       setServings(recipe.servings || 2)
       setCompletedSteps(new Set())
       setActiveSwaps(new Set())
     }
-  }, [recipe, initialServings])
+  }, [recipe?.title, initialServings])
 
   if (!recipe) return null
 
@@ -112,17 +119,17 @@ export function RecipeView({
   }
 
   return (
-    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn transform transition-all duration-300 ease-out overflow-hidden">
+    <Card accent={true} className="w-full space-y-7 sm:space-y-9 animate-fadeIn overflow-hidden">
       {/* Top Action Bar */}
-      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-200 dark:border-roast-700 pb-4">
+      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-kitchen-border pb-4">
         <Button
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="flex items-center justify-center sm:justify-start gap-1.5 text-charcoal-700 dark:text-cream-200 hover:text-charcoal-900 dark:hover:text-cream-50 w-full sm:w-auto"
+          className="flex items-center justify-center sm:justify-start gap-2 text-parchment-300 hover:text-parchment-100 w-full sm:w-auto"
         >
           <span>←</span>
-          <span>Back to Pantry</span>
+          <span>Return to Pantry</span>
         </Button>
 
         <Button
@@ -130,12 +137,12 @@ export function RecipeView({
           size="sm"
           onClick={onRegenerate}
           disabled={isRegenerating}
-          className="flex items-center justify-center gap-1.5 shadow-sm w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 shadow-stamp w-full sm:w-auto"
         >
           {isRegenerating ? (
             <>
               <svg
-                className="animate-spin h-4 w-4 text-terracotta-600 dark:text-terracotta-400"
+                className="animate-spin h-4 w-4 text-mustard-400"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -154,52 +161,52 @@ export function RecipeView({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>Re-crafting...</span>
+              <span>Re-firing recipe...</span>
             </>
           ) : (
             <>
               <span>↻</span>
-              <span>Regenerate</span>
+              <span>Regenerate Plate</span>
             </>
           )}
         </Button>
       </div>
 
       {/* Header Section */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="space-y-3.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <span
-            className={`border px-3 py-1 rounded-full text-xs font-semibold capitalize ${
+            className={`border px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
               difficultyStyles[recipe.difficulty] || difficultyStyles.easy
             }`}
           >
             {recipe.difficulty}
           </span>
           {recipe.totalTimeMinutes && (
-            <span className="bg-cream-50 dark:bg-roast-950 border border-cream-300 dark:border-roast-700 text-charcoal-700 dark:text-cream-200 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+            <span className="bg-kitchen-card border border-kitchen-border text-parchment-200 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 shadow-stamp">
               <span>⏱</span>
-              <span>{recipe.totalTimeMinutes} mins</span>
+              <span>{recipe.totalTimeMinutes} mins total</span>
             </span>
           )}
         </div>
 
-        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal-900 dark:text-cream-50 tracking-tight break-words">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-parchment-100 tracking-tight break-words">
           {recipe.title}
         </h1>
 
         {recipe.description && (
-          <p className="font-body text-charcoal-700 dark:text-cream-200 italic text-sm sm:text-base leading-relaxed border-l-2 border-terracotta-500 pl-3.5 break-words">
+          <p className="font-body text-parchment-200 italic text-sm sm:text-base leading-relaxed border-l-2 border-terracotta-500 pl-4 break-words">
             "{recipe.description}"
           </p>
         )}
 
         {/* Tag Pills */}
         {recipe.tags && recipe.tags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             {recipe.tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="bg-cream-200/70 dark:bg-roast-800 border border-cream-300 dark:border-roast-700 text-xs font-mono px-2.5 py-1 rounded text-charcoal-700 dark:text-cream-200 break-words"
+                className="bg-kitchen-card border border-kitchen-border text-xs font-mono px-2.5 py-1 rounded-md text-parchment-300 shadow-stamp"
               >
                 #{tag}
               </span>
@@ -209,41 +216,42 @@ export function RecipeView({
       </div>
 
       {/* Interactive Servings Bar */}
-      <div className="bg-cream-50 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-inner">
+      <div className="bg-kitchen-bg/80 border border-kitchen-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-inner">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-bold text-charcoal-700 dark:text-cream-200 uppercase tracking-wider">
-              Servings Proportions
+            <span className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-1.5">
+              <span>⚖️</span>
+              <span>Proportional Brigade Yield</span>
             </span>
             {servings !== baseServings && (
-              <span className="text-xs text-terracotta-600 dark:text-terracotta-400 font-medium">
-                (Base {baseServings})
+              <span className="text-xs text-mustard-400 font-semibold">
+                (Base: {baseServings})
               </span>
             )}
           </div>
-          <p className="text-xs text-charcoal-500 dark:text-cream-300/70">
-            Quantities automatically scale with your serving size
+          <p className="text-xs text-parchment-300/70 mt-0.5">
+            Ingredients scale proportionally for your table
           </p>
         </div>
 
-        <div className="inline-flex items-center bg-cream-100 dark:bg-roast-800 border border-cream-200 dark:border-roast-700 rounded-lg p-1 shadow-sm self-start sm:self-auto">
+        <div className="inline-flex items-center bg-kitchen-card border border-kitchen-border rounded-xl p-1 shadow-stamp self-start sm:self-auto">
           <button
             type="button"
             onClick={() => handleServingChange(-1)}
             disabled={servings <= 1}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Decrease servings"
           >
             −
           </button>
-          <div className="w-12 text-center font-display font-bold text-charcoal-900 dark:text-cream-50 text-lg select-none">
+          <div className="w-14 text-center font-display font-bold text-mustard-400 text-xl select-none">
             {servings}
           </div>
           <button
             type="button"
             onClick={() => handleServingChange(1)}
             disabled={servings >= 20}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-parchment-200 hover:bg-kitchen-border/60 hover:text-parchment-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Increase servings"
           >
             +
@@ -251,150 +259,157 @@ export function RecipeView({
         </div>
       </div>
 
-      {/* Ingredient List with Swaps */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs sm:text-sm font-bold text-charcoal-700 dark:text-cream-200 uppercase tracking-wider flex items-center gap-1.5">
-            <span>🧺</span>
-            <span>Ingredients &amp; Smart Swaps</span>
-          </h2>
-          <span className="text-xs text-charcoal-500 dark:text-cream-300/70 font-mono">
-            {recipe.ingredients?.length || 0} items
-          </span>
-        </div>
+      {/* Asymmetric Editorial Grid on Desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-8 pt-2">
+        {/* Left Column: Pantry Tags & Scaled Quantities (5 cols) */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
+            <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
+              <span>🧺</span>
+              <span>Ingredients &amp; Swaps</span>
+            </h2>
+            <span className="text-xs text-parchment-300/60 font-mono">
+              {recipe.ingredients?.length || 0} items
+            </span>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {recipe.ingredients?.map((ing, idx) => {
-            const isSwapped = activeSwaps.has(ing.name)
-            const scaledQty = formatQuantity(ing.quantity, scalingFactor, ing.unit)
+          <div className="space-y-3">
+            {recipe.ingredients?.map((ing, idx) => {
+              const isSwapped = activeSwaps.has(ing.name)
+              const scaledQty = formatQuantity(ing.quantity, scalingFactor, ing.unit)
 
-            return (
-              <div
-                key={idx}
-                className="bg-cream-50 dark:bg-roast-950 border border-cream-300 dark:border-roast-700 rounded-lg p-3.5 space-y-2.5 shadow-tactile dark:shadow-none transition-all duration-200"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0 flex-1 pr-2">
-                    <h3
-                      className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
-                        isSwapped
-                          ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
-                          : 'text-charcoal-900 dark:text-cream-50'
-                      }`}
-                    >
-                      {ing.name}
-                    </h3>
-                    <p
-                      className={`text-xs sm:text-sm font-mono transition-all duration-200 ${
-                        isSwapped
-                          ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
-                          : 'text-charcoal-700 dark:text-cream-200 font-medium'
-                      }`}
-                    >
-                      {scaledQty} {ing.unit}
-                    </p>
+              return (
+                <div
+                  key={idx}
+                  className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-3.5 space-y-2 shadow-stamp transition-all duration-200"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1 pr-1">
+                      <h3
+                        className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
+                          isSwapped
+                            ? 'line-through text-parchment-300/40 opacity-60'
+                            : 'text-parchment-100'
+                        }`}
+                      >
+                        {ing.name}
+                      </h3>
+                      <p
+                        className={`text-xs sm:text-sm font-mono transition-all duration-200 ${
+                          isSwapped
+                            ? 'line-through text-parchment-300/40 opacity-60'
+                            : 'text-mustard-400 font-semibold'
+                        }`}
+                      >
+                        {scaledQty} {ing.unit}
+                      </p>
+                    </div>
+
+                    {ing.swappable && (
+                      <button
+                        type="button"
+                        onClick={() => toggleSwap(ing.name)}
+                        className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 touch-manipulation shrink-0 ${
+                          isSwapped
+                            ? 'bg-sage-600 text-parchment-100 border-sage-500 shadow-sm'
+                            : 'bg-kitchen-surface text-parchment-200 border-kitchen-border hover:border-kitchen-border/80'
+                        }`}
+                      >
+                        {isSwapped ? '✓ Swapped' : '⇄ Swap'}
+                      </button>
+                    )}
                   </div>
 
-                  {ing.swappable && (
-                    <button
-                      type="button"
-                      onClick={() => toggleSwap(ing.name)}
-                      className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-md border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 touch-manipulation shrink-0 ${
-                        isSwapped
-                          ? 'bg-olive-500 dark:bg-olive-600 text-cream-50 border-olive-600 dark:border-olive-500 shadow-sm'
-                          : 'bg-cream-100 dark:bg-roast-800 text-charcoal-700 dark:text-cream-200 border-cream-300 dark:border-roast-700 hover:bg-cream-200 dark:hover:bg-roast-700'
-                      }`}
-                    >
-                      {isSwapped ? '✓ Swapped' : '⇄ Swap'}
-                    </button>
+                  {isSwapped && ing.swapSuggestion && (
+                    <div className="bg-sage-600/20 border border-sage-500/40 rounded-lg p-2.5 text-xs sm:text-sm text-sage-300 animate-fadeIn space-y-0.5">
+                      <span className="font-bold text-[11px] uppercase tracking-wider block text-sage-200">
+                        Alternative Choice:
+                      </span>
+                      <p className="break-words">{ing.swapSuggestion}</p>
+                    </div>
                   )}
                 </div>
-
-                {isSwapped && ing.swapSuggestion && (
-                  <div className="bg-olive-100/70 dark:bg-olive-950/60 border border-olive-500/30 dark:border-olive-700/50 rounded-md p-2.5 text-xs sm:text-sm text-olive-800 dark:text-olive-200 animate-fadeIn space-y-0.5">
-                    <span className="font-bold text-[11px] uppercase tracking-wider block text-olive-900 dark:text-olive-300">
-                      Alternative Choice:
-                    </span>
-                    <p className="break-words">{ing.swapSuggestion}</p>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Interactive Step Checklist */}
-      <div className="space-y-4 pt-2">
-        <div className="space-y-1.5 bg-cream-50 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 p-3.5 rounded-xl shadow-sm">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-bold text-charcoal-700 dark:text-cream-200">
-            <span>
-              Cooking Progress: {completedCount} of {totalSteps} completed
-            </span>
-            <span className="font-mono text-olive-600 dark:text-olive-400">{progressPercent}%</span>
+              )
+            })}
           </div>
-          <div className="w-full bg-cream-200 dark:bg-roast-800 h-2.5 rounded-full overflow-hidden">
+        </div>
+
+        {/* Right Column: Step-by-Step Brigade Checklist (7 cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="flex items-center justify-between border-b border-dashed border-kitchen-border pb-2">
+            <h2 className="text-xs sm:text-sm font-bold text-parchment-200 uppercase tracking-wider flex items-center gap-2">
+              <span>👨‍🍳</span>
+              <span>Brigade Checklist</span>
+            </h2>
+            <span className="text-xs text-mustard-400 font-mono font-bold">
+              {progressPercent}% Complete
+            </span>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-kitchen-card h-2 rounded-full overflow-hidden border border-kitchen-border/60">
             <div
-              className="bg-olive-500 dark:bg-olive-600 h-full transition-all duration-300 ease-out"
+              className="bg-gradient-to-r from-terracotta-500 via-mustard-500 to-sage-500 h-full transition-all duration-300 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-        </div>
 
-        <div className="space-y-2.5">
-          {recipe.steps?.map((step) => {
-            const isDone = completedSteps.has(step.order)
+          {/* Step Cards */}
+          <div className="space-y-3 pt-1">
+            {recipe.steps?.map((step) => {
+              const isDone = completedSteps.has(step.order)
 
-            return (
-              <div
-                key={step.order}
-                role="checkbox"
-                aria-checked={isDone}
-                tabIndex={0}
-                onClick={() => toggleStep(step.order)}
-                onKeyDown={(e) => {
-                  if (e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault()
-                    toggleStep(step.order)
-                  }
-                }}
-                className={`cursor-pointer rounded-xl border p-3.5 sm:p-4 transition-all duration-200 flex items-start gap-3 select-none shadow-tactile dark:shadow-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-roast-900 active:bg-cream-200/50 dark:active:bg-roast-800/60 ${
-                  isDone
-                    ? 'bg-cream-200/40 dark:bg-roast-900/40 border-cream-300/80 dark:border-roast-700/60'
-                    : 'bg-cream-50 dark:bg-roast-950 border-cream-200 dark:border-roast-700 hover:border-terracotta-500/40 dark:hover:border-terracotta-500/40'
-                }`}
-              >
-                <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
-                  <div
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-transform duration-200 ${
-                      isDone
-                        ? 'bg-olive-500 dark:bg-olive-600 text-cream-50 scale-105'
-                        : 'bg-terracotta-100 dark:bg-terracotta-900/40 text-terracotta-700 dark:text-terracotta-400 border border-terracotta-200 dark:border-terracotta-700/60'
-                    }`}
-                  >
-                    {isDone ? '✓' : step.order}
+              return (
+                <div
+                  key={step.order}
+                  role="checkbox"
+                  aria-checked={isDone}
+                  tabIndex={0}
+                  onClick={() => toggleStep(step.order)}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                      e.preventDefault()
+                      toggleStep(step.order)
+                    }
+                  }}
+                  className={`cursor-pointer rounded-xl border p-4 transition-all duration-200 flex items-start gap-3.5 select-none shadow-stamp touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg ${
+                    isDone
+                      ? 'bg-kitchen-surface/50 border-kitchen-border/50 text-parchment-300/40'
+                      : 'bg-kitchen-card/90 border-kitchen-border hover:border-terracotta-500/40'
+                  }`}
+                >
+                  <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-all duration-200 ${
+                        isDone
+                          ? 'bg-sage-600 text-parchment-100 animate-stamp shadow-candlelight'
+                          : 'bg-kitchen-surface text-terracotta-400 border border-kitchen-border'
+                      }`}
+                    >
+                      {isDone ? '✓' : step.order}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 flex-1 pt-2.5">
+                    <p
+                      className={`text-sm sm:text-base leading-relaxed break-words transition-all duration-200 ${
+                        isDone
+                          ? 'line-through opacity-50'
+                          : 'text-parchment-100 font-medium'
+                      }`}
+                    >
+                      {step.instruction}
+                    </p>
                   </div>
                 </div>
-
-                <div className="space-y-1 flex-1 pt-2.5">
-                  <p
-                    className={`text-sm sm:text-base leading-relaxed break-words transition-all duration-200 ${
-                      isDone
-                        ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
-                        : 'text-charcoal-900 dark:text-cream-50 font-medium'
-                    }`}
-                  >
-                    {step.instruction}
-                  </p>
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Stretch C: Recipe Refinement Prompt Bar */}
-      <div className="pt-2">
+      {/* Recipe Refine Section */}
+      <div className="pt-4 border-t border-dashed border-kitchen-border">
         <RecipeRefine
           currentRecipe={recipe}
           onRefineSuccess={(updated) => {

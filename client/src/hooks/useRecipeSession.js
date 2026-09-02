@@ -38,7 +38,6 @@ export function useRecipeSession() {
         timestamp: Date.now(),
       }
       localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(payload))
-      setSession({ ...payload, isRestored: false })
     } catch (err) {
       console.error('Error saving session to localStorage:', err)
     }

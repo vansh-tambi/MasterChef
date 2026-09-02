@@ -8,28 +8,37 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Playfair Display"', 'serif'],
+        display: ['"Fraunces"', 'serif'],
         body: ['"Manrope"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        cream: {
-          50: '#FDFBF7',
-          100: '#F7F3EB',
-          200: '#EFE8D8',
-          300: '#E3D8C0',
+        kitchen: {
+          bg: '#12100E',
+          surface: '#1C1815',
+          card: '#241E1A',
+          border: '#3B312A',
+          muted: '#52453C',
         },
         terracotta: {
-          100: '#F9EBE6',
-          200: '#F4D7CD',
+          400: '#D96E47',
           500: '#C85A32',
-          600: '#B34B25',
-          700: '#963B19',
+          600: '#AE4822',
         },
-        olive: {
-          100: '#EDF2EA',
+        sage: {
+          400: '#758A69',
           500: '#586B4D',
-          600: '#4A5B40',
-          700: '#3D4C34',
+          600: '#43523B',
+        },
+        mustard: {
+          400: '#EDB03A',
+          500: '#D99B26',
+          600: '#B8801B',
+        },
+        parchment: {
+          100: '#FAF6EE',
+          200: '#EDE4D1',
+          300: '#D9CEB6',
         },
         charcoal: {
           500: '#857D75',
@@ -37,16 +46,27 @@ export default {
           900: '#262320',
           950: '#1A1816',
         },
-        roast: {
-          700: '#3D342D',
-          800: '#2D2621',
-          900: '#211C18',
-          950: '#171412',
-        },
       },
       boxShadow: {
-        tactile: '0 2px 0 0 rgba(74, 59, 44, 0.08), 0 4px 12px 0 rgba(74, 59, 44, 0.04)',
-        'tactile-hover': '0 4px 0 0 rgba(74, 59, 44, 0.1), 0 8px 20px 0 rgba(74, 59, 44, 0.06)',
+        candlelight: '0 8px 32px -4px rgba(200, 90, 50, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.4)',
+        'candlelight-hover': '0 12px 40px -4px rgba(200, 90, 50, 0.14), 0 4px 12px -1px rgba(0, 0, 0, 0.6)',
+        press: '0 2px 4px 0 rgba(0, 0, 0, 0.5)',
+        stamp: 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0,0,0,0.3)',
+      },
+      keyframes: {
+        flicker: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.82', transform: 'scale(0.98)' },
+        },
+        stampIn: {
+          '0%': { transform: 'scale(0.8)', opacity: '0' },
+          '70%': { transform: 'scale(1.1)' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
+      animation: {
+        flicker: 'flicker 3s ease-in-out infinite',
+        stamp: 'stampIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
       },
     },
   },

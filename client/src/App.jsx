@@ -68,44 +68,54 @@ function App() {
     })
   }
 
-  const handleViewSessionStateChange = ({ servings, completedSteps, activeSwaps }) => {
-    if (activeRecipe) {
-      saveSession({
-        recipe: activeRecipe,
-        servings,
-        completedSteps,
-        activeSwaps,
-      })
-    }
-  }
+  const handleViewSessionStateChange = React.useCallback(
+    ({ servings, completedSteps, activeSwaps }) => {
+      if (activeRecipe) {
+        saveSession({
+          recipe: activeRecipe,
+          servings,
+          completedSteps,
+          activeSwaps,
+        })
+      }
+    },
+    [activeRecipe, saveSession]
+  )
 
   return (
-    <main className="min-h-screen w-full bg-cream-50 dark:bg-roast-950 text-charcoal-900 dark:text-cream-50 font-body px-4 py-6 sm:px-6 sm:py-12 flex justify-center transition-colors duration-200">
-      <div className="max-w-2xl lg:max-w-3xl w-full space-y-8 sm:space-y-10">
-        {/* Brand Header with Theme Toggle */}
-        <header className="relative text-center space-y-2 pt-2 sm:pt-0">
+    <main className="min-h-screen w-full bg-kitchen-bg text-parchment-100 font-body px-4 py-7 sm:px-6 sm:py-12 flex justify-center ambient-glow">
+      <div className="max-w-2xl lg:max-w-4xl w-full space-y-8 sm:space-y-10">
+        {/* Brand Header with Restaurant Signage Typography */}
+        <header className="relative text-center space-y-3 pt-2 sm:pt-0">
           <div className="absolute right-0 top-0">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
 
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-terracotta-100 dark:bg-terracotta-900/40 text-terracotta-600 dark:text-terracotta-400 text-2xl shadow-sm mb-1">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-kitchen-surface border border-kitchen-border text-terracotta-400 text-3xl shadow-candlelight mb-1">
             👨‍🍳
           </div>
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl text-charcoal-900 dark:text-cream-50 font-bold tracking-tight break-words">
-            Master Chef
-          </h1>
-          <p className="font-body text-charcoal-700 dark:text-cream-300 text-sm sm:text-base mt-1 leading-relaxed max-w-lg mx-auto break-words">
+
+          <div className="space-y-1">
+            <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-mustard-400 font-bold block">
+              Culinary Intelligence Studio
+            </span>
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-parchment-100 break-words">
+              Master Chef
+            </h1>
+          </div>
+
+          <p className="font-body text-parchment-300 text-sm sm:text-base mt-2 leading-relaxed max-w-lg mx-auto break-words">
             Transform ingredients in your pantry and fridge into artisanal home-cooked meals.
           </p>
 
-          {/* Session Restored Notice (Stretch B) */}
+          {/* Session Restored Notice */}
           {showRestoredNotice && activeRecipe && (
-            <div className="inline-flex items-center justify-between gap-3 px-3.5 py-1.5 rounded-full bg-olive-100 dark:bg-olive-950/70 border border-olive-500/30 text-olive-800 dark:text-olive-300 text-xs font-medium animate-fadeIn mt-2">
-              <span>Master Chef session restored from previous creation</span>
+            <div className="inline-flex items-center justify-between gap-3 px-4 py-1.5 rounded-full bg-kitchen-surface border border-sage-500/40 text-sage-400 text-xs font-medium animate-fadeIn mt-2 shadow-stamp">
+              <span>Restored previous Master Chef creation</span>
               <button
                 type="button"
                 onClick={handleStartOver}
-                className="underline hover:text-olive-950 dark:hover:text-olive-100 font-bold"
+                className="underline hover:text-parchment-100 font-bold text-mustard-400"
               >
                 Start Fresh
               </button>

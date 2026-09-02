@@ -44,14 +44,14 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
   }
 
   return (
-    <div className="bg-cream-50 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 rounded-xl p-4 sm:p-5 space-y-3 shadow-inner transition-colors duration-200">
+    <div className="bg-kitchen-card/90 border border-kitchen-border rounded-xl p-4 sm:p-5 space-y-3 shadow-stamp transition-colors duration-200">
       <div className="flex items-center gap-2">
         <span className="text-base">✍️</span>
-        <h3 className="font-display font-bold text-sm sm:text-base text-charcoal-900 dark:text-cream-50">
+        <h3 className="font-display font-bold text-sm sm:text-base text-parchment-100">
           Refine &amp; Customize This Recipe
         </h3>
       </div>
-      <p className="text-xs text-charcoal-700 dark:text-cream-300">
+      <p className="text-xs text-parchment-300/80">
         Want to tweak heat levels, adjust for allergies, or change cooking methods? Add your note below:
       </p>
 
@@ -65,7 +65,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
           }}
           disabled={isSubmitting}
           placeholder="e.g., Make it spicier, swap pasta for zoodles, or make it dairy-free..."
-          className="flex-1 min-h-[44px] px-3.5 py-2.5 rounded-lg border border-cream-300 dark:border-roast-700 bg-cream-100/90 dark:bg-roast-900 text-charcoal-900 dark:text-cream-50 placeholder:text-charcoal-500/70 dark:placeholder:text-charcoal-500 text-sm focus:border-terracotta-500 dark:focus:border-terracotta-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-roast-900 transition-all"
+          className="flex-1 min-h-[44px] px-3.5 py-2.5 rounded-xl border border-kitchen-border bg-kitchen-bg/90 text-parchment-100 placeholder:text-parchment-300/40 text-sm focus:border-terracotta-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mustard-500 focus-visible:ring-offset-2 focus-visible:ring-offset-kitchen-bg transition-all"
         />
 
         <Button
@@ -73,7 +73,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
           variant="primary"
           size="md"
           disabled={!instruction.trim() || isSubmitting}
-          className="shrink-0 flex items-center justify-center gap-2"
+          className="shrink-0 flex items-center justify-center gap-2 font-bold"
         >
           {isSubmitting ? (
             <>
@@ -97,7 +97,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <span>Adjusting notes...</span>
+              <span>Refining plate...</span>
             </>
           ) : (
             <span>Adjust Recipe</span>
@@ -106,7 +106,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
       </form>
 
       {errorMessage && (
-        <p className="text-xs text-terracotta-700 dark:text-terracotta-400 animate-fadeIn">
+        <p className="text-xs text-terracotta-400 animate-fadeIn">
           ⚠️ {errorMessage}
         </p>
       )}

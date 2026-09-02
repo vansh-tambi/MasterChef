@@ -3,11 +3,11 @@ import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 
 const KITCHEN_PHRASES = [
-  'Master Chef is consulting the kitchen...',
-  'Balancing aromatic herbs and seasonings...',
-  'Simmering step-by-step instructions...',
-  'Calculating perfect cooking times and yields...',
-  'Master Chef is tasting for seasoning...',
+  'Clarifying the aromatic broth...',
+  'Tempering herbs and whole spices...',
+  'Composing the brigade line instructions...',
+  'Balancing seasoning and cooking yields...',
+  'Master Chef is plating the recipe...',
 ]
 
 export function RecipeLoading({ onCancel }) {
@@ -16,19 +16,26 @@ export function RecipeLoading({ onCancel }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setPhraseIndex((prev) => (prev + 1) % KITCHEN_PHRASES.length)
-    }, 2800)
+    }, 2500)
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn overflow-hidden">
-      {/* Dynamic Culinary Micro-Copy Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-200 dark:border-roast-700 pb-4">
-        <div className="flex items-center gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-terracotta-500 animate-ping shrink-0"></span>
-          <span className="text-sm sm:text-base font-display italic text-terracotta-700 dark:text-terracotta-400 font-medium transition-all duration-300 break-words">
-            {KITCHEN_PHRASES[phraseIndex]}
-          </span>
+    <Card accent={true} className="w-full space-y-7 sm:space-y-9 animate-fadeIn overflow-hidden">
+      {/* Animated Copper Pot / Flame Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-kitchen-border pb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-kitchen-card border border-kitchen-border flex items-center justify-center text-xl animate-flicker shadow-candlelight">
+            🔥
+          </div>
+          <div>
+            <span className="text-xs uppercase font-bold text-mustard-400 tracking-wider block">
+              Brigade in Progress
+            </span>
+            <span className="text-base sm:text-lg font-display italic text-parchment-100 font-semibold transition-all duration-300">
+              {KITCHEN_PHRASES[phraseIndex]}
+            </span>
+          </div>
         </div>
 
         {onCancel && (
@@ -36,63 +43,60 @@ export function RecipeLoading({ onCancel }) {
             variant="ghost"
             size="sm"
             onClick={onCancel}
-            className="text-charcoal-700 dark:text-cream-200 hover:text-charcoal-900 dark:hover:text-cream-50 w-full sm:w-auto"
+            className="text-parchment-300 hover:text-parchment-100 w-full sm:w-auto"
           >
-            ✕ Cancel and return to pantry
+            ✕ Cancel and return
           </Button>
         )}
       </div>
 
       {/* Skeleton Header Area */}
       <div className="space-y-4 animate-pulse">
-        <div className="flex gap-2">
-          <div className="h-6 w-20 bg-cream-200/90 dark:bg-roast-800 rounded-full"></div>
-          <div className="h-6 w-24 bg-cream-200/90 dark:bg-roast-800 rounded-full"></div>
+        <div className="flex gap-2.5">
+          <div className="h-6 w-20 bg-kitchen-card rounded-full border border-kitchen-border"></div>
+          <div className="h-6 w-28 bg-kitchen-card rounded-full border border-kitchen-border"></div>
         </div>
-        <div className="h-8 sm:h-10 w-3/4 bg-cream-300/80 dark:bg-roast-700 rounded-lg"></div>
-        <div className="h-4 w-5/6 bg-cream-200/80 dark:bg-roast-800 rounded"></div>
+        <div className="h-10 sm:h-12 w-3/4 bg-kitchen-card rounded-xl border border-kitchen-border"></div>
+        <div className="h-4 w-5/6 bg-kitchen-card/60 rounded"></div>
       </div>
 
       {/* Skeleton Servings Bar */}
-      <div className="bg-cream-50/70 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-pulse">
-        <div className="space-y-1.5">
-          <div className="h-4 w-32 bg-cream-300/80 dark:bg-roast-700 rounded"></div>
-          <div className="h-3 w-48 bg-cream-200/80 dark:bg-roast-800 rounded"></div>
+      <div className="bg-kitchen-bg/60 border border-kitchen-border rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-pulse">
+        <div className="space-y-2">
+          <div className="h-4 w-36 bg-kitchen-card rounded"></div>
+          <div className="h-3 w-52 bg-kitchen-card/60 rounded"></div>
         </div>
-        <div className="h-10 w-28 bg-cream-200/90 dark:bg-roast-800 rounded-lg"></div>
+        <div className="h-11 w-32 bg-kitchen-card rounded-xl border border-kitchen-border"></div>
       </div>
 
-      {/* Skeleton Ingredients Grid */}
-      <div className="space-y-3 animate-pulse">
-        <div className="h-4 w-40 bg-cream-300/80 dark:bg-roast-700 rounded"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {[1, 2, 3, 4].map((i) => (
+      {/* Skeleton Two-Column Split */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 animate-pulse pt-2">
+        <div className="lg:col-span-5 space-y-3">
+          <div className="h-4 w-40 bg-kitchen-card rounded"></div>
+          {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-cream-50 dark:bg-roast-950 border border-cream-200/80 dark:border-roast-700 rounded-lg p-3.5 space-y-2"
+              className="bg-kitchen-card border border-kitchen-border rounded-xl p-4 space-y-2"
             >
               <div className="flex justify-between items-center">
-                <div className="h-4 w-28 bg-cream-300/70 dark:bg-roast-700 rounded"></div>
-                <div className="h-4 w-12 bg-cream-200/80 dark:bg-roast-800 rounded"></div>
+                <div className="h-4 w-32 bg-kitchen-border rounded"></div>
+                <div className="h-4 w-14 bg-kitchen-border/70 rounded"></div>
               </div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Skeleton Step Instructions */}
-      <div className="space-y-3 animate-pulse pt-2">
-        <div className="h-4 w-48 bg-cream-300/80 dark:bg-roast-700 rounded"></div>
-        <div className="space-y-2.5">
+        <div className="lg:col-span-7 space-y-3">
+          <div className="h-4 w-48 bg-kitchen-card rounded"></div>
           {[1, 2, 3].map((step) => (
             <div
               key={step}
-              className="bg-cream-50 dark:bg-roast-950 border border-cream-200/80 dark:border-roast-700 rounded-xl p-4 flex items-start gap-3.5"
+              className="bg-kitchen-card border border-kitchen-border rounded-xl p-4 flex items-start gap-4"
             >
-              <div className="w-8 h-8 rounded-lg bg-cream-200 dark:bg-roast-800 shrink-0"></div>
+              <div className="w-8 h-8 rounded-lg bg-kitchen-border shrink-0"></div>
               <div className="space-y-2 flex-1 pt-1">
-                <div className="h-3.5 w-full bg-cream-200/90 dark:bg-roast-800 rounded"></div>
-                <div className="h-3.5 w-4/5 bg-cream-200/70 dark:bg-roast-800/60 rounded"></div>
+                <div className="h-4 w-full bg-kitchen-border rounded"></div>
+                <div className="h-4 w-4/5 bg-kitchen-border/70 rounded"></div>
               </div>
             </div>
           ))}
