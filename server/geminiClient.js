@@ -5,13 +5,15 @@ dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY;
 
-// Multi-model resilience cascade in order of priority:
-// If a model experiences high demand spikes (503), rate limits (429), or temporary outages,
-// the engine automatically fails over to the next candidate model seamlessly.
+// High-capacity, robust multi-model resilience cascade:
+// gemini-3.6-flash is primary for ultra-low latency & zero 503 high-demand blocks.
+const DEFAULT_MODEL = "gemini-3.6-flash";
+const preferredModel = process.env.GEMINI_MODEL || DEFAULT_MODEL;
+
 const CANDIDATE_MODELS = [
-  process.env.GEMINI_MODEL,
-  "gemini-2.5-flash",
+  preferredModel === "gemini-2.5-flash" ? "gemini-3.6-flash" : preferredModel,
   "gemini-3.6-flash",
+  "gemini-2.5-flash",
   "gemini-2.5-pro",
   "gemini-1.5-flash",
 ].filter((m, i, arr) => m && arr.indexOf(m) === i);
@@ -126,7 +128,6 @@ async function generateWithFailover(prompt, systemInstruction, timeoutMs = 35000
 
       // Check if there is another candidate model to failover to
       if (i < CANDIDATE_MODELS.length - 1) {
-        // If 503 (high demand) or 429 (rate limit) or 404 (model unavailable), immediately try next model
         console.info(`[GEMINI_FAILOVER] Switching to fallback model: ${CANDIDATE_MODELS[i + 1]}`);
         continue;
       }
