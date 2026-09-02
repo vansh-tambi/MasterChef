@@ -19,13 +19,13 @@ export function Card({
       className={`relative rounded-xl border-2 border-panel-border bg-surface text-ink shadow-[4px_4px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[4px_4px_0px_0px_#181B20] p-5 sm:p-8 transition-colors duration-200 ${accentStyle} ${className}`}
       {...props}
     >
-      {/* Floating Overlapping Physical Stamp Detail (Animated if badge provided) */}
+      {/* Floating Overlapping Physical Stamp Detail (Only when badge explicitly passed) */}
       {badge && (
         <motion.div
           variants={shouldReduceMotion ? undefined : rotatedBadgePop(-2)}
           initial={shouldReduceMotion ? false : "hidden"}
           animate="visible"
-          className="pointer-events-none absolute -top-3 right-5 sm:right-7 border-2 border-panel-border bg-brass-400 text-ink text-[9px] sm:text-[10px] font-mono font-bold px-2.5 py-0.5 uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(26,29,32,0.3)] dark:shadow-[2px_2px_0px_0px_#000] select-none z-10"
+          className="pointer-events-none absolute top-3.5 right-4 sm:right-6 border-2 border-panel-border bg-brass-400 text-ink text-[10px] sm:text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-sm uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(26,29,32,0.25)] dark:shadow-[2px_2px_0px_0px_#000] select-none z-10"
           aria-hidden="true"
         >
           {badge}

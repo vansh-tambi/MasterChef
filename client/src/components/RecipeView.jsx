@@ -38,9 +38,9 @@ function formatQuantity(quantity, scalingFactor, unit) {
 }
 
 const difficultyStyles = {
-  easy: 'bg-rosemary-500/15 border-2 border-rosemary-600/40 text-rosemary-500',
-  medium: 'bg-brass-500/15 border-2 border-brass-600/40 text-brass-500',
-  hard: 'bg-ember-500/15 border-2 border-ember-600/40 text-ember-500',
+  easy: 'bg-rosemary-500/15 border-2 border-rosemary-600/50 text-rosemary-500 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[1px_1px_0px_0px_#000]',
+  medium: 'bg-brass-500/15 border-2 border-brass-600/50 text-brass-500 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[1px_1px_0px_0px_#000]',
+  hard: 'bg-ember-500/15 border-2 border-ember-600/50 text-ember-500 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[1px_1px_0px_0px_#000]',
 }
 
 export function RecipeView({
@@ -128,8 +128,10 @@ export function RecipeView({
     })
   }
 
+  const diffKey = typeof recipe.difficulty === 'string' ? recipe.difficulty.toLowerCase() : 'easy'
+
   return (
-    <Card accent={true} badge="BRIGADE SPEC // LIVE" className="w-full space-y-7 sm:space-y-9 overflow-hidden">
+    <Card accent={true} badge="BRIGADE SPEC // LIVE" className="w-full space-y-7 sm:space-y-9">
       <motion.div
         variants={shouldReduceMotion ? undefined : staggerPlating}
         initial={shouldReduceMotion ? false : "hidden"}
@@ -197,14 +199,14 @@ export function RecipeView({
         <motion.div variants={shouldReduceMotion ? undefined : platedSection} className="space-y-3 pt-1">
           <div className="flex flex-wrap items-center gap-2.5">
             <span
-              className={`px-2.5 py-0.5 rounded-sm text-[11px] font-mono font-bold uppercase tracking-wider ${
-                difficultyStyles[recipe.difficulty] || difficultyStyles.easy
+              className={`px-3 py-1 rounded-sm text-xs font-mono font-bold uppercase tracking-wider ${
+                difficultyStyles[diffKey] || difficultyStyles.easy
               }`}
             >
               {recipe.difficulty}
             </span>
             {recipe.totalTimeMinutes && (
-              <span className="bg-elevated border-2 border-panel-border text-ink-secondary text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-sm flex items-center gap-1.5 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)]">
+              <span className="bg-elevated border-2 border-panel-border text-ink text-xs font-mono font-bold px-3 py-1 rounded-sm flex items-center gap-1.5 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)] dark:shadow-[1px_1px_0px_0px_#000]">
                 <span>⏱</span>
                 <span>{recipe.totalTimeMinutes} mins</span>
               </span>
@@ -221,13 +223,13 @@ export function RecipeView({
             </p>
           )}
 
-          {/* Tag Pills */}
+          {/* Tag Pills Badge Row */}
           {recipe.tags && recipe.tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 pt-1">
               {recipe.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="bg-elevated border border-panel-border text-[11px] font-mono font-bold px-2 py-0.5 rounded-sm text-ink-muted shadow-[1px_1px_0px_0px_rgba(26,29,32,0.06)]"
+                  className="bg-elevated border-2 border-panel-border text-xs font-mono font-bold px-2.5 py-0.5 rounded-sm text-ink-secondary shadow-[1px_1px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[1px_1px_0px_0px_#2D323B]"
                 >
                   #{tag}
                 </span>
@@ -251,7 +253,7 @@ export function RecipeView({
                   <span>🍽️</span>
                   <span>Servings</span>
                 </span>
-                <span className="text-[11px] text-brass-500 font-mono font-bold">
+                <span className="text-xs text-brass-500 font-mono font-bold bg-surface border-2 border-panel-border px-2 py-0.5 rounded-sm shadow-[1px_1px_0px_0px_rgba(26,29,32,0.08)]">
                   Base: {baseServings}
                 </span>
               </div>
@@ -305,7 +307,7 @@ export function RecipeView({
                   <span>🧺</span>
                   <span>Ingredients</span>
                 </h2>
-                <span className="text-xs text-ink-muted font-mono font-bold">
+                <span className="text-xs text-ink-muted font-mono font-bold bg-surface border-2 border-panel-border px-2 py-0.5 rounded-sm shadow-[1px_1px_0px_0px_rgba(26,29,32,0.08)]">
                   {recipe.ingredients?.length || 0} ITEMS
                 </span>
               </div>
@@ -399,7 +401,7 @@ export function RecipeView({
                 <span>👨‍🍳</span>
                 <span>Steps</span>
               </h2>
-              <span className="text-xs font-mono font-bold text-brass-500 bg-elevated border border-panel-border px-2 py-0.5 rounded-sm shadow-[1px_1px_0px_0px_rgba(26,29,32,0.06)]">
+              <span className="text-xs font-mono font-bold text-brass-500 bg-surface border-2 border-panel-border px-2.5 py-1 rounded-sm shadow-[2px_2px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[2px_2px_0px_0px_#2D323B]">
                 {completedCount} / {totalSteps} done
               </span>
             </div>
