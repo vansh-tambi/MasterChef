@@ -89,19 +89,19 @@ function App() {
           </div>
 
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-terracotta-100 dark:bg-terracotta-900/40 text-terracotta-600 dark:text-terracotta-400 text-2xl shadow-sm mb-1">
-            📖
+            👨‍🍳
           </div>
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl text-charcoal-900 dark:text-cream-50 font-bold tracking-tight break-words">
-            The Kitchen Notebook
+            Master Chef
           </h1>
-          <p className="text-charcoal-700 dark:text-cream-200 text-sm sm:text-base font-medium max-w-lg mx-auto break-words">
+          <p className="font-body text-charcoal-700 dark:text-cream-300 text-sm sm:text-base mt-1 leading-relaxed max-w-lg mx-auto break-words">
             Transform ingredients in your pantry and fridge into artisanal home-cooked meals.
           </p>
 
           {/* Session Restored Notice (Stretch B) */}
           {showRestoredNotice && activeRecipe && (
             <div className="inline-flex items-center justify-between gap-3 px-3.5 py-1.5 rounded-full bg-olive-100 dark:bg-olive-950/70 border border-olive-500/30 text-olive-800 dark:text-olive-300 text-xs font-medium animate-fadeIn mt-2">
-              <span>Restored from previous kitchen session</span>
+              <span>Master Chef session restored from previous creation</span>
               <button
                 type="button"
                 onClick={handleStartOver}

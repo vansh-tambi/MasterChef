@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const SESSION_STORAGE_KEY = 'kitchen_notebook_session_v1'
+const SESSION_STORAGE_KEY = 'master_chef_session_v1'
 
 /**
  * Custom hook for local session persistence (Stretch B).

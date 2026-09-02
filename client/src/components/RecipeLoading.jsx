@@ -3,11 +3,11 @@ import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 
 const KITCHEN_PHRASES = [
-  'Sifting through the pantry staples...',
+  'Master Chef is consulting the kitchen...',
   'Balancing aromatic herbs and seasonings...',
   'Simmering step-by-step instructions...',
   'Calculating perfect cooking times and yields...',
-  'Tasting the sauce for seasoning...',
+  'Master Chef is tasting for seasoning...',
 ]
 
 export function RecipeLoading({ onCancel }) {

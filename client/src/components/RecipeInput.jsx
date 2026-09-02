@@ -90,14 +90,14 @@ export function RecipeInput({
       {/* Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-terracotta-100 dark:bg-terracotta-900/40 border border-terracotta-200 dark:border-terracotta-700/60 text-terracotta-700 dark:text-terracotta-400 text-xs font-semibold tracking-wide uppercase">
-          <span>🥘</span>
-          <span>Pantry to Plate</span>
+          <span>👨‍🍳</span>
+          <span>Master Chef Kitchen</span>
         </div>
         <h2 className="font-display text-2xl sm:text-3xl text-charcoal-900 dark:text-cream-50 font-bold tracking-tight break-words">
           What are we cooking with?
         </h2>
         <p className="text-charcoal-700 dark:text-cream-200 text-sm sm:text-base leading-relaxed break-words">
-          Tell us what's lingering in your fridge, crisper drawer, or spice rack. We'll turn it into tonight's dinner.
+          Tell Master Chef what's lingering in your fridge, crisper drawer, or spice rack. We'll turn it into tonight's dinner.
         </p>
       </div>
 
@@ -208,7 +208,7 @@ export function RecipeInput({
             disabled={!isValid || isLoading}
             className="w-full flex items-center justify-center gap-2 text-base"
           >
-            <span>Create Recipe from Ingredients</span>
+            <span>Create Master Chef Recipe</span>
           </Button>
         </div>
       </form>

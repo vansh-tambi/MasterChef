@@ -1,5 +1,5 @@
 {
-  "name": "fridge-to-recipe",
+  "name": "master-chef",
   "private": true,
   "workspaces": [
     "client",

@@ -1,8 +1,8 @@
-# Kitchen Notebook — Fridge-to-Recipe Assistant
+# Master Chef — Fridge-to-Recipe Assistant
 
 An interactive culinary web tool that transforms an unorganized list of pantry ingredients into a structured, step-by-step recipe. This project fulfills the **Fridge-to-recipe** track of the Frontend Internship Assignment.
 
-Instead of outputting markdown text into a standard chatbot interface, this app prompts an LLM for strictly typed JSON data, validating and rendering it into a tactile, interactive notebook with scalable quantities, interactive step checklists, and ingredient substitutions.
+Instead of outputting markdown text into a standard chatbot interface, Master Chef prompts an LLM for strictly typed JSON data, validating and rendering it into a tactile, interactive notebook with scalable quantities, interactive step checklists, and ingredient substitutions.
 
 ---
 
@@ -57,7 +57,7 @@ Instead of outputting markdown text into a standard chatbot interface, this app 
 └─────────────────────────┘ JSON/Err └───────────────────────────┘  JSON    └──────────────────────┘
 ```
 
-- **Frontend (`/client`):** Built with React (functional components, custom hooks) and Tailwind CSS. It provides a tactile "Kitchen Notebook" aesthetic (warm cream linen paper tones, terracotta primary accents, and sage green success indicators) avoiding generic SaaS design clichés.
+- **Frontend (`/client`):** Built with React (functional components, custom hooks) and Tailwind CSS. It provides a tactile "Master Chef" artisanal aesthetic (warm cream linen paper tones, terracotta primary accents, and sage green success indicators) avoiding generic SaaS design clichés.
 - **Backend (`/server`):** A lightweight ESM Express server acting as a secure gateway.
 - **Security Guardrail:** The `GEMINI_API_KEY` is strictly confined to the backend environment. Routing AI calls through the server prevents token exposure in client bundles, mitigates browser abuse, and centralizes rate-limit protection.
 
@@ -65,7 +65,7 @@ Instead of outputting markdown text into a standard chatbot interface, this app 
 
 ## Handling Bad AI Output
 
-Handling unpredictable LLM output gracefully is the primary focus of this application:
+Handling unpredictable LLM output gracefully is the primary focus of Master Chef:
 
 - **Schema Enforcement via Zod:**
   Incoming LLM responses are validated server-side against a strict Zod contract (`RecipeSchema`) validating required properties, types, minimum lengths, and enum values. If validation fails, the server rejects the payload with HTTP 502 (`invalid_shape`) rather than forwarding broken data to the frontend.
