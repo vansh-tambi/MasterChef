@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
+import { RecipeRefine } from './RecipeRefine'
 
 function formatQuantity(quantity, scalingFactor, unit) {
   const scaled = quantity * scalingFactor
@@ -38,19 +39,36 @@ export function RecipeView({
   recipe,
   onReset,
   onRegenerate,
+  onRecipeUpdate,
   isRegenerating = false,
+  initialServings,
+  initialCompletedSteps,
+  initialActiveSwaps,
+  onStateChange,
 }) {
-  const [servings, setServings] = useState(recipe?.servings || 2)
-  const [completedSteps, setCompletedSteps] = useState(new Set())
-  const [activeSwaps, setActiveSwaps] = useState(new Set())
+  const [servings, setServings] = useState(initialServings || recipe?.servings || 2)
+  const [completedSteps, setCompletedSteps] = useState(() => new Set(initialCompletedSteps || []))
+  const [activeSwaps, setActiveSwaps] = useState(() => new Set(initialActiveSwaps || []))
 
+  // Sync state upward for persistence (Stretch B)
   useEffect(() => {
-    if (recipe?.servings) {
-      setServings(recipe.servings)
+    if (onStateChange) {
+      onStateChange({
+        servings,
+        completedSteps,
+        activeSwaps,
+      })
+    }
+  }, [servings, completedSteps, activeSwaps, onStateChange])
+
+  // Reset local state if a fundamentally new recipe arrives
+  useEffect(() => {
+    if (recipe && !initialServings) {
+      setServings(recipe.servings || 2)
       setCompletedSteps(new Set())
       setActiveSwaps(new Set())
     }
-  }, [recipe])
+  }, [recipe, initialServings])
 
   if (!recipe) return null
 
@@ -81,20 +99,20 @@ export function RecipeView({
     })
   }
 
-  const toggleSwap = (ingredientKey) => {
+  const toggleSwap = (ingredientName) => {
     setActiveSwaps((prev) => {
       const next = new Set(prev)
-      if (next.has(ingredientKey)) {
-        next.delete(ingredientKey)
+      if (next.has(ingredientName)) {
+        next.delete(ingredientName)
       } else {
-        next.add(ingredientKey)
+        next.add(ingredientName)
       }
       return next
     })
   }
 
   return (
-    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn overflow-hidden">
+    <Card accent={true} className="w-full space-y-6 sm:space-y-8 animate-fadeIn transform transition-all duration-300 ease-out overflow-hidden">
       {/* Top Action Bar */}
       <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-200 dark:border-roast-700 pb-4">
         <Button
@@ -213,7 +231,7 @@ export function RecipeView({
             type="button"
             onClick={() => handleServingChange(-1)}
             disabled={servings <= 1}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Decrease servings"
           >
             −
@@ -225,7 +243,7 @@ export function RecipeView({
             type="button"
             onClick={() => handleServingChange(1)}
             disabled={servings >= 20}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
             aria-label="Increase servings"
           >
             +
@@ -253,12 +271,12 @@ export function RecipeView({
             return (
               <div
                 key={idx}
-                className="bg-cream-50 dark:bg-roast-950 border border-cream-300 dark:border-roast-700 rounded-lg p-3.5 space-y-2.5 shadow-tactile dark:shadow-none transition-all"
+                className="bg-cream-50 dark:bg-roast-950 border border-cream-300 dark:border-roast-700 rounded-lg p-3.5 space-y-2.5 shadow-tactile dark:shadow-none transition-all duration-200"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1 pr-2">
                     <h3
-                      className={`font-semibold text-sm sm:text-base break-words transition-all ${
+                      className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
                         isSwapped
                           ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
                           : 'text-charcoal-900 dark:text-cream-50'
@@ -267,7 +285,7 @@ export function RecipeView({
                       {ing.name}
                     </h3>
                     <p
-                      className={`text-xs sm:text-sm font-mono transition-all ${
+                      className={`text-xs sm:text-sm font-mono transition-all duration-200 ${
                         isSwapped
                           ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
                           : 'text-charcoal-700 dark:text-cream-200 font-medium'
@@ -281,7 +299,7 @@ export function RecipeView({
                     <button
                       type="button"
                       onClick={() => toggleSwap(ing.name)}
-                      className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-md border transition-all active:scale-95 touch-manipulation shrink-0 ${
+                      className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-md border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 touch-manipulation shrink-0 ${
                         isSwapped
                           ? 'bg-olive-500 dark:bg-olive-600 text-cream-50 border-olive-600 dark:border-olive-500 shadow-sm'
                           : 'bg-cream-100 dark:bg-roast-800 text-charcoal-700 dark:text-cream-200 border-cream-300 dark:border-roast-700 hover:bg-cream-200 dark:hover:bg-roast-700'
@@ -330,8 +348,17 @@ export function RecipeView({
             return (
               <div
                 key={step.order}
+                role="checkbox"
+                aria-checked={isDone}
+                tabIndex={0}
                 onClick={() => toggleStep(step.order)}
-                className={`cursor-pointer rounded-xl border p-3.5 sm:p-4 transition-all flex items-start gap-3 select-none shadow-tactile dark:shadow-none touch-manipulation active:bg-cream-200/50 dark:active:bg-roast-800/60 ${
+                onKeyDown={(e) => {
+                  if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault()
+                    toggleStep(step.order)
+                  }
+                }}
+                className={`cursor-pointer rounded-xl border p-3.5 sm:p-4 transition-all duration-200 flex items-start gap-3 select-none shadow-tactile dark:shadow-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-roast-900 active:bg-cream-200/50 dark:active:bg-roast-800/60 ${
                   isDone
                     ? 'bg-cream-200/40 dark:bg-roast-900/40 border-cream-300/80 dark:border-roast-700/60'
                     : 'bg-cream-50 dark:bg-roast-950 border-cream-200 dark:border-roast-700 hover:border-terracotta-500/40 dark:hover:border-terracotta-500/40'
@@ -339,9 +366,9 @@ export function RecipeView({
               >
                 <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
                   <div
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-colors ${
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-transform duration-200 ${
                       isDone
-                        ? 'bg-olive-500 dark:bg-olive-600 text-cream-50'
+                        ? 'bg-olive-500 dark:bg-olive-600 text-cream-50 scale-105'
                         : 'bg-terracotta-100 dark:bg-terracotta-900/40 text-terracotta-700 dark:text-terracotta-400 border border-terracotta-200 dark:border-terracotta-700/60'
                     }`}
                   >
@@ -351,7 +378,7 @@ export function RecipeView({
 
                 <div className="space-y-1 flex-1 pt-2.5">
                   <p
-                    className={`text-sm sm:text-base leading-relaxed break-words transition-all ${
+                    className={`text-sm sm:text-base leading-relaxed break-words transition-all duration-200 ${
                       isDone
                         ? 'line-through text-charcoal-500 dark:text-charcoal-500 opacity-60'
                         : 'text-charcoal-900 dark:text-cream-50 font-medium'
@@ -364,6 +391,18 @@ export function RecipeView({
             )
           })}
         </div>
+      </div>
+
+      {/* Stretch C: Recipe Refinement Prompt Bar */}
+      <div className="pt-2">
+        <RecipeRefine
+          currentRecipe={recipe}
+          onRefineSuccess={(updated) => {
+            if (onRecipeUpdate) {
+              onRecipeUpdate(updated)
+            }
+          }}
+        />
       </div>
     </Card>
   )

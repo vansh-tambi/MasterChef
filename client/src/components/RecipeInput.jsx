@@ -61,7 +61,7 @@ export function RecipeInput({
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (!isValid || isLoading) return
 
     const ingredientList = ingredients
@@ -77,8 +77,16 @@ export function RecipeInput({
     }
   }
 
+  // Keyboard shortcut: Cmd/Ctrl + Enter triggers form submission
+  const handleKeyDown = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      e.preventDefault()
+      handleSubmit()
+    }
+  }
+
   return (
-    <Card accent={true} className="w-full space-y-6">
+    <Card accent={true} className="w-full space-y-6 animate-fadeIn transition-all duration-300">
       {/* Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-terracotta-100 dark:bg-terracotta-900/40 border border-terracotta-200 dark:border-terracotta-700/60 text-terracotta-700 dark:text-terracotta-400 text-xs font-semibold tracking-wide uppercase">
@@ -97,21 +105,27 @@ export function RecipeInput({
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Ingredients Textarea */}
         <div className="space-y-2">
-          <label
-            htmlFor="ingredients-input"
-            className="block text-xs sm:text-sm font-bold text-charcoal-700 dark:text-cream-200 uppercase tracking-wider"
-          >
-            Available Ingredients &amp; Staples
-          </label>
+          <div className="flex items-center justify-between">
+            <label
+              htmlFor="ingredients-input"
+              className="block text-xs sm:text-sm font-bold text-charcoal-700 dark:text-cream-200 uppercase tracking-wider"
+            >
+              Available Ingredients &amp; Staples
+            </label>
+            <span className="text-[11px] text-charcoal-500 dark:text-cream-300/70 hidden sm:inline">
+              Tip: Press <kbd className="px-1.5 py-0.5 rounded border border-cream-300 dark:border-roast-700 bg-cream-100 dark:bg-roast-800 font-mono text-[10px]">Ctrl/⌘ + Enter</kbd> to cook
+            </span>
+          </div>
           <textarea
             id="ingredients-input"
             ref={textareaRef}
             rows={4}
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
+            onKeyDown={handleKeyDown}
             disabled={isLoading}
             placeholder="e.g., chicken thighs, baby spinach, minced garlic, leftover cooked jasmine rice, soy sauce, a knob of ginger..."
-            className="w-full bg-cream-50 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 focus:border-terracotta-500 dark:focus:border-terracotta-500 focus:ring-1 focus:ring-terracotta-500 rounded-lg p-3.5 sm:p-4 text-charcoal-900 dark:text-cream-50 placeholder:text-charcoal-500/70 dark:placeholder:text-charcoal-500 font-body text-base leading-relaxed transition-all shadow-inner outline-none resize-y min-h-[120px] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full bg-cream-50 dark:bg-roast-950 border border-cream-200 dark:border-roast-700 focus:border-terracotta-500 dark:focus:border-terracotta-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-roast-900 rounded-lg p-3.5 sm:p-4 text-charcoal-900 dark:text-cream-50 placeholder:text-charcoal-500/70 dark:placeholder:text-charcoal-500 font-body text-base leading-relaxed transition-all shadow-inner outline-none resize-y min-h-[120px] disabled:opacity-60 disabled:cursor-not-allowed"
           />
 
           {/* Helper Note */}
@@ -143,7 +157,7 @@ export function RecipeInput({
                 type="button"
                 onClick={() => handlePresetClick(preset.ingredients)}
                 disabled={isLoading}
-                className="min-h-[44px] border border-cream-300 dark:border-roast-700 bg-cream-50 dark:bg-roast-800 hover:bg-cream-200/80 dark:hover:bg-roast-700 active:scale-[0.98] transition-all px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium text-charcoal-700 dark:text-cream-200 flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:pointer-events-none text-left touch-manipulation"
+                className="min-h-[44px] border border-cream-300 dark:border-roast-700 bg-cream-50 dark:bg-roast-800 hover:bg-cream-200/80 dark:hover:bg-roast-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-roast-900 transition-all px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium text-charcoal-700 dark:text-cream-200 flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:pointer-events-none text-left touch-manipulation"
               >
                 {preset.label}
               </button>
@@ -165,7 +179,7 @@ export function RecipeInput({
               type="button"
               onClick={() => handleServingChange(-1)}
               disabled={servings <= 1 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-800 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-800 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
               aria-label="Decrease servings"
             >
               −
@@ -177,7 +191,7 @@ export function RecipeInput({
               type="button"
               onClick={() => handleServingChange(1)}
               disabled={servings >= 12 || isLoading}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-800 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-charcoal-700 dark:text-cream-200 hover:bg-cream-200 dark:hover:bg-roast-800 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-lg select-none touch-manipulation"
               aria-label="Increase servings"
             >
               +

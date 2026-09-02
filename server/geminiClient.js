@@ -100,11 +100,63 @@ Dietary constraints / preferences: ${dietaryNotes || "None"}.
 Target Servings: ${servings}.
 Ensure accurate step ordering, clear measurements, and practical cooking times.`;
 
-  // Timeout handling with Promise.race / AbortController
   const timeoutPromise = new Promise((_, reject) => {
     const timer = setTimeout(() => {
       clearTimeout(timer);
       reject(new Error(`Gemini API request timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+  });
+
+  const generatePromise = (async () => {
+    const response = await model.generateContent(prompt);
+    const text = response.response.text();
+    return JSON.parse(text);
+  })();
+
+  return await Promise.race([generatePromise, timeoutPromise]);
+}
+
+/**
+ * Calls Gemini to refine an existing recipe according to a user instruction.
+ * @param {Object} params
+ * @param {Object} params.currentRecipe - Current recipe JSON object
+ * @param {string} params.instruction - Modification prompt
+ * @param {number} [params.timeoutMs=20000] - Timeout in ms
+ * @returns {Promise<any>} Refined recipe JSON object
+ */
+export async function refineRecipe({
+  currentRecipe,
+  instruction,
+  timeoutMs = 20000,
+}) {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is not configured in the server environment.");
+  }
+
+  const ai = genAI || new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  const model = ai.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: recipeResponseSchema,
+      temperature: 0.7,
+    },
+    systemInstruction:
+      "You are an artisanal chef updating an existing notebook recipe. Modify the provided recipe JSON strictly according to the user's refinement note (e.g. dietary change, swaps, steps). Preserve the original title and character where possible, update steps and quantities accurately, and return the exact same JSON schema.",
+  });
+
+  const prompt = `Current Recipe JSON:
+${JSON.stringify(currentRecipe, null, 2)}
+
+User Refinement Request:
+"${instruction}"
+
+Please update the recipe according to this instruction while preserving the structure, updating ingredients and steps accurately, and adhering to the schema.`;
+
+  const timeoutPromise = new Promise((_, reject) => {
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      reject(new Error(`Gemini API refinement request timed out after ${timeoutMs}ms`));
     }, timeoutMs);
   });
 
