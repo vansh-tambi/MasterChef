@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY;
+const DEFAULT_MODEL = "gemini-2.5-flash";
+const modelName = process.env.GEMINI_MODEL || DEFAULT_MODEL;
 
 if (!apiKey) {
   console.warn("WARNING: GEMINI_API_KEY is not defined in environment variables. Gemini API calls will fail unless provided.");
@@ -85,7 +87,7 @@ export async function generateRecipeWithGemini({
 
   const ai = genAI || new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = ai.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: modelName,
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: recipeResponseSchema,
@@ -135,7 +137,7 @@ export async function refineRecipe({
 
   const ai = genAI || new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = ai.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: modelName,
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: recipeResponseSchema,

@@ -34,6 +34,7 @@ Instead of outputting markdown text into a standard chatbot interface, Master Ch
    ```env
    PORT=3001
    GEMINI_API_KEY=your_actual_gemini_api_key_here
+   GEMINI_MODEL=gemini-2.5-flash
    ```
 
 4. **Run the application:**
@@ -52,7 +53,7 @@ Instead of outputting markdown text into a standard chatbot interface, Master Ch
 ```
 ┌─────────────────────────┐          ┌───────────────────────────┐          ┌──────────────────────┐
 │       Vite + React      │  /api/*  │       Node + Express      │  SDK Call│      Gemini API      │
-│  (Custom Hook & State)  ├─────────►│  (Schema Check & Timeout) ├─────────►│  (1.5 Flash Model)   │
+│  (Custom Hook & State)  ├─────────►│  (Schema Check & Timeout) ├─────────►│  (2.5 Flash Model)   │
 │                         │◄─────────┤                           │◄─────────┤                      │
 └─────────────────────────┘ JSON/Err └───────────────────────────┘  JSON    └──────────────────────┘
 ```
