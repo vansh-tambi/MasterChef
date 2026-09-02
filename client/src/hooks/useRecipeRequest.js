@@ -2,7 +2,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 
 /**
  * Enterprise-grade custom hook for resilient recipe generation requests.
- * Uses both AbortController and monotonic requestId token guard to eliminate race conditions.
+ * Features: monotonic requestId token guard, AbortController, explicit cancellation,
+ * error code normalization, and empty payload protection.
  */
 export function useRecipeRequest() {
   const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'success' | 'error'
@@ -20,6 +21,15 @@ export function useRecipeRequest() {
         abortControllerRef.current.abort()
       }
     }
+  }, [])
+
+  const cancel = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    activeRequestId.current += 1
+    setStatus('idle')
+    setError(null)
   }, [])
 
   const reset = useCallback(() => {
@@ -46,7 +56,7 @@ export function useRecipeRequest() {
     // 3. Increment and capture local requestId token
     const requestId = ++activeRequestId.current
 
-    // 4. Save params for regeneration / retry
+    // 4. Save params for regeneration / retry (preserves user inputs)
     lastParamsRef.current = { ingredients, servings }
 
     // 5. Update UI to loading
@@ -70,30 +80,55 @@ export function useRecipeRequest() {
 
       // 9. Handle HTTP & API contract errors
       if (!res.ok || !json.success) {
+        let normalizedCode = 'ai_request_failed'
+        if (res.status === 502) normalizedCode = 'invalid_shape'
+        if (res.status === 504) normalizedCode = 'timeout'
+        if (json.code) normalizedCode = json.code
+
         setStatus('error')
         setError({
-          code: json.code || (res.status === 502 ? 'invalid_shape' : 'ai_request_failed'),
+          code: normalizedCode,
           message: json.error || 'Failed to compose recipe.',
           details: json.issues || json.details || null,
         })
         return
       }
 
-      // 10. Success: assign recipe payload (handling both json.recipe and json.data)
+      // 10. Extract recipe payload
       const recipeData = json.recipe || json.data || json
+
+      // Guard against empty content structures
+      if (
+        !recipeData.ingredients ||
+        !Array.isArray(recipeData.ingredients) ||
+        recipeData.ingredients.length === 0 ||
+        !recipeData.steps ||
+        !Array.isArray(recipeData.steps) ||
+        recipeData.steps.length === 0
+      ) {
+        setStatus('error')
+        setError({
+          code: 'empty_recipe',
+          message: 'The recipe returned with zero actionable ingredients or steps.',
+          details: null,
+        })
+        return
+      }
+
       setData(recipeData)
       setStatus('success')
     } catch (err) {
       // 11. Catch handling
       if (err.name === 'AbortError') {
-        // Request was aborted by user or new request; do not alter state
+        // Request was cancelled; silent exit
         return
       }
 
       if (requestId === activeRequestId.current) {
+        const isTimeout = err.message?.toLowerCase().includes('timeout')
         setStatus('error')
         setError({
-          code: 'network_error',
+          code: isTimeout ? 'timeout' : 'network_error',
           message: err instanceof Error ? err.message : 'Network communication error.',
           details: null,
         })
@@ -111,8 +146,10 @@ export function useRecipeRequest() {
     status,
     data,
     error,
+    lastParams: lastParamsRef.current,
     submit,
     retry,
+    cancel,
     reset,
     isLoading: status === 'loading',
   }
