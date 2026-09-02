@@ -44,10 +44,10 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
   }
 
   return (
-    <div className="bg-elevated border border-panel-border rounded-xl p-4 sm:p-5 space-y-3 shadow-stamp transition-colors duration-200">
+    <div className="bg-elevated/70 border-2 border-panel-border rounded-lg p-4 sm:p-5 space-y-3 shadow-[3px_3px_0px_0px_rgba(26,29,32,0.06)] dark:shadow-[3px_3px_0px_0px_#000] transition-colors duration-200">
       <div className="flex items-center gap-2">
-        <span className="text-base">✍️</span>
-        <h3 className="font-display font-bold text-sm sm:text-base text-ink">
+        <span className="text-sm">✍️</span>
+        <h3 className="font-mono uppercase tracking-wider font-bold text-xs sm:text-sm text-ink">
           Adjust Recipe
         </h3>
       </div>
@@ -62,7 +62,7 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
           }}
           disabled={isSubmitting}
           placeholder="e.g. Make it vegetarian, less spicy..."
-          className="flex-1 min-h-[44px] px-3.5 py-2.5 rounded-xl border border-panel-border bg-surface text-ink placeholder:text-ink-muted/40 text-sm focus:border-ember-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas transition-all"
+          className="flex-1 min-h-[44px] px-4 py-2.5 rounded-md border-2 border-panel-border bg-surface text-ink placeholder:text-ink-muted/40 text-sm font-mono focus:border-ember-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ember-500 transition-all shadow-inner"
         />
 
         <Button
@@ -70,14 +70,14 @@ export function RecipeRefine({ currentRecipe, onRefineSuccess }) {
           variant="primary"
           size="md"
           disabled={!instruction.trim() || isSubmitting}
-          className="shrink-0 flex items-center justify-center gap-2 font-bold"
+          className="shrink-0 flex items-center justify-center gap-2"
         >
           {isSubmitting ? <span>Adjusting...</span> : <span>Adjust</span>}
         </Button>
       </form>
 
       {errorMessage && (
-        <p className="text-xs text-ember-500 animate-fadeIn">
+        <p className="text-xs font-mono font-bold text-ember-500 animate-fadeIn">
           ⚠️ {errorMessage}
         </p>
       )}

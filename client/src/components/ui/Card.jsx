@@ -2,6 +2,7 @@ import React from 'react'
 
 export function Card({
   accent = false,
+  badge = null,
   className = '',
   children,
   ...props
@@ -12,12 +13,20 @@ export function Card({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-panel-border bg-surface shadow-sm p-5 sm:p-8 transition-colors duration-200 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-ember-500/20 before:to-transparent ${accentStyle} ${className}`}
+      className={`relative rounded-xl border-2 border-panel-border bg-surface text-ink shadow-[4px_4px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[4px_4px_0px_0px_#181B20] p-5 sm:p-8 transition-colors duration-200 ${accentStyle} ${className}`}
       {...props}
     >
-      {/* Faint Oversized Vintage Culinary Watermark Emblem (2.5% opacity) */}
+      {/* Floating Overlapping Physical Stamp Detail */}
       <div
-        className="pointer-events-none absolute -right-12 -bottom-12 w-64 h-64 opacity-[0.025] select-none text-ink"
+        className="pointer-events-none absolute -top-3 right-5 sm:right-7 rotate-[-2deg] border-2 border-panel-border bg-brass-400 text-ink text-[9px] sm:text-[10px] font-mono font-bold px-2.5 py-0.5 uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(26,29,32,0.3)] dark:shadow-[2px_2px_0px_0px_#000] select-none z-10"
+        aria-hidden="true"
+      >
+        {badge || 'SPEC NO. 01'}
+      </div>
+
+      {/* Faint Oversized Vintage Culinary Watermark Emblem (2% opacity) */}
+      <div
+        className="pointer-events-none absolute -right-12 -bottom-12 w-64 h-64 opacity-[0.025] select-none text-ink overflow-hidden"
         aria-hidden="true"
       >
         <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">

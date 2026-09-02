@@ -32,9 +32,9 @@ function formatQuantity(quantity, scalingFactor, unit) {
 }
 
 const difficultyStyles = {
-  easy: 'bg-rosemary-500/15 border-rosemary-500/40 text-rosemary-400',
-  medium: 'bg-brass-500/15 border-brass-500/40 text-brass-500',
-  hard: 'bg-ember-500/15 border-ember-500/40 text-ember-400',
+  easy: 'bg-rosemary-500/15 border-2 border-rosemary-600/40 text-rosemary-500',
+  medium: 'bg-brass-500/15 border-2 border-brass-600/40 text-brass-500',
+  hard: 'bg-ember-500/15 border-2 border-ember-600/40 text-ember-500',
 }
 
 export function RecipeView({
@@ -87,6 +87,7 @@ export function RecipeView({
   const totalSteps = recipe.steps?.length || 0
   const completedCount = completedSteps.size
   const progressPercent = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0
+  const formattedServings = String(servings).padStart(2, '0')
 
   const handleServingChange = (delta) => {
     setServings((prev) => {
@@ -122,18 +123,18 @@ export function RecipeView({
   }
 
   return (
-    <Card accent={true} className="w-full space-y-7 sm:space-y-9 overflow-hidden">
+    <Card accent={true} badge="BRIGADE SPEC // LIVE" className="w-full space-y-7 sm:space-y-9 overflow-hidden">
       <motion.div
         variants={shouldReduceMotion ? undefined : staggerContainer}
         initial={shouldReduceMotion ? false : "hidden"}
         animate="show"
         exit="exit"
-        className="space-y-7 sm:space-y-9"
+        className="space-y-7 sm:space-y-8"
       >
-        {/* Top Action Bar */}
+        {/* Top Structural Action Bar */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b border-panel-border pb-4"
+          className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-panel-border pb-4 -mx-5 sm:-mx-8 px-5 sm:px-8 bg-elevated/40"
         >
           <Button
             variant="ghost"
@@ -150,12 +151,12 @@ export function RecipeView({
             size="sm"
             onClick={onRegenerate}
             disabled={isRegenerating}
-            className="flex items-center justify-center gap-2 shadow-stamp w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             {isRegenerating ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4 text-brass-500"
+                  className="animate-spin h-3.5 w-3.5 text-brass-500"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -186,17 +187,17 @@ export function RecipeView({
         </motion.div>
 
         {/* Header Section */}
-        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="space-y-3">
+        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="space-y-3 pt-1">
           <div className="flex flex-wrap items-center gap-2.5">
             <span
-              className={`border px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider ${
+              className={`px-2.5 py-0.5 rounded-sm text-[11px] font-mono font-bold uppercase tracking-wider ${
                 difficultyStyles[recipe.difficulty] || difficultyStyles.easy
               }`}
             >
               {recipe.difficulty}
             </span>
             {recipe.totalTimeMinutes && (
-              <span className="bg-elevated border border-panel-border text-ink-secondary text-xs font-medium px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-stamp">
+              <span className="bg-elevated border-2 border-panel-border text-ink-secondary text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-sm flex items-center gap-1.5 shadow-[1px_1px_0px_0px_rgba(26,29,32,0.1)]">
                 <span>⏱</span>
                 <span>{recipe.totalTimeMinutes} mins</span>
               </span>
@@ -208,7 +209,7 @@ export function RecipeView({
           </h1>
 
           {recipe.description && (
-            <p className="font-body text-ink-secondary italic text-sm sm:text-base leading-relaxed border-l-2 border-ember-500 pl-4 break-words">
+            <p className="font-body text-ink-secondary italic text-sm sm:text-base leading-relaxed border-l-4 border-ember-500 pl-4 break-words">
               "{recipe.description}"
             </p>
           )}
@@ -219,7 +220,7 @@ export function RecipeView({
               {recipe.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="bg-elevated border border-panel-border text-xs font-mono px-2.5 py-0.5 rounded-md text-ink-muted shadow-stamp"
+                  className="bg-elevated border border-panel-border text-[11px] font-mono font-bold px-2 py-0.5 rounded-sm text-ink-muted shadow-[1px_1px_0px_0px_rgba(26,29,32,0.06)]"
                 >
                   #{tag}
                 </span>
@@ -228,165 +229,159 @@ export function RecipeView({
           )}
         </motion.div>
 
-        {/* Servings Bar */}
+        {/* Asymmetric 12-Column Layout (4 Cols Ingredients Sidebar, 8 Cols Timeline) */}
         <motion.div
           variants={shouldReduceMotion ? undefined : platedItem}
-          className="bg-canvas border border-panel-border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-dial"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pt-2 items-start"
         >
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-1.5">
-                <span>🍽️</span>
-                <span>Servings</span>
-              </span>
-              <span className="text-xs text-brass-500 font-mono">
-                (Base: {baseServings})
-              </span>
-            </div>
-          </div>
+          {/* LEFT 4-COL SIDEBAR: Scaled Servings & Pantry Inventory */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Servings Mechanical Stepper Card */}
+            <div className="bg-elevated/70 border-2 border-panel-border rounded-lg p-4 space-y-3 shadow-[3px_3px_0px_0px_rgba(26,29,32,0.06)] dark:shadow-[3px_3px_0px_0px_#000]">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+                  <span>🍽️</span>
+                  <span>Servings</span>
+                </span>
+                <span className="text-[11px] text-brass-500 font-mono font-bold">
+                  Base: {baseServings}
+                </span>
+              </div>
 
-          <div className="inline-flex items-center bg-elevated border border-panel-border rounded-xl p-1 shadow-stamp self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={() => handleServingChange(-1)}
-              disabled={servings <= 1}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-surface hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
-              aria-label="Decrease servings"
-            >
-              −
-            </button>
-            <div className="w-14 text-center font-mono font-bold text-brass-500 text-lg select-none overflow-hidden h-7 flex items-center justify-center tracking-wider">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
-                  key={servings}
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 10, opacity: 0 }}
-                  transition={{ duration: 0.15 }}
+              <div className="flex items-center justify-between gap-2 bg-surface border-2 border-panel-border rounded-md p-1.5 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => handleServingChange(-1)}
+                  disabled={servings <= 1}
+                  className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-elevated text-ink font-mono font-bold text-base hover:border-ember-500 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none shadow-[1px_1px_0px_0px_rgba(26,29,32,0.12)] disabled:opacity-30 transition-all select-none touch-manipulation cursor-pointer"
+                  aria-label="Decrease servings"
                 >
-                  {servings}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-            <button
-              type="button"
-              onClick={() => handleServingChange(1)}
-              disabled={servings >= 20}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-ink-secondary hover:bg-surface hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 disabled:opacity-30 transition-all font-bold text-lg select-none touch-manipulation cursor-pointer"
-              aria-label="Increase servings"
-            >
-              +
-            </button>
-          </div>
-        </motion.div>
+                  −
+                </button>
 
-        {/* Asymmetric Open Cookbook Spread */}
-        <motion.div
-          variants={shouldReduceMotion ? undefined : platedItem}
-          className="relative grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 pt-2"
-        >
-          {/* Central Binder Crease */}
-          <div
-            className="hidden lg:block absolute inset-y-0 left-[41.666%] w-px bg-gradient-to-b from-transparent via-panel-border to-transparent -translate-x-1/2 pointer-events-none"
-            aria-hidden="true"
-          />
+                <div className="font-mono font-bold text-xs sm:text-sm tracking-wider text-brass-500 select-none overflow-hidden h-7 flex items-center justify-center">
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.span
+                      key={servings}
+                      initial={{ y: -10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: 10, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      {formattedServings} PORTIONS
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
 
-          {/* Left Page: Ingredients (5 cols) */}
-          <div className="lg:col-span-5 space-y-3">
-            <div className="flex items-center justify-between border-b border-dashed border-panel-border pb-2">
-              <h2 className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-2">
-                <span>🧺</span>
-                <span>Ingredients</span>
-              </h2>
-              <span className="text-xs text-ink-muted font-mono">
-                {recipe.ingredients?.length || 0}
-              </span>
+                <button
+                  type="button"
+                  onClick={() => handleServingChange(1)}
+                  disabled={servings >= 20}
+                  className="w-9 h-9 flex items-center justify-center rounded-sm border-2 border-panel-border bg-elevated text-ink font-mono font-bold text-base hover:border-ember-500 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none shadow-[1px_1px_0px_0px_rgba(26,29,32,0.12)] disabled:opacity-30 transition-all select-none touch-manipulation cursor-pointer"
+                  aria-label="Increase servings"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-2.5">
-              {recipe.ingredients?.map((ing, idx) => {
-                const isSwapped = activeSwaps.has(ing.name)
-                const scaledQty = formatQuantity(ing.quantity, scalingFactor, ing.unit)
+            {/* Ingredients Pantry Inventory */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b-2 border-panel-border pb-2">
+                <h2 className="text-xs font-mono font-bold text-ink uppercase tracking-wider flex items-center gap-2">
+                  <span>🧺</span>
+                  <span>Ingredients</span>
+                </h2>
+                <span className="text-xs text-ink-muted font-mono font-bold">
+                  {recipe.ingredients?.length || 0} ITEMS
+                </span>
+              </div>
 
-                return (
-                  <div
-                    key={idx}
-                    className="bg-elevated border border-panel-border rounded-xl p-3.5 space-y-2 shadow-tag transition-all duration-200"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1 pr-1">
-                        <h3
-                          className={`font-semibold text-sm sm:text-base break-words transition-all duration-200 ${
-                            isSwapped
-                              ? 'hand-strike text-ink-muted/40 opacity-60'
-                              : 'text-ink'
-                          }`}
-                        >
-                          {ing.name}
-                        </h3>
-                        <p
-                          className={`text-xs sm:text-sm font-mono transition-all duration-200 ${
-                            isSwapped
-                              ? 'line-through text-ink-muted/40 opacity-60'
-                              : 'text-brass-500 font-semibold'
-                          }`}
-                        >
-                          {scaledQty} {ing.unit}
-                        </p>
+              <div className="space-y-2.5">
+                {recipe.ingredients?.map((ing, idx) => {
+                  const isSwapped = activeSwaps.has(ing.name)
+                  const scaledQty = formatQuantity(ing.quantity, scalingFactor, ing.unit)
+
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-surface border-2 border-panel-border rounded-md p-3 space-y-2 shadow-[2px_2px_0px_0px_rgba(26,29,32,0.06)] dark:shadow-[2px_2px_0px_0px_#181B20] transition-all duration-200"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1 pr-1">
+                          <h3
+                            className={`font-mono text-xs sm:text-sm font-bold break-words transition-all duration-200 ${
+                              isSwapped
+                                ? 'hand-strike text-ink-muted/40 opacity-60'
+                                : 'text-ink'
+                            }`}
+                          >
+                            {ing.name}
+                          </h3>
+                          <p
+                            className={`text-xs font-mono font-bold transition-all duration-200 ${
+                              isSwapped
+                                ? 'line-through text-ink-muted/40 opacity-60'
+                                : 'text-brass-500'
+                            }`}
+                          >
+                            {scaledQty} {ing.unit}
+                          </p>
+                        </div>
+
+                        {ing.swappable && (
+                          <button
+                            type="button"
+                            onClick={() => toggleSwap(ing.name)}
+                            className={`min-h-[32px] px-2.5 py-1 text-[11px] font-mono font-bold rounded-sm border-2 transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 touch-manipulation shrink-0 cursor-pointer shadow-[2px_2px_0px_0px_rgba(26,29,32,0.15)] dark:shadow-[2px_2px_0px_0px_#000] ${
+                              isSwapped
+                                ? 'bg-rosemary-500 text-white border-rosemary-700'
+                                : 'bg-elevated text-ink border-panel-border hover:border-ember-500'
+                            }`}
+                          >
+                            {isSwapped ? '✓ Swapped' : '⇄ Swap'}
+                          </button>
+                        )}
                       </div>
 
-                      {ing.swappable && (
-                        <button
-                          type="button"
-                          onClick={() => toggleSwap(ing.name)}
-                          className={`min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg border transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 touch-manipulation shrink-0 cursor-pointer ${
-                            isSwapped
-                              ? 'bg-rosemary-500 text-white border-rosemary-600 shadow-sm'
-                              : 'bg-surface text-ink-secondary border-panel-border hover:border-ember-500/50'
-                          }`}
-                        >
-                          {isSwapped ? '✓ Swapped' : '⇄ Swap'}
-                        </button>
-                      )}
+                      {/* Smooth AnimatePresence for Swap Expansion */}
+                      <AnimatePresence>
+                        {isSwapped && ing.swapSuggestion && (
+                          <motion.div
+                            key="swap-box"
+                            {...swapExpand}
+                            className="overflow-hidden"
+                          >
+                            <div className="bg-rosemary-500/10 border-2 border-rosemary-500/30 rounded-sm p-2.5 text-xs text-rosemary-400 space-y-0.5 mt-2">
+                              <span className="font-mono font-bold text-[10px] uppercase tracking-wider block text-rosemary-500">
+                                Swap Choice:
+                              </span>
+                              <p className="font-body break-words">{ing.swapSuggestion}</p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-
-                    {/* Smooth AnimatePresence for Swap Expansion */}
-                    <AnimatePresence>
-                      {isSwapped && ing.swapSuggestion && (
-                        <motion.div
-                          key="swap-box"
-                          {...swapExpand}
-                          className="overflow-hidden"
-                        >
-                          <div className="bg-rosemary-500/10 border border-rosemary-500/30 rounded-lg p-2.5 text-xs sm:text-sm text-rosemary-400 space-y-0.5 mt-2">
-                            <span className="font-bold text-[11px] uppercase tracking-wider block text-rosemary-500">
-                              Swap Choice:
-                            </span>
-                            <p className="break-words">{ing.swapSuggestion}</p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
 
-          {/* Right Page: Steps (7 cols) */}
-          <div className="lg:col-span-7 space-y-3">
-            <div className="flex items-center justify-between border-b border-dashed border-panel-border pb-2">
-              <h2 className="text-xs sm:text-sm font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-2">
+          {/* RIGHT 7-COL PANE: Connected Industrial Step Timeline */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-center justify-between border-b-2 border-panel-border pb-2">
+              <h2 className="text-xs font-mono font-bold text-ink uppercase tracking-wider flex items-center gap-2">
                 <span>👨‍🍳</span>
                 <span>Steps</span>
               </h2>
-              <span className="text-xs text-brass-500 font-mono font-bold">
+              <span className="text-xs font-mono font-bold text-brass-500 bg-elevated border border-panel-border px-2 py-0.5 rounded-sm shadow-[1px_1px_0px_0px_rgba(26,29,32,0.06)]">
                 {completedCount} / {totalSteps} done
               </span>
             </div>
 
-            {/* Progress Bar */}
-            <div className="w-full bg-elevated h-1.5 rounded-full overflow-hidden border border-panel-border/60">
+            {/* Solid Progress Bar */}
+            <div className="w-full bg-elevated h-2 rounded-sm overflow-hidden border-2 border-panel-border">
               <motion.div
                 className="bg-gradient-to-r from-ember-500 via-brass-500 to-rosemary-500 h-full"
                 animate={{ width: `${progressPercent}%` }}
@@ -394,8 +389,8 @@ export function RecipeView({
               />
             </div>
 
-            {/* Step Cards */}
-            <div className="space-y-2.5 pt-1">
+            {/* Prep Timeline with Connecting Dashed Guideline */}
+            <div className="border-l-2 border-dashed border-panel-border ml-4 sm:ml-5 pl-6 sm:pl-7 relative space-y-5 pt-3">
               {recipe.steps?.map((step) => {
                 const isDone = completedSteps.has(step.order)
 
@@ -415,28 +410,24 @@ export function RecipeView({
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    className={`cursor-pointer rounded-xl border p-3.5 transition-colors duration-200 flex items-start gap-3.5 select-none shadow-stamp touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
+                    className={`relative cursor-pointer rounded-md border-2 p-4 transition-all duration-150 select-none shadow-[2px_2px_0px_0px_rgba(26,29,32,0.08)] dark:shadow-[2px_2px_0px_0px_#181B20] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-500 ${
                       isDone
-                        ? 'bg-surface/50 border-panel-border/50 text-ink-muted'
-                        : 'bg-elevated border-panel-border hover:border-ember-500/40'
+                        ? 'bg-surface/50 border-panel-border/60 text-ink-muted'
+                        : 'bg-surface border-panel-border hover:border-ember-500'
                     }`}
                   >
-                    <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2 shrink-0">
-                      <motion.div
-                        initial={false}
-                        animate={{ scale: isDone ? [0.8, 1.15, 1] : 1 }}
-                        transition={{ type: 'spring', stiffness: 600, damping: 20 }}
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs transition-colors duration-200 ${
-                          isDone
-                            ? 'bg-rosemary-500 text-white shadow-glow'
-                            : 'bg-surface text-ember-500 border border-panel-border'
-                        }`}
-                      >
-                        {isDone ? '✓' : step.order}
-                      </motion.div>
+                    {/* Monospace Step Badge that bleeds over the timeline line */}
+                    <div
+                      className={`absolute -left-[35px] sm:-left-[39px] top-3.5 w-7 h-7 sm:w-8 sm:h-8 font-mono font-bold text-xs flex items-center justify-center rounded-sm border-2 transition-all shadow-[1px_1px_0px_0px_rgba(26,29,32,0.2)] dark:shadow-[1px_1px_0px_0px_#000] ${
+                        isDone
+                          ? 'bg-rosemary-500 text-white border-rosemary-700'
+                          : 'bg-surface text-ember-500 border-panel-border'
+                      }`}
+                    >
+                      {isDone ? '✓' : step.order}
                     </div>
 
-                    <div className="space-y-1 flex-1 pt-2">
+                    <div className="space-y-1">
                       <motion.p
                         animate={{ opacity: isDone ? 0.45 : 1 }}
                         transition={{ duration: 0.15 }}
@@ -455,7 +446,7 @@ export function RecipeView({
         </motion.div>
 
         {/* Recipe Refine Section */}
-        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="pt-3 border-t border-dashed border-panel-border">
+        <motion.div variants={shouldReduceMotion ? undefined : platedItem} className="pt-3 border-t-2 border-panel-border">
           <RecipeRefine
             currentRecipe={recipe}
             onRefineSuccess={(updated) => {

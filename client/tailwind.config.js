@@ -35,6 +35,7 @@ export default {
           400: '#F06548',
           500: '#E05338',
           600: '#C74127',
+          700: '#8F2815',
           glow: 'rgba(224, 83, 56, 0.25)',
         },
         /* ── Success: Rosemary / Alpine Sage ── */
@@ -42,20 +43,25 @@ export default {
           400: '#4E9F76',
           500: '#3D7055',
           600: '#2F5943',
+          700: '#1B3D2C',
         },
         /* ── Accent: Nordic Brass ── */
         brass: {
           400: '#E5AB4C',
           500: '#D49A3D',
           600: '#B8801B',
+          700: '#8A601E',
         },
       },
       boxShadow: {
-        glow:      '0 8px 30px -4px rgba(224,83,56,0.10), 0 2px 8px -2px rgba(0,0,0,0.08)',
-        'glow-lg': '0 12px 40px -4px rgba(224,83,56,0.16), 0 4px 12px -2px rgba(0,0,0,0.12)',
-        stamp:     'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.12)',
-        tag:       '1px 2px 0px rgba(0,0,0,0.06)',
-        dial:      'inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 0 rgba(212,154,61,0.15)',
+        retro:       '3px 3px 0px 0px rgba(26, 29, 32, 1)',
+        'retro-sm':  '2px 2px 0px 0px rgba(26, 29, 32, 0.9)',
+        'retro-lg':  '4px 4px 0px 0px rgba(26, 29, 32, 1)',
+        'retro-ember': '3px 3px 0px 0px #8F2815',
+        'retro-rosemary': '3px 3px 0px 0px #1B3D2C',
+        'retro-brass': '3px 3px 0px 0px #8A601E',
+        'retro-card': '4px 4px 0px 0px rgba(26, 29, 32, 0.10)',
+        'retro-card-dark': '4px 4px 0px 0px rgba(0, 0, 0, 0.5)',
       },
       keyframes: {
         flicker: {

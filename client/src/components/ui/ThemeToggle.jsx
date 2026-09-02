@@ -8,17 +8,17 @@ export function ThemeToggle({ theme, toggleTheme }) {
       type="button"
       onClick={toggleTheme}
       aria-label="Toggle dark mode"
-      className="min-h-[44px] min-w-[44px] p-2.5 rounded-xl border border-panel-border bg-surface text-ink-secondary hover:bg-elevated transition-all duration-200 active:scale-95 shadow-sm flex items-center justify-center touch-manipulation cursor-pointer"
+      className="min-h-[40px] min-w-[40px] p-2 rounded-md border-2 border-panel-border bg-surface text-ink-secondary hover:text-ink hover:bg-elevated transition-all duration-100 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none shadow-[2px_2px_0px_0px_rgba(26,29,32,0.12)] dark:shadow-[2px_2px_0px_0px_#000] flex items-center justify-center touch-manipulation cursor-pointer"
     >
       {isDark ? (
         /* Sun Icon → switch to light */
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-brass-400"
+          className="w-4 h-4 text-brass-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
         >
           <path
             strokeLinecap="round"
@@ -30,11 +30,11 @@ export function ThemeToggle({ theme, toggleTheme }) {
         /* Moon Icon → switch to dark */
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-ink"
+          className="w-4 h-4 text-ink"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
         >
           <path
             strokeLinecap="round"
